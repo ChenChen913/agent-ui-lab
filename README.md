@@ -6,6 +6,8 @@
   <a href="https://chenchen913.github.io/agent-ui-lab/"><b>▶ 在线访问</b></a>
   &nbsp;·&nbsp;
   <a href="https://github.com/ChenChen913/agent-ui-lab">源码</a>
+  <br>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
 </p>
 
 Fifteen standalone interface experiments on how an AI agent's work should look.
@@ -194,4 +196,6 @@ A：那不是空白，是用户登录后看到的空状态。点右上角的播�
 
 ## 许可证
 
-<!-- TODO: 需作者确认。仓库里没有 LICENSE 文件，package.json 也没有 license 字段。 -->
+[MIT](LICENSE) © 2026 ChenChen913
+
+可以自由使用、修改、分发，包括商用和闭源项目，只要保留版权声明。

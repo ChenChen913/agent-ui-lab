@@ -3,6 +3,7 @@
   "description": "Fifteen standalone interface experiments on how an AI agent's work should look.",
   "private": true,
   "version": "0.0.1",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "dev": "vite",

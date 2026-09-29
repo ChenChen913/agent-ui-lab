@@ -66,4 +66,4 @@
 - [x] 所有环境变量在代码中能搜到（结论是：一个都没有）
 - [x] 目录结构与实际一致
 - [x] 无臆造项
-- [ ] 许可证：仓库里没有 LICENSE 文件，`package.json` 也没有 `license` 字段，README 里保留 TODO
+- [x] 许可证：MIT（作者 2026-09-29 确认），LICENSE 文件与 package.json 的 license 字段都已补上

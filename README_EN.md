@@ -6,6 +6,8 @@
   <a href="https://chenchen913.github.io/agent-ui-lab/"><b>▶ Live demo</b></a>
   &nbsp;·&nbsp;
   <a href="https://github.com/ChenChen913/agent-ui-lab">Source</a>
+  <br>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
 </p>
 
 Fifteen standalone interface experiments on how an AI agent's work should look.
@@ -192,4 +194,6 @@ If you want to add an experiment, include its `NOTES.md` and state clearly the o
 
 ## License
 
-<!-- TODO: needs the author's decision. The repository has no LICENSE file and package.json has no license field. -->
+[MIT](LICENSE) © 2026 ChenChen913
+
+Free to use, modify, and distribute, including commercially and in closed-source projects, as long as the copyright notice is kept.
