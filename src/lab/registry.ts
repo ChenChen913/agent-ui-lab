@@ -46,8 +46,8 @@ export const LINES: LineMeta[] = [
   {
     id: 'b',
     name: 'Agent 主界面',
-    question: 'Agent 在干活的时候，怎么让用户看懂？',
-    desc: '传统产品把 Agent 的工作压成一句 Loading。这一线探索的是：那整个过程除了聊天消息，还能怎么被表达出来。六个模板是六种完全不同的视觉语言，故意不统一。',
+    question: '用户应该如何使用 Agent？',
+    desc: '从「Agent 正在干什么」转向「人怎么用它」。这一线研究的是产品入口、任务创建、委托与谈判、产物，以及人和 Agent 的持续交互。',
   },
   {
     id: 'a',
