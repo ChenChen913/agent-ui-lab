@@ -8,6 +8,7 @@ import BenchC from './experiments/001-bench/C-glass'
 import OneLine from './experiments/002-one-line'
 import Terminal from './experiments/003-terminal'
 import Chronicle from './experiments/004-chronicle'
+import Desktop from './experiments/005-desktop'
 
 const BENCH: { id: string; name: string; Comp: (p: Ctl) => React.ReactElement }[] = [
   { id: 'a', name: 'A · 极简黑白', Comp: BenchA },
@@ -50,6 +51,11 @@ export default function App() {
         <Route
           path="/004"
           element={<Frame no="004" title="Chronicle" render={(ctl) => <Chronicle {...ctl} />} />}
+        />
+
+        <Route
+          path="/005"
+          element={<Frame no="005" title="Desktop" render={(ctl) => <Desktop {...ctl} />} />}
         />
 
         <Route path="*" element={<Navigate to="/" replace />} />

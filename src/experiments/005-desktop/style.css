@@ -1,0 +1,342 @@
+.dk {
+  --desk: #a7b3c0;
+  --win: #fcfcfb;
+  --win-2: #f2f2f0;
+  --line: #e5e5e3;
+  --ink: #1b2027;
+  --ink-2: #626b76;
+  --ink-3: #98a1ab;
+  --ambient: #6c7a8c;
+  --ok: #4f8a63;
+  --warn: #c4811f;
+
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  background: var(--desk);
+  color: var(--ink);
+  font-family: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+  user-select: none;
+  cursor: default;
+}
+
+/* 环境光随 Agent 的状态微微变化 —— 不看它也能感觉到它在忙 */
+.dk[data-presence='thinking'] { --ambient: #7a6ea8; }
+.dk[data-presence='working']  { --ambient: #3f8fa8; }
+.dk[data-presence='waiting']  { --ambient: #c4811f; }
+.dk[data-presence='done']     { --ambient: #4f8a63; }
+
+.dk-amb { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 1100ms ease; }
+.dk-amb[data-k='thinking'] { background: radial-gradient(130% 95% at 50% -12%, #7a6ea8 0%, transparent 62%); }
+.dk-amb[data-k='working']  { background: radial-gradient(130% 95% at 50% -12%, #3f8fa8 0%, transparent 62%); }
+.dk-amb[data-k='waiting']  { background: radial-gradient(130% 95% at 50% -12%, #c4811f 0%, transparent 62%); }
+.dk-amb[data-k='done']     { background: radial-gradient(130% 95% at 50% -12%, #4f8a63 0%, transparent 62%); }
+.dk[data-presence='thinking'] .dk-amb[data-k='thinking'],
+.dk[data-presence='working']  .dk-amb[data-k='working'],
+.dk[data-presence='waiting']  .dk-amb[data-k='waiting'],
+.dk[data-presence='done']     .dk-amb[data-k='done'] { opacity: 0.24; }
+
+/* ── 桌面上的时间 ─────────────────────────────────────── */
+.dk-clock {
+  position: absolute; top: 28px; right: 40px;
+  font-family: 'Geist Mono Variable', ui-monospace, monospace;
+  font-size: 27px; letter-spacing: -0.01em; font-variant-numeric: tabular-nums;
+  color: color-mix(in srgb, var(--ink) 42%, transparent);
+}
+
+/* ── 当前目标 ─────────────────────────────────────────── */
+.dk-ask {
+  position: absolute; top: 34px; left: 50%; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 9px;
+  max-width: 60vw; padding: 7px 15px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--win) 72%, transparent);
+  border: 1px solid color-mix(in srgb, var(--ink) 8%, transparent);
+  backdrop-filter: blur(12px);
+  font-size: 12.5px; color: var(--ink-2);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  animation: dk-fade 420ms ease;
+}
+.dk-ask-dot { flex: none; width: 5px; height: 5px; border-radius: 50%; background: var(--ambient); transition: background 900ms ease; }
+@keyframes dk-fade { from { opacity: 0 } to { opacity: 1 } }
+
+/* ── 任务窗口 ─────────────────────────────────────────── */
+.dk-win {
+  position: absolute;
+  border-radius: 14px;
+  background: var(--win);
+  border: 1px solid var(--line);
+  box-shadow: 0 22px 54px -22px rgba(18, 28, 38, 0.5), 0 3px 10px -5px rgba(18, 28, 38, 0.18);
+  overflow: hidden;
+  transform-origin: 50% 100%;
+  animation: dk-win-in 380ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 320ms ease, transform 340ms cubic-bezier(0.4, 0, 1, 1);
+  will-change: transform;
+}
+@keyframes dk-win-in {
+  from { opacity: 0; transform: translateY(18px) scale(0.96); }
+  to   { opacity: 1; transform: none; }
+}
+.dk-win[data-min='1'] {
+  opacity: 0;
+  transform: translateY(46vh) scale(0.32);
+  pointer-events: none;
+}
+
+.dk-win-bar {
+  display: flex; align-items: center; gap: 8px;
+  height: 34px; padding: 0 8px 0 13px;
+  background: var(--win-2);
+  border-bottom: 1px solid var(--line);
+  cursor: grab; touch-action: none;
+}
+.dk-win-bar:active { cursor: grabbing; }
+.dk-win-title {
+  flex: 1; min-width: 0; font-size: 12px; font-weight: 500;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.dk-win-state {
+  font-family: 'Geist Mono Variable', ui-monospace, monospace;
+  font-size: 12px; color: var(--ink-3);
+}
+.dk-win[data-state='done'] .dk-win-state { color: var(--ok); }
+.dk-win[data-state='warn'] .dk-win-state { color: var(--warn); font-weight: 600; }
+.dk-win-btns { display: flex; gap: 2px; }
+.dk-wbtn {
+  width: 20px; height: 20px; padding: 0; border: 0; border-radius: 5px;
+  background: transparent; color: var(--ink-3);
+  font-size: 14px; line-height: 1; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.dk-wbtn:hover { background: color-mix(in srgb, var(--ink) 8%, transparent); color: var(--ink); }
+
+.dk-win-body { padding: 12px 14px 14px; }
+
+.dk-table { width: 100%; border-collapse: collapse; font-size: 11.5px; font-variant-numeric: tabular-nums; }
+.dk-table th {
+  padding: 0 0 7px; text-align: right;
+  font-size: 10px; font-weight: 500; letter-spacing: 0.06em; color: var(--ink-3);
+}
+.dk-table th:first-child, .dk-table td:first-child { text-align: left; }
+.dk-table td { padding: 5px 0; text-align: right; border-top: 1px solid var(--line); }
+.dk-table td:first-child { color: var(--ink-2); }
+.dk-table tbody tr { opacity: 0; transform: translateY(4px); transition: opacity 260ms ease, transform 260ms ease; }
+.dk-table tbody tr.is-in { opacity: 1; transform: none; }
+
+.dk-check { list-style: none; margin: 0; padding: 0; }
+.dk-check li {
+  display: flex; align-items: baseline; gap: 9px;
+  padding: 6px 0; border-top: 1px solid var(--line); font-size: 11.5px;
+  opacity: 0; transform: translateY(4px);
+  transition: opacity 260ms ease, transform 260ms ease;
+}
+.dk-check li:first-child { border-top: 0; }
+.dk-check li.is-in { opacity: 1; transform: none; }
+.dk-check-mark { flex: none; width: 10px; color: var(--ok); }
+.dk-check li[data-warn='1'] .dk-check-mark { color: var(--warn); font-weight: 700; }
+.dk-check-name { flex: 1; min-width: 0; }
+.dk-check-ver { font-family: 'Geist Mono Variable', ui-monospace, monospace; font-size: 10.5px; color: var(--ink-3); }
+.dk-check li[data-warn='1'] .dk-check-ver { color: var(--warn); }
+
+.dk-confirm-body { margin: 2px 0 16px; font-size: 12.5px; line-height: 1.65; }
+.dk-confirm-btns { display: flex; gap: 8px; justify-content: flex-end; }
+.dk-cbtn {
+  font: inherit; font-size: 11.5px; padding: 6px 15px; border-radius: 7px;
+  border: 1px solid var(--line); background: transparent; color: var(--ink-2); cursor: pointer;
+}
+.dk-cbtn:hover { border-color: var(--ink-3); color: var(--ink); }
+.dk-cbtn.is-yes { background: var(--ink); border-color: var(--ink); color: var(--win); }
+.dk-cbtn.is-yes:hover { opacity: 0.88; color: var(--win); }
+
+/* ── 命令面板 ─────────────────────────────────────────── */
+.dk-palette {
+  position: absolute; inset: 0; z-index: 900;
+  display: flex; align-items: flex-start; justify-content: center;
+  padding-top: 24vh; cursor: text;
+  background: color-mix(in srgb, var(--ink) 13%, transparent);
+  backdrop-filter: blur(3px);
+  animation: dk-fade 220ms ease;
+}
+.dk-palette-box {
+  display: flex; align-items: center; gap: 11px;
+  width: min(620px, 76vw); padding: 15px 18px;
+  border-radius: 14px; background: var(--win); border: 1px solid var(--line);
+  box-shadow: 0 30px 70px -24px rgba(18, 28, 38, 0.55);
+  animation: dk-palette-in 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes dk-palette-in {
+  from { opacity: 0; transform: translateY(-10px) scale(0.985); }
+  to   { opacity: 1; transform: none; }
+}
+.dk-palette-mark { color: var(--ambient); font-size: 15px; transition: color 900ms ease; }
+.dk-palette-text {
+  flex: 1; min-width: 0; font-size: 14px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.dk-caret { flex: none; width: 1.5px; height: 17px; background: var(--ink); animation: dk-blink 1.05s steps(1, end) infinite; }
+@keyframes dk-blink { 0%, 50% { opacity: 1 } 50.01%, 100% { opacity: 0 } }
+.dk-palette-hint {
+  flex: none; padding: 1px 6px; border: 1px solid var(--line); border-radius: 4px;
+  font-size: 11px; color: var(--ink-3);
+}
+
+/* ── 通知 ─────────────────────────────────────────────── */
+.dk-notify {
+  position: absolute; top: 86px; right: 36px; z-index: 950;
+  display: flex; align-items: flex-start; gap: 12px;
+  width: 306px; padding: 14px 16px; text-align: left;
+  border-radius: 13px; cursor: pointer;
+  background: color-mix(in srgb, var(--win) 88%, transparent);
+  backdrop-filter: blur(18px);
+  border: 1px solid var(--line);
+  box-shadow: 0 20px 46px -20px rgba(18, 28, 38, 0.45);
+  font: inherit;
+  animation: dk-notify-in 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes dk-notify-in {
+  from { opacity: 0; transform: translateX(26px) scale(0.97); }
+  to   { opacity: 1; transform: none; }
+}
+.dk-notify-mark { flex: none; width: 7px; height: 7px; margin-top: 5px; border-radius: 50%; background: var(--ok); }
+.dk-notify[data-tone='warn'] .dk-notify-mark { background: var(--warn); }
+.dk-notify-text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.dk-notify-text b { font-size: 12.5px; font-weight: 500; color: var(--ink); }
+.dk-notify-text em { font-style: normal; font-size: 11.5px; line-height: 1.5; color: var(--ink-2); }
+
+/* ── Dock = 任务列表 ──────────────────────────────────── */
+.dk-dock {
+  position: absolute; left: 50%; bottom: 26px; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 7px;
+  min-height: 52px; padding: 8px 12px;
+  border-radius: 17px;
+  background: color-mix(in srgb, var(--win) 82%, transparent);
+  backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid color-mix(in srgb, var(--ink) 9%, transparent);
+  box-shadow: 0 20px 44px -22px rgba(18, 28, 38, 0.42);
+}
+.dk-dock-empty { padding: 6px 10px; font-size: 11.5px; color: var(--ink-3); }
+.dk-chip {
+  position: relative; width: 36px; height: 36px; border-radius: 10px;
+  border: 1px solid var(--line); background: var(--win-2);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; overflow: hidden;
+  transition: transform 180ms ease, border-color 180ms ease, opacity 240ms ease;
+}
+.dk-chip:hover { transform: translateY(-3px); border-color: var(--ink-3); }
+.dk-chip-glyph { font-size: 15px; line-height: 1; color: var(--ink-2); }
+.dk-chip[data-state='done'] .dk-chip-glyph { color: var(--ok); }
+.dk-chip[data-state='warn'] .dk-chip-glyph { color: var(--warn); }
+.dk-chip[data-state='running'] { border-color: color-mix(in srgb, var(--ambient) 55%, var(--line)); }
+.dk-chip[data-min='1'] { opacity: 0.7; }
+.dk-chip-prog {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 2px;
+  background: var(--ambient); transform-origin: left; transform: scaleX(0);
+  transition: transform 200ms linear, background 900ms ease;
+}
+.dk-chip-tip {
+  position: absolute; bottom: 100%; left: 50%;
+  transform: translateX(-50%) translateY(-8px);
+  padding: 5px 9px; border-radius: 7px; white-space: nowrap;
+  background: var(--ink); color: var(--win); font-size: 11px;
+  opacity: 0; pointer-events: none; transition: opacity 150ms ease;
+}
+.dk-chip:hover .dk-chip-tip { opacity: 1; }
+
+/* ── Agent 本体 ───────────────────────────────────────── */
+.dk-presence {
+  position: absolute; right: 30px; bottom: 30px;
+  width: 58px; height: 58px; padding: 0;
+  border-radius: 20px;
+  border: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
+  background: var(--win);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 16px 34px -16px rgba(18, 28, 38, 0.4);
+  transition: border-radius 600ms cubic-bezier(0.16, 1, 0.3, 1),
+              transform 300ms cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 600ms ease;
+}
+.dk-presence:hover { transform: scale(1.05); }
+.dk-presence[data-state='thinking'] { border-radius: 50%; }
+.dk-presence[data-state='working']  { border-radius: 14px; }
+.dk-presence[data-state='done']     { border-color: var(--ok); }
+.dk-presence[data-state='waiting']  {
+  border-radius: 50%; border-color: var(--warn);
+  animation: dk-pulse 1.5s ease-in-out infinite;
+}
+@keyframes dk-pulse {
+  0%, 100% { box-shadow: 0 16px 34px -16px rgba(18,28,38,.4), 0 0 0 0 rgba(196,129,31,.45); }
+  60%      { box-shadow: 0 16px 34px -16px rgba(18,28,38,.4), 0 0 0 13px rgba(196,129,31,0); }
+}
+
+.dk-presence-fill {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 0;
+  border-radius: inherit;
+  background: color-mix(in srgb, var(--ambient) 26%, transparent);
+  transition: height 220ms linear, background 900ms ease;
+}
+.dk-presence-core { position: relative; width: 100%; height: 100%; }
+.dk-presence-core i {
+  position: absolute; left: 50%; top: 50%;
+  width: 8px; height: 8px; margin: -4px 0 0 -4px;
+  border-radius: 50%; background: var(--ambient);
+  transition: background 900ms ease, opacity 400ms ease, width 300ms ease, height 300ms ease, margin 300ms ease;
+}
+.dk-presence-core i:nth-child(2), .dk-presence-core i:nth-child(3) { opacity: 0; }
+
+.dk-presence[data-state='idle'] .dk-presence-core i:nth-child(1) { animation: dk-breathe 3.4s ease-in-out infinite; }
+@keyframes dk-breathe {
+  0%, 100% { opacity: 0.4; transform: scale(0.8); }
+  50%      { opacity: 1;   transform: scale(1); }
+}
+
+.dk-presence[data-state='thinking'] .dk-presence-core i:nth-child(1) { animation: dk-orbit 2.6s linear infinite; }
+@keyframes dk-orbit {
+  0%   { transform: translate(0, -13px); }
+  25%  { transform: translate(13px, 0); }
+  50%  { transform: translate(0, 13px); }
+  75%  { transform: translate(-13px, 0); }
+  100% { transform: translate(0, -13px); }
+}
+
+.dk-presence[data-state='working'] .dk-presence-core i { opacity: 1; }
+.dk-presence[data-state='working'] .dk-presence-core i:nth-child(1) { animation: dk-drift-1 3.4s ease-in-out infinite; }
+.dk-presence[data-state='working'] .dk-presence-core i:nth-child(2) {
+  width: 6px; height: 6px; margin: -3px 0 0 -3px; animation: dk-drift-2 4.1s ease-in-out infinite;
+}
+.dk-presence[data-state='working'] .dk-presence-core i:nth-child(3) {
+  width: 6px; height: 6px; margin: -3px 0 0 -3px; animation: dk-drift-3 2.9s ease-in-out infinite;
+}
+@keyframes dk-drift-1 { 0%, 100% { transform: translate(-9px, -6px); } 50% { transform: translate(8px, 7px); } }
+@keyframes dk-drift-2 { 0%, 100% { transform: translate(10px, 5px); }  50% { transform: translate(-7px, -9px); } }
+@keyframes dk-drift-3 { 0%, 100% { transform: translate(2px, 11px); }  50% { transform: translate(-4px, -11px); } }
+
+.dk-presence[data-state='waiting'] .dk-presence-core i:nth-child(1) { animation: dk-breathe 1.1s ease-in-out infinite; }
+.dk-presence[data-state='done']    .dk-presence-core i:nth-child(1) { animation: dk-pop 1.2s cubic-bezier(0.16, 1, 0.3, 1) infinite; }
+@keyframes dk-pop { 0%, 100% { transform: scale(1); } 40% { transform: scale(1.55); } }
+
+.dk-presence-ring {
+  position: absolute; inset: 4px; border-radius: inherit; pointer-events: none;
+  border: 1px solid transparent;
+  transition: border-color 600ms ease;
+}
+.dk-presence[data-state='working'] .dk-presence-ring { border-color: color-mix(in srgb, var(--ambient) 34%, transparent); }
+
+.dk-input {
+  position: absolute; left: 0; bottom: 0; width: 1px; height: 1px;
+  padding: 0; border: 0; opacity: 0; pointer-events: none; font: inherit;
+}
+
+@media (max-width: 900px) {
+  .dk-clock { font-size: 20px; top: 18px; right: 20px; }
+  .dk-ask { display: none; }
+  .dk-presence { right: 18px; bottom: 18px; width: 50px; height: 50px; }
+  .dk-dock { bottom: 18px; }
+  .dk-notify { right: 16px; top: 64px; width: min(290px, 84vw); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dk-presence, .dk-presence-core i, .dk-chip, .dk-win { animation: none !important; }
+  .dk-caret { animation: none; }
+  .dk-presence[data-state='idle'] .dk-presence-core i:nth-child(1) { opacity: 1; }
+}

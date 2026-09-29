@@ -70,7 +70,16 @@ export const ENTRIES: Entry[] = [
       { id: 'a', name: 'Chronicle', tag: '时间轴 / 泳道 / 可拖动', bg: '#eef1f3', fg: '#16232e', accent: '#c4472c', href: '/004' },
     ],
   },
-  { no: '005', slug: '/005', title: 'Desktop', question: 'Agent 像操作系统助手一样活着。', status: 'planned' },
+  {
+    no: '005',
+    slug: '/005',
+    title: 'Desktop',
+    question: '如果 Agent 不是一个网页，而是一个活在桌面上的存在，会怎么样？',
+    status: 'live',
+    variants: [
+      { id: 'a', name: 'Desktop', tag: '桌面 / 窗口 / 常驻本体', bg: '#a7b3c0', fg: '#1b2027', accent: '#3f8fa8', href: '/005' },
+    ],
+  },
   { no: '006', slug: '/006', title: 'Spatial', question: '不用列表，用空间表达 Agent 的工作。', status: 'planned' },
   { no: '—', slug: '/', title: '…', question: '下一个想法。', status: 'planned' },
 ]
