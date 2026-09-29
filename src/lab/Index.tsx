@@ -94,14 +94,14 @@ function Card({ e }: { e: Entry }) {
   const multi = vs.length > 1
 
   const to = v?.href ?? (v ? e.slug + '/' + v.id : e.slug)
-  const previewProps: PreviewProps = v ? { bg: v.bg, fg: v.fg, accent: v.accent, bg2: v.bg2 } : {}
+  const previewProps: PreviewProps = v ? { bg: v.bg, fg: v.fg, accent: v.accent, bg2: v.bg2, vn: v.id } : {}
   const label = v ? (multi ? v.name + ' · ' + v.tag : v.tag) : ''
 
   return (
     <article className="group relative flex flex-col overflow-hidden rounded-xl border lab-line lab-card lab-hover">
       <Link to={to} className="absolute inset-0 z-10" aria-label={'进入 ' + e.title} />
 
-      <div className="relative h-[150px] overflow-hidden border-b lab-line-soft">
+      <div className="relative h-[168px] overflow-hidden border-b lab-line-soft">
         <P {...previewProps} />
         {multi ? (
           <div

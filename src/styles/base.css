@@ -103,6 +103,17 @@ body {
   font-family: 'Geist Mono Variable', ui-monospace, monospace;
   font-size: 12px; color: var(--lab-t3);
 }
+/* ── 主页卡片上的真截图 ──────────────────────────────────
+   截图是 1280×560，顶部 52px 是实验外壳的黑边。
+   top 与 height 的百分比都按容器高度算，所以这里能精确裁掉那 52px。 */
+.lab-shot { position: relative; height: 100%; overflow: hidden; }
+.lab-shot img {
+  position: absolute; left: 0;
+  top: -10.5%; height: 110.5%; width: 100%;
+  object-fit: cover; object-position: top;
+  display: block; user-select: none;
+}
+
 .lab-lh-q { margin: 17px 0 7px; font-size: 15px; font-weight: 500; color: var(--lab-t1); letter-spacing: -0.01em; }
 .lab-lh-d { margin: 0 0 24px; max-width: 78ch; font-size: 13.5px; line-height: 1.85; color: var(--lab-t3); }
 

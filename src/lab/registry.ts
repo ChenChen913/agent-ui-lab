@@ -44,13 +44,13 @@ export interface LineMeta {
 /** 展示顺序：主界面在前，过程可视化在后 */
 export const LINES: LineMeta[] = [
   {
-    id: 'b',
+    id: 'a',
     name: 'Agent 主界面',
     question: '用户应该如何使用 Agent？',
     desc: '从「Agent 正在干什么」转向「人怎么用它」。这一线研究的是产品入口、任务创建、委托与谈判、产物，以及人和 Agent 的持续交互。',
   },
   {
-    id: 'a',
+    id: 'b',
     name: 'Agent 工作过程可视化',
     question: 'Agent 在干活的时候，怎么让用户看懂？',
     desc: '传统产品把 Agent 的工作压成一句 Loading。这一线探索的是：那整个过程除了聊天消息，还能怎么被表达出来。六个模板是六种完全不同的视觉语言，故意不统一。',
@@ -101,7 +101,7 @@ export const ENTRIES: Entry[] = [
   {
     no: '001',
     slug: '/001',
-    line: 'a',
+    line: 'b',
     title: 'The Bench',
     question: 'Agent 干活的时候，界面除了转圈还能是什么样？',
     status: 'live',
@@ -114,7 +114,7 @@ export const ENTRIES: Entry[] = [
   {
     no: '002',
     slug: '/002',
-    line: 'a',
+    line: 'b',
     title: 'One Line',
     question: '如果整个界面只允许存在一条线，Agent 还能怎么工作？',
     status: 'live',
@@ -129,7 +129,7 @@ export const ENTRIES: Entry[] = [
   {
     no: '003',
     slug: '/003',
-    line: 'a',
+    line: 'b',
     title: 'Terminal',
     question: '终端本身很粗糙，能不能把它设计成一个高级的 Agent Interface？',
     status: 'live',
@@ -140,7 +140,7 @@ export const ENTRIES: Entry[] = [
   {
     no: '004',
     slug: '/004',
-    line: 'a',
+    line: 'b',
     title: 'Chronicle',
     question: '如果不用传统聊天记录，而是用时间轴表达 Agent 的工作过程，会怎么样？',
     status: 'live',
@@ -151,7 +151,7 @@ export const ENTRIES: Entry[] = [
   {
     no: '005',
     slug: '/005',
-    line: 'a',
+    line: 'b',
     title: 'Desktop',
     question: '如果 Agent 不是一个网页，而是一个活在桌面上的存在，会怎么样？',
     status: 'live',
@@ -162,7 +162,7 @@ export const ENTRIES: Entry[] = [
   {
     no: '006',
     slug: '/006',
-    line: 'a',
+    line: 'b',
     title: 'Spatial',
     question: '如果 Agent 的状态不是用列表表达，而是用空间关系表达，会怎么样？',
     status: 'live',
@@ -173,7 +173,7 @@ export const ENTRIES: Entry[] = [
   {
     no: '007',
     slug: '/007',
-    line: 'b',
+    line: 'a',
     title: 'The Brief',
     question: '如果界面的主角是「这份委托」，而不是聊天记录，会怎么样？',
     status: 'live',
@@ -184,7 +184,7 @@ export const ENTRIES: Entry[] = [
   {
     no: '008',
     slug: '/008',
-    line: 'b',
+    line: 'a',
     title: 'Baseline',
     question: '用户登录之后第一眼看到的那一层，应该长什么样？',
     status: 'live',
@@ -195,7 +195,7 @@ export const ENTRIES: Entry[] = [
   {
     no: '009',
     slug: '/009',
-    line: 'b',
+    line: 'a',
     title: 'Workbench',
     question: '如果产出不是最后一条消息，而是一个放在旁边的产物呢？',
     status: 'live',
@@ -206,7 +206,7 @@ export const ENTRIES: Entry[] = [
   {
     no: '010',
     slug: '/010',
-    line: 'b',
+    line: 'a',
     title: 'Home',
     question: '如果首页本身就是这个产品，输入框悬在正中，会怎么样？',
     status: 'live',
@@ -217,7 +217,7 @@ export const ENTRIES: Entry[] = [
   {
     no: '011',
     slug: '/011',
-    line: 'b',
+    line: 'a',
     title: 'Bubble',
     question: '如果 Agent 就长成你最熟悉的那个聊天软件的样子呢？',
     status: 'live',
@@ -228,7 +228,7 @@ export const ENTRIES: Entry[] = [
   {
     no: '012',
     slug: '/012',
-    line: 'b',
+    line: 'a',
     title: 'The Plan',
     question: 'Agent 已经开干了，你才发现它理解错了，除了打断重来还能怎么办？',
     status: 'live',
@@ -237,22 +237,22 @@ export const ENTRIES: Entry[] = [
     ],
   },
   {
-    no: '013', slug: '/013', line: 'b', title: 'Weight',
+    no: '013', slug: '/013', line: 'a', title: 'Weight',
     question: '同一块界面，面对一句话和二十个项目，应该给出同样分量的过程吗？',
     status: 'live',
     variants: [{ id: 'a', name: 'Weight', tag: '分量随任务变 · 自己长大', bg: '#fafaf9', fg: '#1c1c1a', accent: '#c2410c', href: '/013' }],
   },
   {
-    no: '014', slug: '/014', line: 'b', title: 'Settle',
+    no: '014', slug: '/014', line: 'a', title: 'Settle',
     question: '过程和结果，是两个东西，还是同一个东西的两个阶段？',
     status: 'live',
     variants: [{ id: 'a', name: 'Settle', tag: '过程即草稿 · 撤来源看少掉什么', bg: '#f2f1ee', fg: '#1b1a18', accent: '#1f5f8b', href: '/014' }],
   },
   {
-    no: '015', slug: '/015', line: 'b', title: 'Return',
+    no: '015', slug: '/015', line: 'a', title: 'Return',
     question: '用户离开 20 分钟再回来，界面上应该是什么？',
     status: 'live',
     variants: [{ id: 'a', name: 'Return', tag: '简报 · 替你做的决定 · 时间带', bg: '#f4f6f8', fg: '#14171b', accent: '#b8811c', href: '/015' }],
   },
-  { no: '—', slug: '/', title: '…', question: '下一个想法。', status: 'planned', line: 'b' },
+  { no: '—', slug: '/', title: '…', question: '下一个想法。', status: 'planned', line: 'a' },
 ]
