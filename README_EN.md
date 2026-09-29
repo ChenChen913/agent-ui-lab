@@ -39,7 +39,7 @@ This project starts from one line:
 
 > **Less architecture, more experiments. Less infrastructure, more interface. Less consistency, more divergence.**
 
-So there is no component library, no design system, no SDK, and no agent runtime here. Each of the fifteen templates is a standalone interface with its own colors, type, and layout. They never import each other, and nothing gets abstracted for the sake of reuse.
+So there is no component library, no design system, no SDK, and no agent runtime here. Each of the fifteen templates is a standalone interface with its own colors, type, and layout. They never import each other, and not a single line of CSS is shared. The one exception is [`src/shared/beat.ts`](#project-structure), which holds plumbing rather than looks.
 
 The project has two lines, each answering one question:
 
@@ -114,11 +114,17 @@ The gallery lives at `/`. Every experiment has its own route:
 
 Each experiment page has a control bar in the top right: back to the gallery, previous and next experiment, light and dark toggle, play and pause, restart, and speed (0.5x, 1x, 2x).
 
+**Every experiment is operable, not just viewable.** You can type into the inputs, click the buttons, drag and zoom the canvas in 006, and rewrite a step in place in 012. The scripted demo is only one of several paths through it, and it stops on its own once the script runs out instead of idling in the background.
+
 ## Configuration
 
-**This project has no environment variables and needs no API keys.**
+**This project needs no API keys and no environment variables for you to fill in.**
 
-Command: `Select-String -Path 'src\**\*.ts','src\**\*.tsx' -Pattern 'import\.meta\.env|process\.env'` returns 0 matches.
+Command: `Get-ChildItem -Path src -Recurse -Include *.ts,*.tsx | Select-String -Pattern 'import\.meta\.env|process\.env'` returns 1 match: `import.meta.env.BASE_URL` in `src/lab/previews.tsx`.
+
+That is a Vite build constant, used to point preview images at the right GitHub Pages subpath. Nothing to configure.
+
+> Correction: this used to say 0 matches. The old command relied on `Select-String -Path 'src\**\*.ts'`, and PowerShell does not expand `**` into a recursive walk from `-Path`. It was a false negative. `-Recurse` tells the truth.
 
 All data is mock data hard-coded in `src/experiments/*/scenario.ts`.
 
@@ -135,7 +141,13 @@ src/
 │   ├── previews.tsx      One schematic per experiment on the gallery page
 │   ├── registry.ts       Experiment list and route table
 │   └── theme.ts          Light and dark
+├── shared/               The only place reuse is allowed
+│   └── beat.ts           Demo beat engine, used by 008 through 015
 └── styles/               Global styles and shell color tokens
+docs/                     Screenshots used by the README
+```
+
+Each experiment ships as its own chunk. Opening one downloads only that one, so the first screen does not carry the weight of the other fourteen.
 docs/                     Screenshots used by the README
 ```
 
@@ -167,24 +179,29 @@ Since 002, all animation follows one pattern: **the per-frame loop only writes C
 
 **Q: Why does every experiment write its own styles instead of sharing?**
 
-A: Sharing would slowly make all fifteen look alike, and that destroys the point of comparing them. A `shared/` directory only appears once the same thing has been written three times. It has not happened yet.
+A: Sharing would slowly make all fifteen look alike, and that destroys the point of comparing them. So not a single line of CSS is shared.
+
+The one exception is `src/shared/beat.ts`. The demo beat loop in 008 through 015 had been copied verbatim six times — advancing time, interpolating the typewriter, clearing timers, byte for byte identical each time. It is pure plumbing with no bearing on appearance, so extracting it changes nobody's looks. It also means one fix lands eight times over: "stop when the script is done" went from missing in eight places to correct in one.
 
 **Q: Can I wire this up to a real LLM?**
 
 A: No, and there is no plan to. This project studies interfaces. Adding a model would only pull attention away from layout and interaction.
 
-**Q: Why are 008 through 010 blank when I open them?**
+**Q: Why do 008 through 015 open almost empty?**
 
-A: That is not blank, it is the empty state a user sees after signing in. Press play in the top right to watch the full demo.
+A: That is not unfinished work, it is a deliberate first frame: the moment a user opens the product and has not yet handed over a task. Press play in the top right for the full demo, or just start using it — the inputs in these experiments all work.
+
+001 through 007 autoplay instead, because the process itself is what they are studying.
 
 ## Known limitations
 
 - All data is mock. There is no real model call, no backend, no database, and no login
-- Only the desktop layout is fully designed. Mobile is only handled well enough not to break
-- No test framework and no CI
+- Desktop is the primary viewport. Mobile gets breakpoint handling, and every stylesheet ships a `prefers-reduced-motion` fallback, but no design has been done specifically for phones
+- No automated tests. CI only runs `pnpm build` and deploys to GitHub Pages (`.github/workflows/deploy.yml`)
 - The terminal in 003 implements only the few commands the demo needs (`clear`, Ctrl-C, and so on)
 - The live build uses hash routing, so a template URL looks like `https://chenchen913.github.io/agent-ui-lab/#/008`
 - Clauses in 007 cannot be edited in place, only rewritten by answering
+- Undo in 014 restores a source wholesale; it cannot remove a single step
 
 ## Contributing
 

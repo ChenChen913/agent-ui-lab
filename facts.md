@@ -18,6 +18,7 @@
 8. **目录结构**：
    - `src/experiments/` — 每个实验一个目录，自包含
    - `src/lab/` — 实验室外壳（总页面、实验外壳、配色、预览图）
+   - `src/shared/` — 唯一允许跨实验复用的地方，目前只有 `beat.ts`（演示节拍引擎）
    - `src/styles/` — 全局样式与外壳的配色变量
    - `docs/` — README 用的截图
 9. **主要依赖**（10 个）：
@@ -35,19 +36,27 @@
    | @fontsource-variable/source-serif-4 | ^5.3.0 | 衬线（007 用） |
    | @fontsource-variable/fraunces | ^5.3.0 | 衬线（001-B 用） |
    | @fontsource-variable/jetbrains-mono | ^5.3.0 | 等宽（003 用） |
-10. **环境变量 / 配置项**：**没有**。
-    命令：`Select-String -Path 'src\**\*.ts','src\**\*.tsx' -Pattern 'import\.meta\.env|process\.env'` → 命中 0 条
+10. **环境变量 / 配置项**：**不需要任何密钥，也不需要任何配置。**
+    命令：`Get-ChildItem -Path src -Recurse -Include *.ts,*.tsx | Select-String -Pattern 'import\.meta\.env|process\.env'` → 命中 1 条：`src/lab/previews.tsx` 的 `import.meta.env.BASE_URL`，Vite 内建的构建常量，用来拼 GitHub Pages 的子路径。
+
+    > **更正**：这一条早先记录为「命中 0 条」。当时的命令是 `Select-String -Path 'src\**\*.ts','src\**\*.tsx'`，
+    > PowerShell 不会按 `-Path` 里的 `**` 递归子目录，那条命令实际只扫了 `src` 根目录，是假阴性。
+    > 换成 `-Recurse` 之后才拿得到真结果。README 中英文均已同步更正。
 11. **CLI 参数 / 公开 API**：无。这是一个应用，不是库
 12. **已有文档**：
     - `README.md` / `README_EN.md`
     - `src/experiments/*/NOTES.md`（15 份，001 至 015）
 13. **规模**（命令 → 结果）：
-    - `(Get-ChildItem 'src' -Recurse -File).Count` → 96
-    - `(Get-ChildItem 'src' -Recurse -File | Get-Content | Measure-Object -Line).Lines` → 12545
+    - `(Get-ChildItem 'src' -Recurse -File).Count` → 97
+    - `(Get-ChildItem 'src' -Recurse -File | Get-Content | Measure-Object -Line).Lines` → 12976
     - `(Get-ChildItem 'src\experiments' -Recurse -Filter 'NOTES.md').Count` → 15
     - `(Get-ChildItem 'public\previews' -File).Count` → 17
     - `(Get-ChildItem 'src\experiments' -Directory).Count` → 15
     - `(Select-String -Path 'src\App.tsx' -Pattern 'path="' -AllMatches).Matches.Count` → 16
+14. **构建产物**（`pnpm build`）：
+    - 入口 `index.js` 277.72 kB（gzip 90.34 kB），`index.css` 20.60 kB（gzip 5.12 kB）
+    - JS chunk 共 34 个：十五个实验各自独立，打开谁才下载谁
+    - 对比：分包之前是单个 753.64 kB（gzip 233.40 kB）
 
 ## B. 需人工补充
 
