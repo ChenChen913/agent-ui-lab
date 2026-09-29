@@ -19,7 +19,6 @@ import GithubMark from './GithubMark'
 export default function LabIndex() {
   const { lang, setLang, t } = useLang()
   const live = ENTRIES.filter((e) => e.status === 'live' && PREVIEWS[e.no])
-  const planned = ENTRIES.filter((e) => e.status === 'planned')
 
   return (
     <div className="min-h-full lab-bg">
@@ -36,7 +35,6 @@ export default function LabIndex() {
         <header className="relative pb-12 pt-6 text-center">
           <div className="lab-hero-glow" />
           <div className="relative">
-            <div className="mb-7 font-mono text-[12px] tracking-[0.18em] lab-t3">AGENT UI LAB · {t(UI.eyebrow)}</div>
             <h1 className="lab-hero lab-rise mx-auto text-balance text-[38px] font-medium leading-[1.16] tracking-[-0.035em] sm:text-[52px] lg:text-[64px]">
               {t(HERO.line1)}
               <br />
@@ -67,22 +65,16 @@ export default function LabIndex() {
           )
         })}
 
-        <section className="mt-4 border-t pt-7 lab-line">
-          <div className="mb-4 font-mono text-[12px] tracking-[0.16em] lab-t3">{t(UI.planned)}</div>
-          <ul className="flex flex-col gap-2.5">
-            {planned.map((e, i) => (
-              <li key={i} className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-                <span className="w-9 font-mono text-[12.5px] tabular-nums lab-t3">{e.no}</span>
-                <span className="text-[14px] font-medium lab-t2">{t(e.title)}</span>
-                <span className="text-[14px] lab-t3">{t(e.question)}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        <footer className="mt-12 flex flex-wrap items-center justify-between gap-x-8 gap-y-2 border-t pt-6 text-[12.5px] lab-t3 lab-line-soft">
-          <span>{t(UI.footL)}</span>
-          <span>{t(UI.footR)}</span>
+        <footer className="mt-16 flex flex-wrap items-center justify-between gap-x-8 gap-y-2 border-t pt-6 lab-line">
+          <span className="text-[13px] lab-t3">MIT License · © 2026 ChenChen913</span>
+          <a
+            className="font-mono text-[13px] lab-t3 lab-hover-plain"
+            href={GITHUB}
+            target="_blank"
+            rel="noreferrer"
+          >
+            github.com/ChenChen913/agent-ui-lab
+          </a>
         </footer>
       </div>
     </div>

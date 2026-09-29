@@ -101,7 +101,9 @@ body {
 .lab-lh-n {
   margin-left: auto;
   font-family: 'Geist Mono Variable', ui-monospace, monospace;
-  font-size: 12px; color: var(--lab-t3);
+  font-size: 16px; font-weight: 600;
+  color: var(--lab-t1);
+  font-variant-numeric: tabular-nums;
 }
 /* ── 主页卡片上的真截图 ──────────────────────────────────
    截图不是整个窗口，是 750×360 的一块关键区域（2 倍像素密度）。
