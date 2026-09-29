@@ -1,0 +1,204 @@
+/* ── 一套重新设计过的终端调色板：低饱和、高可读，不是那种荧光绿 ── */
+.tm {
+  --t-bg: #0e1012;
+  --t-panel: #14171a;
+  --t-fg: #cbc8c0;
+  --t-dim: #6b7073;
+  --t-faint: #383d40;
+  --t-line: #22272a;
+  --t-accent: #d6a45f;
+  --t-amber: #d6a45f;
+  --t-red: #cf7368;
+  --t-green: #8fae72;
+  --t-blue: #7f9fc4;
+  --t-purple: #ab86b5;
+  --t-cyan: #7cb3ab;
+
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 26px;
+  background: #07080a;
+  overflow: hidden;
+}
+
+.tm[data-theme='green'] { --t-accent: #7fae7a; }
+.tm[data-theme='mono'] {
+  --t-accent: #cfcdc6;
+  --t-amber: #a9a6a0;
+  --t-red: #9d9993;
+  --t-green: #b8b5af;
+  --t-blue: #a5a29c;
+  --t-purple: #b0ada7;
+  --t-cyan: #aaa7a1;
+}
+
+.tm-window {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  height: 100%;
+  max-height: 700px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--t-bg);
+  border: 1px solid var(--t-line);
+  border-radius: 10px;
+  font-family: 'JetBrains Mono Variable', ui-monospace, monospace;
+  font-size: 12.5px;
+  line-height: 1.8;
+  color: var(--t-fg);
+  cursor: text;
+  box-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+/* 顶栏：会话信息 */
+.tm-title {
+  flex: none;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 13px;
+  background: var(--t-panel);
+  border-bottom: 1px solid var(--t-line);
+  font-size: 11px;
+  color: var(--t-dim);
+}
+.tm-title-l b { color: var(--t-accent); font-weight: 500; }
+.tm-title-r { display: flex; align-items: center; gap: 12px; }
+.tm-faint { color: var(--t-faint); }
+.tm-btn {
+  font: inherit;
+  font-size: 11px;
+  padding: 2px 8px;
+  color: var(--t-dim);
+  background: transparent;
+  border: 1px solid var(--t-line);
+  border-radius: 4px;
+  cursor: pointer;
+}
+.tm-btn:hover { color: var(--t-fg); border-color: var(--t-faint); }
+
+/* 主区域：scrollback */
+.tm-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 12px 16px 16px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--t-line) transparent;
+}
+.tm-body::-webkit-scrollbar { width: 9px; }
+.tm-body::-webkit-scrollbar-thumb { background: var(--t-line); border-radius: 5px; border: 2px solid var(--t-bg); }
+.tm-body::-webkit-scrollbar-track { background: transparent; }
+
+.tm-l { white-space: pre-wrap; word-break: break-word; }
+.tm-blank { height: 0.7em; }
+
+/* 用户命令 */
+.tm-cmd { color: #e7e4dc; margin-top: 4px; }
+.tm-p { color: var(--t-accent); }
+
+/* agent 步骤头：▾ 名称 ──────── 1.02s */
+.tm-task {
+  display: flex;
+  align-items: baseline;
+  gap: 1ch;
+  margin-top: 11px;
+  cursor: pointer;
+  user-select: none;
+}
+.tm-task:hover .tm-task-t { color: var(--t-fg); }
+.tm-task-t { flex: none; color: var(--t-accent); }
+.tm-task-rule { flex: 1; min-width: 2ch; overflow: hidden; white-space: nowrap; color: var(--t-faint); }
+.tm-task-ms { flex: none; font-size: 11px; color: var(--t-dim); }
+.tm-task-ms.is-run { color: var(--t-accent); }
+
+/* 日志行 */
+.tm-note { color: var(--t-fg); }
+.tm-note.tm-dim { color: var(--t-dim); }
+.tm-note.tm-ok { color: var(--t-green); }
+.tm-note.tm-err { color: var(--t-red); }
+.tm-note.tm-warn { color: var(--t-amber); }
+.tm-note.tm-path { color: var(--t-blue); }
+.tm-note.tm-tool { color: var(--t-purple); }
+
+/* 文本进度条 —— 一格一格跳 */
+.tm-bar { display: flex; align-items: baseline; gap: 2ch; }
+.tm-bar-l {
+  flex: none; width: 15ch; overflow: hidden; white-space: nowrap;
+  text-overflow: ellipsis; color: var(--t-dim);
+}
+.tm-bar-b { flex: none; }
+.tm-bar-on { color: var(--t-accent); }
+.tm-bar-off { color: var(--t-faint); }
+.tm-bar-p { flex: none; width: 5ch; text-align: right; font-size: 11px; color: var(--t-dim); }
+.tm-bar.is-done .tm-bar-on { color: var(--t-green); }
+.tm-bar.is-done .tm-bar-p { color: var(--t-dim); }
+
+/* 结果：TUI 面板 */
+.tm-result { margin-top: 13px; }
+.tm-res-rule { display: flex; align-items: baseline; color: var(--t-faint); }
+.tm-res-title { color: var(--t-accent); flex: none; }
+.tm-res-bar { flex: 1; min-width: 2ch; overflow: hidden; white-space: nowrap; }
+.tm-res-body { padding: 6px 0 6px 3ch; }
+.tm-res-head { color: var(--t-fg); margin-bottom: 4px; }
+.tm-res-item { color: var(--t-dim); font-size: 11.5px; line-height: 1.9; }
+
+/* 提示符 + 块状光标 */
+.tm-prompt { display: flex; align-items: baseline; gap: 1ch; color: #e7e4dc; margin-top: 4px; }
+.tm-draft { white-space: pre; }
+.tm-caret {
+  display: inline-block;
+  width: 1ch;
+  height: 1.15em;
+  background: var(--t-fg);
+  transform: translateY(0.18em);
+  animation: tm-blink 1.05s steps(1, end) infinite;
+}
+@keyframes tm-blink { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
+
+/* 状态行：Agent 的内部状态，永远只有一行，原地重绘 */
+.tm-status {
+  flex: none;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  gap: 2ch;
+  padding: 0 14px;
+  background: var(--t-panel);
+  border-top: 1px solid var(--t-line);
+  font-size: 11px;
+  color: var(--t-dim);
+}
+.tm-spin { flex: none; width: 1ch; color: var(--t-accent); }
+.tm-status-text { flex: none; color: var(--t-fg); }
+.tm-mini { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; letter-spacing: -0.02em; }
+.tm-mini-on { color: var(--t-accent); }
+.tm-mini-head { color: var(--t-accent); opacity: 0.7; }
+.tm-mini-off { color: var(--t-faint); }
+.tm-status-pct { flex: none; width: 5ch; text-align: right; }
+.tm-status-clock { flex: none; width: 7ch; text-align: right; color: var(--t-fg); }
+
+.tm-input {
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 1px; height: 1px;
+  padding: 0; border: 0; opacity: 0;
+  pointer-events: none;
+  font: inherit;
+}
+
+@media (max-width: 820px) {
+  .tm { padding: 0; }
+  .tm-window { max-height: none; border-radius: 0; border: 0; }
+  .tm-bar-l { width: 10ch; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tm-caret { animation: none; }
+}

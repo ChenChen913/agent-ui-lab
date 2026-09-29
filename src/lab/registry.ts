@@ -50,7 +50,16 @@ export const ENTRIES: Entry[] = [
       },
     ],
   },
-  { no: '003', slug: '/003', title: 'Terminal', question: '终端可以有多优雅？', status: 'planned' },
+  {
+    no: '003',
+    slug: '/003',
+    title: 'Terminal',
+    question: '终端本身很粗糙，能不能把它设计成一个高级的 Agent Interface？',
+    status: 'live',
+    variants: [
+      { id: 'a', name: 'Terminal', tag: '调色板 / 文本动效', bg: '#0e1012', fg: '#cbc8c0', accent: '#d6a45f', href: '/003' },
+    ],
+  },
   { no: '004', slug: '/004', title: 'Chronicle', question: '把对话历史做成一条可以滑动的时间轴。', status: 'planned' },
   { no: '005', slug: '/005', title: 'Desktop', question: 'Agent 像操作系统助手一样活着。', status: 'planned' },
   { no: '006', slug: '/006', title: 'Spatial', question: '不用列表，用空间表达 Agent 的工作。', status: 'planned' },

@@ -6,6 +6,7 @@ import BenchA from './experiments/001-bench/A-minimal'
 import BenchB from './experiments/001-bench/B-paper'
 import BenchC from './experiments/001-bench/C-glass'
 import OneLine from './experiments/002-one-line'
+import Terminal from './experiments/003-terminal'
 
 const BENCH: { id: string; name: string; Comp: (p: Ctl) => React.ReactElement }[] = [
   { id: 'a', name: 'A · 极简黑白', Comp: BenchA },
@@ -38,6 +39,11 @@ export default function App() {
         <Route
           path="/002"
           element={<Frame no="002" title="One Line" render={(ctl) => <OneLine {...ctl} />} />}
+        />
+
+        <Route
+          path="/003"
+          element={<Frame no="003" title="Terminal" render={(ctl) => <Terminal {...ctl} />} />}
         />
 
         <Route path="*" element={<Navigate to="/" replace />} />
