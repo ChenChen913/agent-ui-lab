@@ -29,7 +29,6 @@ export type Beat =
   | { t: number; op: 'end' }
 
 export const USER_ASK = '帮我研究一下这个项目'
-export const DURATION = 18500
 
 export const SCENARIO: Beat[] = [
   // ── ① 第一次沉降（教语法） ─────────────────────────────

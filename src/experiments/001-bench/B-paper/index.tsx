@@ -1,7 +1,6 @@
 import { AnimatePresence, motion } from 'motion/react'
 import '@fontsource-variable/fraunces'
 import { useBench } from '../useBench'
-import { USER_ASK } from '../scenario'
 import { Counter, barStyle } from '../parts'
 import type { BenchProps } from '../types'
 import './style.css'
@@ -16,7 +15,7 @@ import './style.css'
 const EASE: [number, number, number, number] = [0.22, 0.61, 0.24, 1]
 
 export default function BenchB({ playing, speed, runId }: BenchProps) {
-  const s = useBench({ playing, speed, runId })
+  const { state: s, api } = useBench({ playing, speed, runId })
 
   const active = s.activeId ? s.steps[s.activeId] : null
   // 目录按阅读顺序（最早的在最上面）
@@ -138,12 +137,24 @@ export default function BenchB({ playing, speed, runId }: BenchProps) {
       <footer className="bb-foot">
         <div className="bb-ask">
           <span className="bb-ask-who">你</span>
-          {USER_ASK}
+          {s.ask}
         </div>
-        <div className="bb-composer">
-          <span>说点什么…</span>
-          <span className="bb-composer-key">↵</span>
-        </div>
+        <form
+          className="bb-composer"
+          onSubmit={(e) => {
+            e.preventDefault()
+            api.submit()
+          }}
+        >
+          <input
+            className="bb-composer-input"
+            value={api.draft}
+            onChange={(e) => api.setDraft(e.target.value)}
+            placeholder="说点什么…"
+            aria-label="给 Agent 一件事"
+          />
+          <span className="bb-composer-key">{api.busy ? '···' : '↵'}</span>
+        </form>
       </footer>
     </div>
   )

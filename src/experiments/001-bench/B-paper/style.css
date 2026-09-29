@@ -245,6 +245,18 @@
   font-size: 12px;
   color: var(--ink-3);
 }
+.bb-composer-input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: none;
+  outline: none;
+  font: inherit;
+  color: var(--ink);
+}
+.bb-composer-input::placeholder { color: var(--ink-3); }
+.bb-composer-input:disabled { color: var(--ink-3); }
+.bb-composer:focus-within { border-color: var(--ink-2); }
 
 @media (max-width: 940px) {
   .bb-page { grid-template-columns: 1fr; padding: 36px 28px 0; }

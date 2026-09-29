@@ -1,6 +1,5 @@
 import { motion } from 'motion/react'
 import { useBench, type BenchStep } from '../useBench'
-import { USER_ASK } from '../scenario'
 import { Counter, barStyle } from '../parts'
 import type { BenchProps } from '../types'
 import './style.css'
@@ -16,7 +15,7 @@ import './style.css'
 const EASE: [number, number, number, number] = [0.2, 0, 0, 1]
 
 export default function BenchA({ playing, speed, runId }: BenchProps) {
-  const s = useBench({ playing, speed, runId })
+  const { state: s, api } = useBench({ playing, speed, runId })
 
   return (
     <div className="ba">
@@ -62,12 +61,24 @@ export default function BenchA({ playing, speed, runId }: BenchProps) {
       <div className="ba-foot">
         <div className="ba-ask">
           <span>你</span>
-          {USER_ASK}
+          {s.ask}
         </div>
-        <div className="ba-composer">
-          <span>说点什么…</span>
-          <kbd>↵</kbd>
-        </div>
+        <form
+          className="ba-composer"
+          onSubmit={(e) => {
+            e.preventDefault()
+            api.submit()
+          }}
+        >
+          <input
+            className="ba-composer-input"
+            value={api.draft}
+            onChange={(e) => api.setDraft(e.target.value)}
+            placeholder="说点什么…"
+            aria-label="给 Agent 一件事"
+          />
+          <kbd>{api.busy ? '···' : '↵'}</kbd>
+        </form>
       </div>
     </div>
   )

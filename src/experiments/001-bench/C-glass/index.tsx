@@ -1,7 +1,7 @@
 import { motion } from 'motion/react'
 import { FileText, PenLine, RotateCcw, Scale, Search, Sparkles, type LucideIcon } from 'lucide-react'
 import { useBench, type BenchStep } from '../useBench'
-import { SCENARIO, USER_ASK, type StepKind } from '../scenario'
+import { SCENARIO, type StepKind } from '../scenario'
 import { Counter, barStyle } from '../parts'
 import type { BenchProps } from '../types'
 import './style.css'
@@ -26,7 +26,7 @@ const KIND_ICON: Record<StepKind, LucideIcon> = {
 const TOTAL = SCENARIO.length
 
 export default function BenchC({ playing, speed, runId }: BenchProps) {
-  const s = useBench({ playing, speed, runId })
+  const { state: s, api } = useBench({ playing, speed, runId })
 
   const active = s.activeId ? s.steps[s.activeId] : null
   const trail = s.order.filter((id) => id !== s.activeId)
@@ -149,12 +149,24 @@ export default function BenchC({ playing, speed, runId }: BenchProps) {
         <div className="bc-foot-inner">
           <div className="bc-ask">
             <span className="bc-ask-who">USER</span>
-            {USER_ASK}
+            {s.ask}
           </div>
-          <div className="bc-composer bc-glass">
-            <span className="bc-composer-ph">说点什么…</span>
-            <span className="bc-composer-key">↵</span>
-          </div>
+          <form
+            className="bc-composer bc-glass"
+            onSubmit={(e) => {
+              e.preventDefault()
+              api.submit()
+            }}
+          >
+            <input
+              className="bc-composer-input"
+              value={api.draft}
+              onChange={(e) => api.setDraft(e.target.value)}
+              placeholder="说点什么…"
+              aria-label="给 Agent 一件事"
+            />
+            <span className="bc-composer-key">{api.busy ? '···' : '↵'}</span>
+          </form>
           <div className="bc-meter">
             <div className="bc-meter-bar">
               <div className="bc-meter-fill" style={{ transform: `scaleX(${progress})` }} />

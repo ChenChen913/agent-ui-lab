@@ -324,6 +324,18 @@
   color: var(--ink-3);
 }
 .bc-composer-key { font-size: 12px; color: var(--ink-3); }
+.bc-composer-input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: none;
+  outline: none;
+  font: inherit;
+  color: var(--ink);
+}
+.bc-composer-input::placeholder { color: var(--ink-3); }
+.bc-composer-input:disabled { color: var(--ink-3); }
+.bc-composer:focus-within { border-color: var(--ink-2); }
 
 .bc-meter {
   display: flex;
