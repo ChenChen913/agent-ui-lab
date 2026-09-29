@@ -9,6 +9,7 @@ import OneLine from './experiments/002-one-line'
 import Terminal from './experiments/003-terminal'
 import Chronicle from './experiments/004-chronicle'
 import Desktop from './experiments/005-desktop'
+import Spatial from './experiments/006-spatial'
 
 const BENCH: { id: string; name: string; Comp: (p: Ctl) => React.ReactElement }[] = [
   { id: 'a', name: 'A · 极简黑白', Comp: BenchA },
@@ -56,6 +57,11 @@ export default function App() {
         <Route
           path="/005"
           element={<Frame no="005" title="Desktop" render={(ctl) => <Desktop {...ctl} />} />}
+        />
+
+        <Route
+          path="/006"
+          element={<Frame no="006" title="Spatial" render={(ctl) => <Spatial {...ctl} />} />}
         />
 
         <Route path="*" element={<Navigate to="/" replace />} />

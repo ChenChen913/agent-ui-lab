@@ -80,6 +80,15 @@ export const ENTRIES: Entry[] = [
       { id: 'a', name: 'Desktop', tag: '桌面 / 窗口 / 常驻本体', bg: '#a7b3c0', fg: '#1b2027', accent: '#3f8fa8', href: '/005' },
     ],
   },
-  { no: '006', slug: '/006', title: 'Spatial', question: '不用列表，用空间表达 Agent 的工作。', status: 'planned' },
+  {
+    no: '006',
+    slug: '/006',
+    title: 'Spatial',
+    question: '如果 Agent 的状态不是用列表表达，而是用空间关系表达，会怎么样？',
+    status: 'live',
+    variants: [
+      { id: 'a', name: 'Spatial', tag: '空间 / 景深 / 相机', bg: '#08090c', fg: '#e6e4df', accent: '#6ea8d8', href: '/006' },
+    ],
+  },
   { no: '—', slug: '/', title: '…', question: '下一个想法。', status: 'planned' },
 ]
