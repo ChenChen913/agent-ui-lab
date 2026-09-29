@@ -40,11 +40,11 @@
 11. **CLI 参数 / 公开 API**：无。这是一个应用，不是库
 12. **已有文档**：
     - `README.md` / `README_EN.md`
-    - `src/experiments/*/NOTES.md`（11 份，001 至 011）
+    - `src/experiments/*/NOTES.md`（12 份，001 至 012）
 13. **规模**（命令 → 结果）：
-    - `(Get-ChildItem 'src' -Recurse -File).Count` → 71
-    - `(Get-ChildItem 'src' -Recurse -File | Get-Content | Measure-Object -Line).Lines` → 10796
-    - `(Get-ChildItem 'src\experiments' -Recurse -Filter 'NOTES.md').Count` → 11
+    - `(Get-ChildItem 'src' -Recurse -File).Count` → 76
+    - `(Get-ChildItem 'src' -Recurse -File | Get-Content | Measure-Object -Line).Lines` → 11532
+    - `(Get-ChildItem 'src\experiments' -Recurse -Filter 'NOTES.md').Count` → 12
     - `(Get-ChildItem 'src\experiments' -Directory).Count` → 11
     - `(Select-String -Path 'src\App.tsx' -Pattern 'path="' -AllMatches).Matches.Count` → 11
 

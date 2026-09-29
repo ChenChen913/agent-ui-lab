@@ -1,6 +1,6 @@
 {
   "name": "agent-ui-lab",
-  "description": "Eleven standalone interface experiments on how an AI agent's work should look.",
+  "description": "Twelve standalone interface experiments on how an AI agent's work should look.",
   "private": true,
   "version": "0.0.1",
   "type": "module",
