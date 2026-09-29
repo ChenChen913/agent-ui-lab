@@ -54,9 +54,9 @@ Open the address printed in the terminal (http://localhost:5173 by default). You
 
 ## The two lines
 
-The project has two lines, and **every template belongs to exactly one. Each line is numbered from 1.**
+The project has two lines. **Line A sits on top, line B below; every template belongs to exactly one, and each line is numbered from 1.**
 
-### 1 · Agent product UI
+### A · Agent product UI
 
 > How should a person actually use an agent?
 
@@ -74,7 +74,7 @@ Moving from "what is the agent doing" to "how does a person work with it". This 
 | 8 | Settle | Are the process and the result two things, or two stages of one thing? |
 | 9 | Return | The user was away for 20 minutes. What should they see when they come back? |
 
-### 2 · Agent process visualisation
+### B · Agent process visualisation
 
 > When an agent is working, how do you let the user understand it?
 

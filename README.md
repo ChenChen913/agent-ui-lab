@@ -8,7 +8,7 @@ Fifteen standalone interface experiments on how an AI agent's work should look.
 
 十个彼此独立的界面实验，研究 AI Agent 干活的样子。
 
-![十个实验的总页面](docs/gallery.png)
+![总页面](docs/gallery.png)
 
 ## 目录
 
@@ -56,9 +56,9 @@ pnpm dev
 
 ## 两条主线
 
-整个项目分两条线，**每个模板只属于一条，两条线各自从 1 开始编号**。
+整个项目分两条线。**A 线在上面，B 线在下面；每个模板只属于一条，各自从 1 开始编号。**
 
-### 一 · Agent 主界面
+### A · Agent 主界面
 
 > 用户应该如何使用 Agent？
 
@@ -76,7 +76,7 @@ pnpm dev
 | 8 | Settle | 过程和结果，是两个东西，还是同一个东西的两个阶段？ |
 | 9 | Return | 用户离开 20 分钟再回来，界面上应该是什么？ |
 
-### 二 · Agent 工作过程可视化
+### B · Agent 工作过程可视化
 
 > Agent 在干活的时候，怎么让用户看懂？
 
