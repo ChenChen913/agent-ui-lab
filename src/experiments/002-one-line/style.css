@@ -1,0 +1,289 @@
+.ol {
+  /* ── 整个实验只有这两个变量决定明暗：反转 = 改这里 ── */
+  --field: #ffffff;
+  --ink: #111111;
+  --ink-2: #6b6b6b;
+  --ink-3: #a8a8a8;
+  --rule: rgba(17, 17, 17, 0.1);
+  --veil: color-mix(in srgb, var(--field) 62%, transparent);
+
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--field);
+  color: var(--ink);
+  font-family: 'Geist Mono Variable', ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  cursor: default;
+  user-select: none;
+}
+
+.ol[data-theme='dark'] {
+  --field: #0b0b0c;
+  --ink: #ededea;
+  --ink-2: #8a8a86;
+  --ink-3: #5c5c59;
+  --rule: rgba(237, 237, 234, 0.13);
+}
+
+/* 冻结：整条线彻底静止（重音②） */
+.ol[data-freeze='1'] * { animation-play-state: paused !important; }
+
+.ol-band { width: 72%; max-width: 1080px; min-width: 400px; }
+
+/* ── 上方读数 ─────────────────────────────────────────── */
+.ol-meta {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 14px; font-size: 9.5px; letter-spacing: 0.16em; color: var(--ink-3);
+}
+.ol-meta-right { display: flex; align-items: center; gap: 14px; }
+.ol-theme {
+  font: inherit; letter-spacing: 0.16em; color: var(--ink-3);
+  background: none; border: 0; padding: 0; cursor: pointer;
+}
+.ol-theme:hover { color: var(--ink); }
+
+/* ── 线所在的区域（留白是给「裂开」用的） ─────────────── */
+.ol-area { position: relative; height: 264px; }
+.ol[data-phase='idle'] .ol-area,
+.ol[data-phase='typing'] .ol-area { cursor: text; }
+
+.ol-edge { position: absolute; left: 0; right: 0; height: 0; }
+
+/* 上半：墨迹。裂开时它往上走 */
+.ol-edge-top {
+  top: calc(50% - var(--open, 0) * 110px);
+  transform: translateY(var(--shake, 0px)) rotate(calc(var(--slack, 0) * 0.55deg));
+  transform-origin: left center;
+  will-change: transform;
+}
+
+.ol-rail {
+  position: absolute; left: 0; right: 0; top: -0.5px; height: 1px;
+  background: var(--rule);
+  opacity: calc(1 - var(--slack, 0) * 0.45);
+}
+/* 静置时线在呼吸 */
+.ol[data-phase='idle'] .ol-rail { animation: ol-breathe 3.4s ease-in-out infinite; }
+@keyframes ol-breathe { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+
+/* 已经画出来的墨 */
+.ol-ink {
+  position: absolute; left: 0;
+  top: calc(var(--inkw, 1.5) * -0.5px);
+  height: calc(var(--inkw, 1.5) * 1px);
+  width: max(calc(var(--drawn, 0) * 100%), var(--typedw, 0px));
+  background: var(--ink);
+  overflow: hidden;
+  opacity: calc(1 - var(--slack, 0) * 0.6);
+}
+
+/* 浓墨阶段：一道「墨流」沿着线前进 */
+.ol-flow {
+  position: absolute; top: 0; bottom: 0; left: -64px; width: 64px;
+  background: var(--veil); opacity: 0;
+}
+.ol[data-phase='write'] .ol-flow { opacity: 1; animation: ol-flow 1.4s linear infinite; }
+@keyframes ol-flow { from { left: -64px; } to { left: 100%; } }
+
+/* 阅读留下的断口 —— 线在这里被分成 4 段 */
+.ol-gap {
+  position: absolute; top: -4px; height: 8px; width: 5px; margin-left: -2.5px;
+  background: var(--field);
+  transition: opacity 0.35s linear;
+  pointer-events: none;
+}
+
+/* 思考：一道鼓起沿着墨迹旅行 */
+.ol-twistwrap {
+  position: absolute; left: 0; top: 0; height: 0;
+  width: calc(var(--drawn, 0) * 100%);
+  overflow: hidden;
+}
+.ol-twist {
+  position: absolute; width: 52px; border-radius: 4px; left: -52px;
+  height: calc((var(--inkw, 1.5) + 1.6) * 1px);
+  top: calc((var(--inkw, 1.5) + 1.6) * -0.5px);
+  background: var(--ink); opacity: 0;
+}
+.ol[data-phase='think'] .ol-twist { opacity: 1; animation: ol-twist 2.5s linear infinite; }
+@keyframes ol-twist { from { left: -52px; } to { left: 100%; } }
+
+/* 搜索：两个亮点反向扫描整条轨道 */
+.ol-scanwrap { position: absolute; left: 0; right: 0; top: 0; height: 0; opacity: 0; transition: opacity 0.3s; }
+.ol[data-phase='search'] .ol-scanwrap { opacity: 1; }
+.ol-scan {
+  position: absolute; top: -1.5px; height: 3px; width: 84px;
+  border-radius: 2px; background: var(--ink); opacity: 0.45;
+}
+.ol-scan[data-d='0'] { animation: ol-scan-r 1.25s linear infinite; }
+.ol-scan[data-d='1'] { animation: ol-scan-l 1.25s linear infinite; }
+@keyframes ol-scan-r { from { left: 0; } to { left: calc(100% - 84px); } }
+@keyframes ol-scan-l { from { left: calc(100% - 84px); } to { left: 0; } }
+
+/* 飞白：笔锋分成 3 根细丝 */
+.ol-strands {
+  position: absolute; left: 0; right: 0; top: 0; height: 0;
+  opacity: var(--fray, 0); transition: opacity 0.3s;
+}
+.ol-strand { position: absolute; left: 55%; top: -0.5px; height: 1px; background: var(--ink); }
+.ol-strand[data-i='0'] {
+  width: max(0px, calc((var(--s0, 0.55) - 0.55) * 100%));
+  transform: translateY(-2.5px); opacity: 0.5;
+}
+.ol-strand[data-i='1'] {
+  width: max(0px, calc((var(--s1, 0.55) - 0.55) * 100%));
+  opacity: 0.95;
+}
+.ol-strand[data-i='2'] {
+  width: max(0px, calc((var(--s2, 0.55) - 0.55) * 100%));
+  transform: translateY(2.5px); opacity: 0.6;
+}
+/* 其中一根断了 */
+.ol-snapgap {
+  position: absolute; left: 50%; top: -4px; height: 8px; width: 10px; margin-left: -5px;
+  background: var(--field);
+  transform: scaleX(var(--snap1, 0));
+  transition: transform 0.12s linear;
+}
+
+/* 结：矛盾 */
+.ol-knot {
+  position: absolute; top: 0;
+  width: 15px; height: 12px; margin-left: -7.5px; margin-top: -6px;
+  border: 1.5px solid var(--ink); border-radius: 50%;
+  background: var(--field);
+  transform: scale(var(--knot, 0));
+  opacity: var(--knot, 0);
+}
+
+/* 输入态：你的那句话就写在线上，线是它的下划线 */
+.ol-type {
+  position: absolute; left: 0; bottom: 12px;
+  display: flex; align-items: center;
+  opacity: 0; transition: opacity 0.22s linear;
+  pointer-events: none;
+}
+.ol[data-phase='idle'] .ol-type,
+.ol[data-phase='typing'] .ol-type { opacity: 1; }
+.ol-type-text { font-size: 14px; letter-spacing: -0.01em; white-space: nowrap; color: var(--ink); }
+.ol[data-phase='idle'] .ol-type-text { color: var(--ink-3); }
+.ol-type-caret {
+  width: 1.5px; height: 15px; margin-left: 1px; background: var(--ink);
+  animation: ol-blink 1.05s steps(1, end) infinite;
+}
+@keyframes ol-blink { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
+
+/* 字幕：跟着笔尖走（超过 68% 翻到笔尖左侧） */
+.ol-tag {
+  position: absolute; bottom: 22px;
+  left: calc(var(--tagx, var(--drawn, 0)) * 100%);
+  transform: translateX(15px);
+  display: flex; align-items: center; gap: 7px;
+  white-space: nowrap;
+  font-size: 13px; font-weight: 500; letter-spacing: -0.005em; color: var(--ink);
+  opacity: calc(1 - var(--open, 0));
+  pointer-events: none;
+}
+.ol[data-side='left'] .ol-tag { transform: translateX(calc(-100% - 15px)); }
+.ol[data-phase='idle'] .ol-tag,
+.ol[data-phase='typing'] .ol-tag,
+.ol[data-phase='sent'] .ol-tag,
+.ol[data-phase='still'] .ol-tag { visibility: hidden; }
+.ol[data-hover='1'] .ol-tag { visibility: visible; }
+.ol-tag-dot {
+  flex: none; width: 4px; height: 4px; border-radius: 50%; background: currentColor;
+  animation: ol-pulse 1.6s ease-in-out infinite;
+}
+@keyframes ol-pulse { 0%, 100% { opacity: 0.25; } 50% { opacity: 1; } }
+
+/* 笔尖 */
+.ol-tip {
+  position: absolute; left: calc(var(--drawn, 0) * 100%);
+  top: -2px; width: 4px; height: 4px; margin-left: -2px;
+  border-radius: 50%; background: var(--ink);
+  opacity: calc(1 - var(--open, 0));
+}
+.ol[data-phase='idle'] .ol-tip,
+.ol[data-phase='typing'] .ol-tip { opacity: 0; }
+
+/* ── 裂开：结果从缝里长出来 ──────────────────────────── */
+.ol-reveal {
+  position: absolute; left: 0; right: 0;
+  top: calc(50% - var(--open, 0) * 110px);
+  height: calc(var(--open, 0) * 220px);
+  overflow: hidden;
+  display: flex; align-items: center;
+}
+.ol[data-phase='done'] .ol-reveal { cursor: pointer; }
+.ol-reveal-inner {
+  width: 100%; padding: 6px 2px;
+  opacity: 0; transform: translateY(8px);
+  transition: opacity 0.5s 0.16s, transform 0.5s 0.16s;
+}
+.ol-reveal[data-revealed='1'] .ol-reveal-inner { opacity: 1; transform: none; }
+
+.ol-result-kicker { font-size: 9.5px; letter-spacing: 0.22em; color: var(--ink-3); margin-bottom: 10px; }
+.ol-result-title { margin: 0; font-size: 22px; font-weight: 500; letter-spacing: -0.015em; line-height: 1.3; }
+.ol-result-list { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.ol-result-list li { position: relative; padding-left: 15px; font-size: 12px; line-height: 1.6; color: var(--ink-2); }
+.ol-result-list li::before {
+  content: ''; position: absolute; left: 0; top: 0.62em;
+  width: 5px; height: 1px; background: var(--ink-3);
+}
+.ol-result-foot { margin-top: 16px; font-size: 9.5px; letter-spacing: 0.16em; color: var(--ink-3); }
+
+/* 下半：合上的那条线 */
+.ol-edge-bot { top: calc(50% + var(--open, 0) * 110px); }
+.ol-edge-bot::after {
+  content: ''; position: absolute; left: 0; right: 0; top: -0.5px; height: 1px;
+  background: var(--ink); opacity: var(--open, 0);
+}
+
+/* ── 下方：用户那句话缩成的墨块 + 提示 ───────────────── */
+.ol-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 22px; margin-top: 4px;
+}
+.ol-chip {
+  max-width: 60%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font-size: 10px; letter-spacing: 0.02em;
+  padding: 3px 7px; border-radius: 2px;
+  background: var(--ink); color: var(--field);
+  opacity: 0; transform: translateX(-5px);
+  transition: opacity 0.3s, transform 0.3s;
+}
+.ol-chip[data-on='1'] { opacity: 1; transform: none; }
+.ol-hint { font-size: 9.5px; letter-spacing: 0.14em; color: var(--ink-3); }
+
+.ol-input {
+  position: absolute; left: 0; bottom: 0; width: 1px; height: 1px;
+  padding: 0; border: 0; opacity: 0; pointer-events: none; font: inherit;
+}
+
+.ol-legend {
+  position: absolute; left: 0; right: 0; bottom: 18px;
+  display: flex; justify-content: space-between;
+  padding: 0 32px; font-size: 9px; letter-spacing: 0.2em;
+  color: var(--ink-3); opacity: 0.75;
+}
+
+@media (max-width: 760px) {
+  .ol-band { width: 88%; min-width: 0; }
+  .ol-area { height: 232px; }
+  .ol-result-title { font-size: 17px; }
+  .ol-tag { font-size: 11.5px; }
+  .ol-legend { padding: 0 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ol-rail, .ol-twist, .ol-scan, .ol-flow, .ol-tag-dot, .ol-type-caret { animation: none !important; }
+  .ol[data-phase='think'] .ol-twist { opacity: 0.85; left: 12%; }
+  .ol[data-phase='search'] .ol-scanwrap { opacity: 1; }
+  .ol-scan[data-d='0'] { left: 8%; }
+  .ol-scan[data-d='1'] { left: 62%; }
+}

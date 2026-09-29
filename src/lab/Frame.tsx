@@ -1,16 +1,16 @@
 import { useState, type ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { ArrowLeft, Pause, Play, RotateCcw } from 'lucide-react'
-import type { BenchProps } from '../experiments/001-bench/types'
+import type { Ctl } from './ctl'
 
 const SPEEDS = [0.5, 1, 2]
 
 export interface FrameProps {
   no: string
   title: string
-  variants: { id: string; name: string }[]
-  current: string
-  render: (ctl: BenchProps) => ReactNode
+  variants?: { id: string; name: string }[]
+  current?: string
+  render: (ctl: Ctl) => ReactNode
 }
 
 export default function Frame({ no, title, variants, current, render }: FrameProps) {
@@ -45,8 +45,8 @@ export default function Frame({ no, title, variants, current, render }: FramePro
           <span className="text-[12.5px] font-medium text-[#dfe3ea]">{title}</span>
         </div>
 
-        <nav className="ml-2 flex items-center gap-1">
-          {variants.map((v) => {
+        <nav className={'ml-2 flex items-center gap-1 ' + (variants && variants.length > 1 ? '' : 'hidden')}>
+          {(variants ?? []).map((v) => {
             const on = v.id === current
             return (
               <button

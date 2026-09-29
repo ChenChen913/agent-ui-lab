@@ -34,18 +34,23 @@ export default function LabIndex() {
               {e.variants?.map((v) => (
                 <Link
                   key={v.id}
-                  to={`${e.slug}/${v.id}`}
+                  to={v.href ?? `${e.slug}/${v.id}`}
                   className="group block overflow-hidden rounded-xl border border-[#1d2129] bg-[#101218] transition-colors hover:border-[#333a47]"
                 >
                   <div
-                    className="relative h-40 px-5 py-5 transition-transform duration-500 group-hover:scale-[1.02]"
+                    className="relative h-40 overflow-hidden px-5 py-5 transition-transform duration-500 group-hover:scale-[1.02]"
                     style={{ background: v.bg, color: v.fg }}
                   >
-                    <div className="font-mono text-[9px] uppercase tracking-[0.2em] opacity-45">
-                      {v.id.toUpperCase()}
+                    {v.bg2 ? (
+                      <div className="absolute inset-y-0 right-0 w-[42%]" style={{ background: v.bg2 }} />
+                    ) : null}
+                    <div className="relative w-[54%]">
+                      <div className="font-mono text-[9px] uppercase tracking-[0.2em] opacity-45">
+                        {v.id.toUpperCase()}
+                      </div>
+                      <div className="mt-9 h-[2px] w-2/3 opacity-25" style={{ background: v.fg }} />
+                      <div className="mt-2.5 h-[9px] w-full rounded-full opacity-80" style={{ background: v.fg }} />
                     </div>
-                    <div className="mt-9 h-[2px] w-1/3 opacity-25" style={{ background: v.fg }} />
-                    <div className="mt-2.5 h-[9px] w-3/5 rounded-full opacity-80" style={{ background: v.fg }} />
                     <div
                       className="absolute bottom-5 left-5 h-[3px] w-14"
                       style={{ background: v.accent }}
