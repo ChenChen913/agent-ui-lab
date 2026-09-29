@@ -1,0 +1,261 @@
+.bb {
+  --paper: #f7f4ee;
+  --paper-2: #fffdf8;
+  --ink: #2a2622;
+  --ink-2: #7a7268;
+  --ink-3: #a89f92;
+  --rule: #e5ded2;
+  --ochre: #b5502e;
+  --olive: #6b7a4f;
+
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* 极淡纸纹：没有它就不像纸 */
+.bb-grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
+}
+
+/* ── 双栏书页 ─────────────────────────────────── */
+.bb-page {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 268px 1fr;
+  gap: 0;
+  padding: 52px 64px 0;
+  overflow: hidden;
+}
+
+.bb-margin {
+  padding-right: 34px;
+  border-right: 1px solid var(--rule);
+  overflow: hidden;
+}
+.bb-margin-title {
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  color: var(--ink-3);
+  margin-bottom: 22px;
+}
+
+.bb-index {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.bb-index li {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 9px 0;
+}
+.bb-index-num {
+  font-size: 10.5px;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+.bb-index-label {
+  font-size: 13px;
+  color: var(--ink-2);
+  flex: 1;
+  min-width: 0;
+}
+.bb-index-mark {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ochre);
+}
+
+.bb-main {
+  padding-left: 44px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* ── 报告首页 ─────────────────────────────────── */
+.bb-output {
+  padding-bottom: 30px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 30px;
+}
+.bb-output-kicker {
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  color: var(--ochre);
+  margin-bottom: 12px;
+}
+.bb-output-title {
+  margin: 0;
+  font-family: 'Fraunces Variable', Georgia, serif;
+  font-size: 38px;
+  line-height: 1.1;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+}
+.bb-output-meta {
+  margin: 14px 0 0;
+  font-size: 13px;
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── 正在写的那一页 ───────────────────────────── */
+.bb-stage {
+  position: relative;
+}
+.bb-hero-kicker {
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  color: var(--ink-3);
+  margin-bottom: 12px;
+}
+.bb-hero-label {
+  margin: 0;
+  font-family: 'Fraunces Variable', Georgia, serif;
+  font-size: 33px;
+  line-height: 1.16;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+}
+.bb-hero-detail {
+  margin: 14px 0 0;
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--ink-2);
+  font-style: italic;
+  font-family: 'Fraunces Variable', Georgia, serif;
+}
+.bb-hero-count {
+  margin: 16px 0 0;
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  color: var(--ink-2);
+  font-size: 13px;
+}
+.bb-num {
+  font-family: 'Fraunces Variable', Georgia, serif;
+  font-size: 34px;
+  font-weight: 500;
+  color: var(--ochre);
+  font-variant-numeric: tabular-nums;
+}
+
+.bb-subs {
+  list-style: none;
+  margin: 18px 0 0;
+  padding: 0;
+  max-width: 46ch;
+}
+.bb-subs li {
+  display: flex;
+  gap: 11px;
+  padding: 6px 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--ink-3);
+  transition: color 320ms linear;
+}
+.bb-subs li.is-done {
+  color: var(--ink-2);
+}
+.bb-sub-mark {
+  flex: none;
+  width: 11px;
+  color: var(--olive);
+}
+.bb-subs li:not(.is-done) .bb-sub-mark {
+  color: var(--ink-3);
+}
+
+.bb-bar {
+  margin-top: 22px;
+  height: 1px;
+  background: var(--rule);
+  max-width: 300px;
+}
+.bb-bar-fill {
+  height: 100%;
+  background: var(--ochre);
+  width: var(--from);
+  animation: bb-fill var(--dur) linear forwards;
+}
+@keyframes bb-fill {
+  from { width: var(--from); }
+  to   { width: var(--to); }
+}
+
+.bb-retry {
+  margin: 18px 0 0;
+  font-size: 13.5px;
+  color: var(--ochre);
+}
+.bb-note {
+  margin: 18px 0 0;
+  padding-left: 14px;
+  border-left: 2px solid var(--ochre);
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--ochre);
+}
+
+/* ── 页脚 ─────────────────────────────────────── */
+.bb-foot {
+  position: relative;
+  flex: none;
+  padding: 0 64px 44px;
+}
+.bb-ask {
+  font-size: 13px;
+  color: var(--ink-3);
+  margin-bottom: 12px;
+}
+.bb-ask-who {
+  color: var(--ink);
+  font-weight: 500;
+  margin-right: 10px;
+}
+.bb-composer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 15px 17px;
+  font-size: 14px;
+  color: var(--ink-3);
+  box-shadow: 0 1px 2px rgba(42, 38, 34, 0.03);
+}
+.bb-composer-key {
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+@media (max-width: 940px) {
+  .bb-page { grid-template-columns: 1fr; padding: 36px 28px 0; }
+  .bb-margin { display: none; }
+  .bb-main { padding-left: 0; }
+  .bb-foot { padding: 0 28px 28px; }
+  .bb-output-title { font-size: 27px; }
+  .bb-hero-label { font-size: 24px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bb-bar-fill { animation-duration: 1ms; }
+  .bb-subs li { transition: none; }
+}

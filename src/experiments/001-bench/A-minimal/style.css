@@ -1,0 +1,268 @@
+.ba {
+  --ink: #0a0a0a;
+  --ink-2: #6e6e6e;
+  --ink-3: #a3a3a3;
+  --line: #e8e8e8;
+  --red: #d93a2b;
+  --paper: #ffffff;
+
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+}
+
+.ba-page {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  gap: 32px;
+  padding: 60px 72px 0;
+  overflow: hidden;
+}
+
+/* 那条 1px 的轴 —— 瑞士排版的骨架 */
+.ba-rail {
+  flex: none;
+  width: 1px;
+  background: var(--line);
+}
+
+.ba-body {
+  flex: 1;
+  min-width: 0;
+  max-width: 680px;
+  overflow: hidden;
+}
+
+/* ── 结果：从上往下第一个东西 ───────────────── */
+.ba-output {
+  padding-bottom: 34px;
+  border-bottom: 2px solid var(--ink);
+  margin-bottom: 34px;
+}
+.ba-kicker {
+  font-family: 'Geist Mono Variable', ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: var(--ink-3);
+  margin-bottom: 14px;
+}
+.ba-output-title {
+  margin: 0;
+  font-size: 31px;
+  line-height: 1.16;
+  letter-spacing: -0.025em;
+  font-weight: 600;
+}
+.ba-output-meta {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── 步骤栈：最新的在最上面 ─────────────────── */
+.ba-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.ba-row + .ba-row {
+  border-top: 1px solid var(--line);
+}
+.ba-row.is-active {
+  padding: 6px 0 22px;
+}
+
+/* 当前步骤：大、黑、有焦点 */
+.ba-hero-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+.ba-caret {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  background: var(--ink);
+  transform: translateY(-4px);
+}
+.ba-hero-label {
+  margin: 0;
+  font-size: 30px;
+  line-height: 1.18;
+  letter-spacing: -0.025em;
+  font-weight: 600;
+}
+.ba-hero-detail {
+  margin-top: 11px;
+  font-family: 'Geist Mono Variable', ui-monospace, monospace;
+  font-size: 13.5px;
+  color: var(--ink-2);
+}
+.ba-hero-count {
+  margin-top: 14px;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.ba-num {
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+}
+.ba-hero-count-unit {
+  font-size: 13px;
+  color: var(--ink-2);
+}
+
+.ba-subs {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
+}
+.ba-subs li {
+  display: flex;
+  gap: 10px;
+  padding: 5px 0;
+  font-size: 13.5px;
+  color: var(--ink-3);
+  transition: color 220ms linear;
+}
+.ba-subs li.is-done {
+  color: var(--ink-2);
+}
+.ba-sub-mark {
+  flex: none;
+  width: 12px;
+  font-family: 'Geist Mono Variable', ui-monospace, monospace;
+}
+.ba-subs li.is-done .ba-sub-mark {
+  color: var(--ink);
+}
+
+/* 进度条：2px，方形，绝不圆角 */
+.ba-bar {
+  margin-top: 20px;
+  height: 2px;
+  background: var(--line);
+}
+.ba-bar-fill {
+  height: 100%;
+  background: var(--ink);
+  width: var(--from);
+  animation: ba-fill var(--dur) linear forwards;
+}
+@keyframes ba-fill {
+  from { width: var(--from); }
+  to   { width: var(--to); }
+}
+
+.ba-retry {
+  margin-top: 18px;
+  font-size: 13px;
+  color: var(--ink-2);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.ba-retry-arrow {
+  font-family: 'Geist Mono Variable', ui-monospace, monospace;
+  font-size: 14px;
+  color: var(--ink);
+}
+
+/* 全片唯一一次红 */
+.ba-note {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--red);
+}
+.ba-note-mark {
+  width: 7px;
+  height: 7px;
+  background: var(--red);
+}
+
+/* 已完成的：小、灰、往下沉 */
+.ba-trail {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.ba-trail-mark {
+  flex: none;
+  width: 12px;
+  font-family: 'Geist Mono Variable', ui-monospace, monospace;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.ba-trail-mark.is-warn {
+  color: var(--red);
+  font-weight: 600;
+}
+.ba-trail-label {
+  flex: 1;
+  min-width: 0;
+}
+.ba-trail-dur {
+  font-family: 'Geist Mono Variable', ui-monospace, monospace;
+  font-size: 11.5px;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── 底部：用户的输入只是旁白 + 一个方框 ──────── */
+.ba-foot {
+  flex: none;
+  padding: 0 72px 44px;
+}
+.ba-ask {
+  font-size: 13px;
+  color: var(--ink-3);
+  margin-bottom: 12px;
+}
+.ba-ask span {
+  color: var(--ink);
+  font-weight: 500;
+  margin-right: 10px;
+}
+.ba-composer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid var(--line);
+  padding: 15px 16px;
+  font-size: 14px;
+  color: var(--ink-3);
+}
+.ba-composer kbd {
+  font-family: 'Geist Mono Variable', ui-monospace, monospace;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+@media (max-width: 860px) {
+  .ba-page { padding: 36px 28px 0; gap: 20px; }
+  .ba-foot { padding: 0 28px 28px; }
+  .ba-hero-label { font-size: 22px; }
+  .ba-output-title { font-size: 22px; }
+  .ba-num { font-size: 22px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ba-bar-fill { animation-duration: 1ms; }
+  .ba-subs li { transition: none; }
+}
