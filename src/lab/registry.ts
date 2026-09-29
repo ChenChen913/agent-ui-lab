@@ -133,7 +133,7 @@ export const ENTRIES: Entry[] = [
     no: '001',
     slug: '/001',
     line: 'b',
-    title: { zh: '案头', en: 'The Bench' },
+    title: { zh: '当前这步', en: 'The Bench' },
     question: { zh: 'Agent 干活的时候，界面除了转圈还能是什么样？', en: 'When an agent is working, what can the interface be besides a spinner?' },
     status: 'live',
     variants: [
@@ -146,7 +146,7 @@ export const ENTRIES: Entry[] = [
     no: '002',
     slug: '/002',
     line: 'b',
-    title: { zh: '一线', en: 'One Line' },
+    title: { zh: '一条线', en: 'One Line' },
     question: { zh: '如果整个界面只允许存在一条线，Agent 还能怎么工作？', en: 'If the whole interface were allowed exactly one line, how could an agent still work?' },
     status: 'live',
     variants: [
@@ -161,7 +161,7 @@ export const ENTRIES: Entry[] = [
     no: '003',
     slug: '/003',
     line: 'b',
-    title: { zh: '终端', en: 'Terminal' },
+    title: { zh: '终端当界面', en: 'Terminal' },
     question: { zh: '终端本身很粗糙，能不能把它设计成一个高级的 Agent Interface？', en: 'Terminals are crude. Can one be designed into a first-class agent interface?' },
     status: 'live',
     variants: [
@@ -172,7 +172,7 @@ export const ENTRIES: Entry[] = [
     no: '004',
     slug: '/004',
     line: 'b',
-    title: { zh: '编年', en: 'Chronicle' },
+    title: { zh: '时间即长度', en: 'Chronicle' },
     question: { zh: '如果不用传统聊天记录，而是用时间轴表达 Agent 的工作过程，会怎么样？', en: 'What if an agent\'s work were shown as a timeline instead of a chat log?' },
     status: 'live',
     variants: [
@@ -183,7 +183,7 @@ export const ENTRIES: Entry[] = [
     no: '005',
     slug: '/005',
     line: 'b',
-    title: { zh: '桌面', en: 'Desktop' },
+    title: { zh: '活在桌面上', en: 'Desktop' },
     question: { zh: '如果 Agent 不是一个网页，而是一个活在桌面上的存在，会怎么样？', en: 'What if an agent were not a web page but something that lives on your desktop?' },
     status: 'live',
     variants: [
@@ -194,7 +194,7 @@ export const ENTRIES: Entry[] = [
     no: '006',
     slug: '/006',
     line: 'b',
-    title: { zh: '场', en: 'Spatial' },
+    title: { zh: '清晰与模糊', en: 'Spatial' },
     question: { zh: '如果 Agent 的状态不是用列表表达，而是用空间关系表达，会怎么样？', en: 'What if an agent\'s state were expressed through spatial relationships instead of a list?' },
     status: 'live',
     variants: [
@@ -205,7 +205,7 @@ export const ENTRIES: Entry[] = [
     no: '007',
     slug: '/007',
     line: 'a',
-    title: { zh: '委托书', en: 'The Brief' },
+    title: { zh: '先谈后做', en: 'The Brief' },
     question: { zh: '如果界面的主角是「这份委托」，而不是聊天记录，会怎么样？', en: 'What if the interface were about the commission, not the chat log?' },
     status: 'live',
     variants: [
@@ -216,7 +216,7 @@ export const ENTRIES: Entry[] = [
     no: '008',
     slug: '/008',
     line: 'a',
-    title: { zh: '基准', en: 'Baseline' },
+    title: { zh: '标准聊天', en: 'Baseline' },
     question: { zh: '用户登录之后第一眼看到的那一层，应该长什么样？', en: 'What should the layer a user sees right after signing in actually look like?' },
     status: 'live',
     variants: [
@@ -227,7 +227,7 @@ export const ENTRIES: Entry[] = [
     no: '009',
     slug: '/009',
     line: 'a',
-    title: { zh: '工作台', en: 'Workbench' },
+    title: { zh: '产物在旁', en: 'Workbench' },
     question: { zh: '如果产出不是最后一条消息，而是一个放在旁边的产物呢？', en: 'What if the output were not the last message but an artifact sitting next to the chat?' },
     status: 'live',
     variants: [
@@ -238,7 +238,7 @@ export const ENTRIES: Entry[] = [
     no: '010',
     slug: '/010',
     line: 'a',
-    title: { zh: '首页', en: 'Home' },
+    title: { zh: '首页即输入', en: 'Home' },
     question: { zh: '如果首页本身就是这个产品，输入框悬在正中，会怎么样？', en: 'What if the home screen were the product itself, with the input floating in the center?' },
     status: 'live',
     variants: [
@@ -249,7 +249,7 @@ export const ENTRIES: Entry[] = [
     no: '011',
     slug: '/011',
     line: 'a',
-    title: { zh: '气泡', en: 'Bubble' },
+    title: { zh: '熟悉的聊天', en: 'Bubble' },
     question: { zh: '如果 Agent 就长成你最熟悉的那个聊天软件的样子呢？', en: 'What if the agent looked like the chat app you already know by heart?' },
     status: 'live',
     variants: [
@@ -260,7 +260,7 @@ export const ENTRIES: Entry[] = [
     no: '012',
     slug: '/012',
     line: 'a',
-    title: { zh: '计划', en: 'The Plan' },
+    title: { zh: '活的计划', en: 'The Plan' },
     question: { zh: 'Agent 已经开干了，你才发现它理解错了，除了打断重来还能怎么办？', en: 'The agent already started, and you realise it misunderstood. What now, besides killing it?' },
     status: 'live',
     variants: [
@@ -268,19 +268,19 @@ export const ENTRIES: Entry[] = [
     ],
   },
   {
-    no: '013', slug: '/013', line: 'a', title: { zh: '分量', en: 'Weight' },
+    no: '013', slug: '/013', line: 'a', title: { zh: '按需展开', en: 'Weight' },
     question: { zh: '同一块界面，面对一句话和二十个项目，应该给出同样分量的过程吗？', en: 'Should one screen give the same amount of process for one sentence and for twenty projects?' },
     status: 'live',
     variants: [{ id: 'a', name: 'Weight', tag: { zh: '分量随任务变 · 自己长大', en: 'Weight follows the task · it grows by itself' }, bg: '#fafaf9', fg: '#1c1c1a', accent: '#c2410c', href: '/013' }],
   },
   {
-    no: '014', slug: '/014', line: 'a', title: { zh: '沉淀', en: 'Settle' },
+    no: '014', slug: '/014', line: 'a', title: { zh: '过程即草稿', en: 'Settle' },
     question: { zh: '过程和结果，是两个东西，还是同一个东西的两个阶段？', en: 'Are the process and the result two things, or two stages of one thing?' },
     status: 'live',
     variants: [{ id: 'a', name: 'Settle', tag: { zh: '过程即草稿 · 撤来源看少掉什么', en: 'Process as draft · drop a source, the doc loses it' }, bg: '#f2f1ee', fg: '#1b1a18', accent: '#1f5f8b', href: '/014' }],
   },
   {
-    no: '015', slug: '/015', line: 'a', title: { zh: '回来', en: 'Return' },
+    no: '015', slug: '/015', line: 'a', title: { zh: '回来先看简报', en: 'Return' },
     question: { zh: '用户离开 20 分钟再回来，界面上应该是什么？', en: 'The user was away for 20 minutes. What should they see when they come back?' },
     status: 'live',
     variants: [{ id: 'a', name: 'Return', tag: { zh: '简报 · 替你做的决定 · 时间带', en: 'Briefing · decisions I made · a time band' }, bg: '#f4f6f8', fg: '#14171b', accent: '#b8811c', href: '/015' }],
