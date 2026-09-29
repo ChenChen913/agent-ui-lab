@@ -105,7 +105,7 @@ Conventional products compress an agent's work into one spinner. This line asks 
 The gallery lives at `/`. Every experiment has its own route:
 
 ```
-/            Gallery, the entry point for all ten
+/            Gallery, the entry point for all fifteen
 /001/a      001 has three skins at /001/a, /001/b and /001/c
 /002 … /015 The rest
 ```
