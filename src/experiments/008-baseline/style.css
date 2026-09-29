@@ -180,6 +180,8 @@
 .bl-b + .bl-b { margin-top: 14px; }
 .bl-b p { margin: 0; }
 .bl-b ol, .bl-b ul { margin: 0; padding-left: 21px; }
+.bl-b ul { list-style: disc; }
+.bl-b ol { list-style: decimal; }
 .bl-b li { margin-bottom: 7px; }
 .bl-b li::marker { color: var(--bl-ink-3); }
 .bl-b blockquote {

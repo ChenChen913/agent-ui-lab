@@ -155,7 +155,7 @@ export const ENTRIES: Entry[] = [
     question: '如果 Agent 就长成你最熟悉的那个聊天软件的样子呢？',
     status: 'live',
     variants: [
-      { id: 'a', name: 'Bubble', tag: '气泡 · 头像昵称 · 时间', bg: '#f5f5f5', fg: '#191919', accent: '#95ec69', href: '/011' },
+      { id: 'a', name: 'Bubble', tag: '头像 · 昵称 · 气泡 · 时间', bg: '#ffffff', fg: '#1a1a1a', accent: '#0e8a5f', href: '/011' },
     ],
   },
   { no: '—', slug: '/', title: '…', question: '下一个想法。', status: 'planned' },

@@ -1,97 +1,106 @@
 /**
- * 011 · Bubble —— 剧本
+ * 011 · Bubble —— 剧本（重做版）
  *
- * 问题：如果 Agent 就长成你最熟悉的那个聊天软件的样子呢？
+ * 问题：如果 Agent 用最传统的那套聊天语法来表达自己呢？
+ *       头像一个昵称一条气泡，谁都看得懂。
  *
- * 观点：微信早就有一套完整的词汇描述「异步、会失败、需要等待」的通信。
- *       Agent 正好塞得进去，一条新的界面语言都不用发明。
+ * 结构照参考图来，两个不对称是重点：
+ *   1. 用户是一条窄气泡，深绿底白字
+ *   2. Agent 是一块几乎占满宽度的白色内容面板 ——
+ *      因为它要装的不止一句话，还有过程、列表和产物
  *
- *        正在输入    → 标题栏的「对方正在输入…」
- *        工具调用    → 居中灰底的系统消息
- *        产出        → 会话里的文件卡片
- *        失败 / 降级 → 系统消息里直说
- *        时间        → 每条消息下面
+ * 时间在每条消息底部，参考图里没有，是项目自己的要求。
  *
  * t 是毫秒，总长 22 秒。
  */
 
-export interface Card {
-  icon: 'file' | 'doc'
-  title: string
-  desc: string
-  meta: string
-}
+export type Act = { label: string; state: 'pending' | 'running' | 'done'; note?: string }
 
-export type MsgState = 'sending' | 'sent' | 'failed'
+export type Block =
+  | { kind: 'p'; text: string }
+  | { kind: 'ul'; items: string[] }
+  | { kind: 'ol'; items: string[] }
+  | { kind: 'quote'; text: string }
+  | { kind: 'acts'; acts: Act[] }
+  | { kind: 'card'; title: string; desc: string; meta: string }
 
 export interface Msg {
-  kind: 'msg'
   id: string
   from: 'me' | 'agent'
-  text?: string
-  card?: Card
+  blocks: Block[]
   time: string
-  state: MsgState
-  /** 首次出现的毫秒时刻，用于入场动画 */
-  t: number
+  /** 正在流式接收的块下标，-1 表示写完了 */
+  streaming: number
+  done: boolean
 }
-
-export interface Sys {
-  kind: 'system'
-  id: string
-  text: string
-  time: string
-  t: number
-}
-
-export type Item = Msg | Sys
 
 export type Beat =
   | { t: number; op: 'type'; text: string; dur: number }
-  | { t: number; op: 'send'; id: string; from: 'me' | 'agent'; text?: string; card?: Card; time: string }
-  | { t: number; op: 'recv'; id: string; from: 'me' | 'agent'; text?: string; card?: Card; time: string }
-  | { t: number; op: 'sys'; id: string; text: string; time: string }
-  | { t: number; op: 'typed'; id: string; state: 'sending' | 'sent' | 'failed' }
+  | { t: number; op: 'send'; id: string; text: string; time: string }
+  | { t: number; op: 'recv'; id: string; blocks: Block[]; time: string }
+  | { t: number; op: 'push'; id: string; block: Block }
+  | { t: number; op: 'stream'; id: string; index: number }
+  | { t: number; op: 'act'; id: string; bi: number; ai: number; state: Act['state']; note?: string }
+  | { t: number; op: 'done'; id: string }
   | { t: number; op: 'typing'; on: boolean }
   | { t: number; op: 'end' }
 
-export const TOTAL = 22000
+export const TOTAL = 19600
 export const DEFAULT_ASK = '帮我把这份季度报告读一下，提炼三个关键点'
 
-export const ME = { name: '陈晨', initial: '陈', color: '#4a6fa5' }
-export const AGENT = { name: '研究员小助手', initial: '研', color: '#3f7f5f' }
+export const ME = { name: '我' }
+export const AGENT = { name: '研究员小助手', initial: '研' }
 
-export const CHATS: { id: string; name: string; last: string; time: string; unread?: number; initial: string; color: string; active?: boolean }[] = [
-  { id: 'c1', name: '研究员小助手', last: '已发送「复盘要点.md」', time: '15:31', initial: '研', color: '#3f7f5f', active: true },
-  { id: 'c2', name: '文件传输助手', last: '复盘要点.md', time: '15:31', initial: '文', color: '#5a8fbf' },
-  { id: 'c3', name: '产品组', last: '李工：明早十点评审', time: '14:02', unread: 3, initial: '产', color: '#a8712c' },
-  { id: 'c4', name: '周然', last: '收到，我看下', time: '11:47', initial: '周', color: '#8a5fa8' },
-  { id: 'c5', name: '数据平台', last: '你的导出任务已完成', time: '10:15', initial: '数', color: '#4f8a63' },
-  { id: 'c6', name: '设计评审群', last: '王：这版我同意', time: '昨天', initial: '设', color: '#b0553f' },
-  { id: 'c7', name: '张一鸣', last: '[图片]', time: '昨天', initial: '张', color: '#3f7f8a' },
+/** 首屏那条：Agent 自己介绍能做什么。参考图里就是这个结构 */
+const WELCOME: Block[] = [
+  { kind: 'p', text: '你好！我是研究员小助手，可以帮你读文档、查资料、把结论整理成文件。🙂' },
+  { kind: 'p', text: '我可以帮你做这些事：' },
+  { kind: 'ul', items: [
+    '**读文档**：把长报告读成三条结论，标出原文出处',
+    '**查资料**：联网检索，或者只在你的资料库里找',
+    '**做对比**：把两个方案摊开，列出取舍',
+    '**整理成文件**：结论、表格、清单都可以导出',
+    '**追问细节**：任何一句我都可以展开说',
+  ] },
+  { kind: 'p', text: '把文件发给我，或者直接说一句话就行。' },
 ]
 
+/** 打开就该看到这条 —— 它是初始状态，不是演示的第一拍 */
+export const WELCOME_MSG: Msg = {
+  id: 'm0', from: 'agent', blocks: WELCOME, time: '15:24', streaming: -1, done: true,
+}
+
 export const SCENARIO: Beat[] = [
-  { t: 600, op: 'sys', id: 's0', text: '你已添加了「研究员小助手」，现在可以开始聊天了', time: '15:24' },
+  { t: 1200, op: 'type', text: DEFAULT_ASK, dur: 1900 },
+  { t: 3100, op: 'send', id: 'm1', text: DEFAULT_ASK, time: '15:24' },
 
-  { t: 1800, op: 'type', text: DEFAULT_ASK, dur: 2000 },
-  { t: 4000, op: 'send', id: 'm1', from: 'me', text: DEFAULT_ASK, time: '15:24' },
+  { t: 3400, op: 'typing', on: true },
+  { t: 4100, op: 'recv', id: 'm2', blocks: [
+    { kind: 'acts', acts: [
+      { label: '读取 季度报告.pdf', state: 'running' },
+      { label: '分析数据', state: 'pending' },
+      { label: '整理结论', state: 'pending' },
+    ] },
+  ], time: '15:25' },
+  { t: 5800, op: 'act', id: 'm2', bi: 0, ai: 0, state: 'done', note: '41 页' },
+  { t: 6000, op: 'act', id: 'm2', bi: 0, ai: 1, state: 'running' },
+  { t: 7800, op: 'act', id: 'm2', bi: 0, ai: 1, state: 'done', note: '12 张表' },
+  { t: 8000, op: 'act', id: 'm2', bi: 0, ai: 2, state: 'running' },
+  { t: 9200, op: 'typing', on: false },
 
-  { t: 4300, op: 'typing', on: true },
-  { t: 5200, op: 'sys', id: 's1', text: '正在读取「季度报告.pdf」', time: '15:24' },
-  { t: 7400, op: 'sys', id: 's2', text: '已读取 41 页 · 12 张表', time: '15:24' },
-  { t: 7800, op: 'typing', on: false },
-
-  { t: 8100, op: 'recv', id: 'm2', from: 'agent', text: '读完了。这份季报的信息密度不低，但真正影响决策的只有三点：', time: '15:25' },
-  { t: 9200, op: 'recv', id: 'm3', from: 'agent', text: '1. 营收环比 +12%，但增量几乎全部来自华东一条产品线\n2. 毛利率掉了 2.4 个点，主要原因是新客户的获客成本\n3. 研发投入占比首次超过 20%', time: '15:25' },
-  { t: 10800, op: 'recv', id: 'm4', from: 'agent', card: { icon: 'doc', title: '季度报告要点.md', desc: '三点结论 + 原文出处对照', meta: '4.2 KB' }, time: '15:25' },
-
-  { t: 13000, op: 'send', id: 'm5', from: 'me', text: '第二点展开说说', time: '15:26' },
-  { t: 13400, op: 'typing', on: true },
-  { t: 14200, op: 'sys', id: 's3', text: '正在查找附注', time: '15:26' },
-  { t: 16200, op: 'sys', id: 's4', text: '联网检索超时，改用本地资料', time: '15:26' },
-  { t: 16600, op: 'typing', on: false },
-  { t: 17000, op: 'recv', id: 'm6', from: 'agent', text: '第二点出自附注 4，正文一个字都没提。原文的措辞是「客户获取成本的阶段性上升」，听起来像临时的，但附表里连续三个季度都在涨。', time: '15:27' },
-
-  { t: 19400, op: 'end' },
+  { t: 9600, op: 'push', id: 'm2', block: { kind: 'p', text: '读完了。这份季报的信息密度不低，但真正影响决策的只有三点：' } },
+  { t: 10200, op: 'stream', id: 'm2', index: 1 },
+  { t: 11400, op: 'push', id: 'm2', block: { kind: 'ol', items: [
+    '营收环比 +12%，但增量几乎全部来自华东一条产品线',
+    '毛利率掉了 2.4 个点，主要原因是新客户的获客成本',
+    '研发投入占比首次超过 20%，和去年的 14% 相比是结构性变化',
+  ] } },
+  { t: 12000, op: 'stream', id: 'm2', index: 2 },
+  { t: 13600, op: 'act', id: 'm2', bi: 0, ai: 2, state: 'done', note: '17s' },
+  { t: 13800, op: 'push', id: 'm2', block: { kind: 'quote', text: '第二点出自附注 4，正文一个字都没提。如果你要拿这份报告去汇报，这一条值得单独说。' } },
+  { t: 14400, op: 'stream', id: 'm2', index: 3 },
+  { t: 16000, op: 'push', id: 'm2', block: { kind: 'card', title: '季度报告要点.md', desc: '三条结论 + 原文出处对照', meta: '4.2 KB' } },
+  { t: 16600, op: 'stream', id: 'm2', index: 4 },
+  { t: 17400, op: 'done', id: 'm2' },
+  { t: 19600, op: 'end' },
 ]

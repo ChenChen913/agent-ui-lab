@@ -288,49 +288,34 @@ function Brief() {
   )
 }
 
-/** 011 · 仿微信：三栏 + 白绿气泡 + 头像昵称时间 */
+/** 011 · 会话：窄的绿色气泡 + 宽的白色内容面板 */
 function BubblePv() {
   return (
-    <Box bg="#f5f5f5">
-      <rect x="0" y="0" width="26" height={H} fill="#2e2e2e" />
-      <rect x="7" y="10" width="12" height="12" rx="2" fill="#4a6fa5" />
-      <rect x="9" y="30" width="8" height="8" rx="2" fill="#07c160" />
-      <rect x="9" y="44" width="8" height="8" rx="2" fill="#5c5c5c" />
-      <rect x="9" y="58" width="8" height="8" rx="2" fill="#5c5c5c" />
-      <rect x="26" y="0" width="70" height={H} fill="#f7f7f7" />
-      <rect x="26" y="0" width="1" height={H} fill="#e7e7e7" />
-      <rect x="33" y="10" width="56" height="11" rx="3" fill="#e6e6e6" />
-      <rect x="33" y="28" width="56" height="22" rx="3" fill="#e3e3e3" />
-      <rect x="38" y="32" width="13" height="13" rx="2" fill="#3f7f5f" />
-      <rect x="55" y="33" width="26" height="3.5" rx="1.75" fill="#5c5c5c" />
-      <rect x="55" y="41" width="30" height="3" rx="1.5" fill="#a8a8a8" />
-      <rect x="33" y="54" width="13" height="13" rx="2" fill="#5a8fbf" />
-      <rect x="55" y="56" width="24" height="3.5" rx="1.75" fill="#5c5c5c" />
-      <rect x="55" y="64" width="28" height="3" rx="1.5" fill="#a8a8a8" />
-      <rect x="33" y="76" width="13" height="13" rx="2" fill="#a8712c" />
-      <rect x="55" y="78" width="26" height="3.5" rx="1.75" fill="#5c5c5c" />
-      <rect x="55" y="86" width="20" height="3" rx="1.5" fill="#a8a8a8" />
-      <rect x="96" y="0" width="224" height="1" fill="#e7e7e7" />
-      <rect x="96" y="10" width="52" height="4" rx="2" fill="#5c5c5c" />
-      <rect x="96" y="30" width="120" height="12" rx="3" fill="#e2e2e2" />
-      <rect x="112" y="34" width="88" height="4" rx="2" fill="#8c8c8c" />
-      <rect x="112" y="52" width="13" height="13" rx="2" fill="#3f7f5f" />
-      <rect x="129" y="49" width="22" height="3" rx="1.5" fill="#8c8c8c" />
-      <rect x="129" y="55" width="86" height="26" rx="4" fill="#ffffff" />
-      <path d="M129 62 l-5 5 l5 5 z" fill="#ffffff" />
-      <rect x="137" y="62" width="62" height="3.5" rx="1.75" fill="#5c5c5c" />
-      <rect x="137" y="70" width="44" height="3.5" rx="1.75" fill="#5c5c5c" />
-      <rect x="129" y="84" width="20" height="3" rx="1.5" fill="#b0b0b0" />
-      <rect x="263" y="100" width="13" height="13" rx="2" fill="#4a6fa5" />
-      <rect x="285" y="97" width="14" height="3" rx="1.5" fill="#8c8c8c" />
-      <rect x="231" y="103" width="50" height="20" rx="4" fill="#95ec69" />
-      <path d="M281 110 l5 5 l-5 5 z" fill="#95ec69" />
-      <rect x="239" y="110" width="34" height="3.5" rx="1.75" fill="#2c3b23" />
-      <rect x="259" y="126" width="20" height="3" rx="1.5" fill="#b0b0b0" />
-      <rect x="96" y="140" width="224" height="1" fill="#e7e7e7" />
-      <rect x="104" y="146" width="6" height="6" rx="1.5" fill="#b0b0b0" />
-      <rect x="114" y="146" width="6" height="6" rx="1.5" fill="#b0b0b0" />
-      <rect x="278" y="144" width="34" height="11" rx="3" fill="#07c160" />
+    <Box bg="#ffffff">
+      <rect x="0" y="0" width={W} height="24" fill="#ffffff" />
+      <rect x="0" y="24" width={W} height="1" fill="#ededed" />
+      <rect x="16" y="7" width="11" height="11" rx="3.5" fill="#0e8a5f" />
+      <rect x="33" y="11" width="40" height="4" rx="2" fill="#3a3f3d" />
+      <rect x="79" y="12" width="18" height="3" rx="1.5" fill="#b4b8b6" />
+      <rect x="196" y="38" width="14" height="3" rx="1.5" fill="#b4b8b6" />
+      <rect x="170" y="47" width="78" height="22" rx="7" fill="#0e8a5f" />
+      <rect x="182" y="55" width="54" height="4" rx="2" fill="#ffffff" opacity="0.92" />
+      <circle cx="264" cy="58" r="11" fill="#e9ebee" />
+      <circle cx="264" cy="55" r="3.6" fill="#a2a7b0" />
+      <path d="M257.5 64.5 a6.6 6.6 0 0 1 13 0 z" fill="#a2a7b0" />
+      <rect x="16" y="86" width="11" height="11" rx="3.5" fill="#0e8a5f" />
+      <rect x="33" y="90" width="38" height="3" rx="1.5" fill="#b4b8b6" />
+      <rect x="33" y="99" width="243" height="50" rx="8" fill="#ffffff" stroke="#ededed" />
+      <rect x="47" y="110" width="196" height="4" rx="2" fill="#4a504e" />
+      <rect x="47" y="122" width="212" height="20" rx="6" fill="#f5f7f6" />
+      <circle cx="59" cy="132" r="3.4" fill="#0e8a5f" />
+      <rect x="68" y="130" width="88" height="3.5" rx="1.75" fill="#7d8380" />
+      <rect x="214" y="130" width="26" height="3.5" rx="1.75" fill="#a9aeac" />
+      <rect x="16" y="152" width="260" height="1" fill="none" />
+      <rect x="16" y="146" width="260" height="14" rx="5" fill="#ffffff" stroke="#c9d3ce" />
+      <rect x="26" y="151" width="112" height="4" rx="2" fill="#c4c9c7" />
+      <rect x="258" y="148" width="14" height="11" rx="4" fill="#0e8a5f" />
+      <path d="M265 153.5 l0 4 M263 155.5 l2 -2 l2 2" stroke="#ffffff" strokeWidth="1.2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
     </Box>
   )
 }

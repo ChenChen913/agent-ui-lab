@@ -281,7 +281,7 @@
 }
 .wk-db:first-child h3 { margin-top: 0; }
 .wk-db p { margin: 0; }
-.wk-db ul { margin: 0; padding-left: 19px; }
+.wk-db ul { margin: 0; padding-left: 19px; list-style: disc; }
 .wk-db li { margin-bottom: 7px; }
 .wk-db blockquote {
   margin: 0; padding: 11px 13px;

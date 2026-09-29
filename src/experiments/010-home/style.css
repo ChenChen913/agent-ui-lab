@@ -173,7 +173,7 @@
 .hm-b { font-size: 15px; line-height: 1.82; color: var(--hm-ink-2); }
 .hm-b + .hm-b { margin-top: 14px; }
 .hm-b p { margin: 0; }
-.hm-b ul { margin: 0; padding-left: 20px; }
+.hm-b ul { margin: 0; padding-left: 20px; list-style: disc; }
 .hm-b li { margin-bottom: 8px; }
 .hm-b blockquote {
   margin: 0; padding: 2px 0 2px 15px;

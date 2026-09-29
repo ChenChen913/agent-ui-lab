@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { CHATS, DEFAULT_ASK, SCENARIO, type Beat, type Card, type Item, type Msg } from './scenario'
+import { DEFAULT_ASK, SCENARIO, WELCOME_MSG, type Beat, type Block, type Msg } from './scenario'
 
 export interface B11State {
   typed: string
-  items: Item[]
+  messages: Msg[]
   typing: boolean
 }
 
-const fresh = (): B11State => ({ typed: '', items: [], typing: false })
+/** 打开就有 Agent 的自我介绍 —— 这是初始状态，不是演示的第一拍 */
+const fresh = (): B11State => ({ typed: '', messages: [{ ...WELCOME_MSG }], typing: false })
 
 let uid = 0
 const nid = (p: string) => p + ++uid
@@ -16,9 +17,14 @@ const clock = () => {
   return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0')
 }
 
-const CANNED = [
-  '收到。演示环境里我的回复是固定的，点右上角的播放键可以看完整的流程。',
-  '好。左边是会话列表，中间是气泡，每条消息下面都有时间。',
+const CANNED: { blocks: Block[] }[] = [
+  { blocks: [
+    { kind: 'p', text: '收到。这是演示环境，我的回复是固定的，点右上角的播放键可以看完整的流程。' },
+    { kind: 'p', text: '这个界面里你可以随时打字，过程会出现在我的面板里。' },
+  ] },
+  { blocks: [
+    { kind: 'p', text: '好。每条消息下面都有时间，左边是我的头像和昵称，右边是你的。' },
+  ] },
 ]
 let ci = 0
 
@@ -29,7 +35,13 @@ export function useBubble({ playing, speed, runId }: { playing: boolean; speed: 
 
   const commit = useCallback(() => {
     const D = r.current.disc
-    setState({ ...D, items: D.items.map((i) => ({ ...i })) })
+    setState({
+      ...D,
+      messages: D.messages.map((m) => ({
+        ...m,
+        blocks: m.blocks.map((b) => (b.kind === 'acts' ? { ...b, acts: b.acts.map((a) => ({ ...a })) } : b)),
+      })),
+    })
   }, [])
 
   const clearTimers = () => { timers.current.forEach((t) => window.clearTimeout(t)); timers.current = [] }
@@ -70,61 +82,48 @@ export function useBubble({ playing, speed, runId }: { playing: boolean; speed: 
   }, [playing, speed, runId, commit])
 
   const api = {
-    /** 用户真的发了一条：先挂上「发送中」，再转成已发送 */
     send: useCallback((text: string) => {
       const t = text.trim(); if (!t) return
       const D = r.current.disc
       r.current.mode = 'live'
-      const id = nid('u')
-      D.items = [...D.items, { kind: 'msg', id, from: 'me', text: t, time: clock(), state: 'sending', t: 0 }]
+      D.messages = [...D.messages, { id: nid('u'), from: 'me', blocks: [{ kind: 'p', text: t }], time: clock(), streaming: -1, done: true }]
       D.typed = ''
+      D.typing = true
       commit()
+
+      const id = nid('m')
+      const c = CANNED[ci++ % CANNED.length]
       timers.current.push(window.setTimeout(() => {
-        const m = r.current.disc.items.find((x) => x.id === id) as Msg | undefined
-        if (m) m.state = 'sent'
-        r.current.disc.typing = true
+        const D2 = r.current.disc
+        D2.typing = false
+        D2.messages = [...D2.messages, { id, from: 'agent', blocks: [], time: clock(), streaming: -1, done: false }]
         commit()
-      }, 500))
-
-      const mid = nid('m')
-      const reply = CANNED[ci++ % CANNED.length]
+      }, 1100))
+      c.blocks.forEach((b, i) => {
+        timers.current.push(window.setTimeout(() => {
+          const m = r.current.disc.messages.find((x) => x.id === id)
+          if (!m) return
+          m.blocks = [...m.blocks, b]
+          m.streaming = i
+          commit()
+        }, 1500 + i * 700))
+      })
       timers.current.push(window.setTimeout(() => {
-        r.current.disc.typing = false
-        r.current.disc.items = [...r.current.disc.items, { kind: 'msg', id: mid, from: 'agent', text: reply, time: clock(), state: 'sent', t: 0 }]
+        const m = r.current.disc.messages.find((x) => x.id === id)
+        if (m) { m.streaming = -1; m.done = true }
         commit()
-      }, 2200))
+      }, 1500 + c.blocks.length * 700 + 300))
     }, [commit]),
 
-    /** 撤回 */
-    recall: useCallback((id: string) => {
-      const D = r.current.disc
-      const i = D.items.findIndex((x) => x.id === id)
-      if (i < 0) return
-      const m = D.items[i] as Msg
-      D.items = D.items.map((x, j) => (j === i
-        ? ({ kind: 'system', id: 'r' + id, text: (m.from === 'me' ? '你' : '对方') + '撤回了一条消息', time: m.time, t: 0 } as Item)
-        : x))
+    /** 点一下过程，把某条 Agent 消息里的步骤条收起来 */
+    foldActs: useCallback((id: string, bi: number) => {
+      const m = r.current.disc.messages.find((x) => x.id === id)
+      const b = m?.blocks[bi]
+      if (b && b.kind === 'acts') { b.acts = b.acts.map((a) => ({ ...a })) }
       commit()
     }, [commit]),
 
-    /** 重新生成：把最后一条 Agent 消息换掉 */
-    regen: useCallback((id: string) => {
-      const D = r.current.disc
-      const m = D.items.find((x) => x.id === id) as Msg | undefined
-      if (!m) return
-      m.text = '（重新生成）' + (m.text ?? '')
-      commit()
-    }, [commit]),
-
-    retry: useCallback((id: string) => {
-      const m = r.current.disc.items.find((x) => x.id === id) as Msg | undefined
-      if (!m) return
-      m.state = 'sending'
-      commit()
-      timers.current.push(window.setTimeout(() => { m.state = 'sent'; commit() }, 900))
-    }, [commit]),
-
-    newChat: useCallback(() => {
+    reset: useCallback(() => {
       clearTimers()
       r.current = { elapsed: 0, idx: 0, typing: null, typedLen: 0, disc: fresh(), mode: 'live' }
       setState(r.current.disc)
@@ -134,30 +133,35 @@ export function useBubble({ playing, speed, runId }: { playing: boolean; speed: 
     setTyped: useCallback((v: string) => { r.current.disc.typed = v; commit() }, [commit]),
   }
 
-  return { state, api, chats: CHATS }
+  return { state, api }
 }
 
 function applyBeat(S: { elapsed: number; typing: any; typedLen: number; disc: B11State }, b: Beat): boolean {
   const D = S.disc
-  const push = (m: Msg) => { D.items = [...D.items, m] }
+  const msg = (id: string) => D.messages.find((x) => x.id === id)
+
   switch (b.op) {
     case 'type': S.typing = { text: b.text, dur: b.dur, t0: S.elapsed }; S.typedLen = 0; D.typed = ''; return false
     case 'send':
       S.typing = null
-      push({ kind: 'msg', id: b.id, from: b.from, text: b.text ?? (D.typed || DEFAULT_ASK), card: b.card, time: b.time, state: 'sent', t: S.elapsed })
+      D.messages = [...D.messages, { id: b.id, from: 'me', blocks: [{ kind: 'p', text: b.text }], time: b.time, streaming: -1, done: true }]
       D.typed = ''
       return false
     case 'recv':
-      push({ kind: 'msg', id: b.id, from: b.from, text: b.text, card: b.card, time: b.time, state: 'sent', t: S.elapsed })
+      D.messages = [...D.messages, { id: b.id, from: 'agent', blocks: b.blocks, time: b.time, streaming: -1, done: true }]
       return false
-    case 'sys':
-      D.items = [...D.items, { kind: 'system', id: b.id, text: b.text, time: b.time, t: S.elapsed }]
-      return false
-    case 'typed': {
-      const m = D.items.find((x) => x.id === b.id) as Msg | undefined
-      if (m) m.state = b.state
+    case 'push': { const m = msg(b.id); if (m) m.blocks = [...m.blocks, b.block]; return false }
+    case 'stream': { const m = msg(b.id); if (m) m.streaming = b.index; return false }
+    case 'act': {
+      const m = msg(b.id)
+      const blk = m?.blocks[b.bi]
+      if (blk && blk.kind === 'acts' && blk.acts[b.ai]) {
+        blk.acts[b.ai].state = b.state
+        if (b.note) blk.acts[b.ai].note = b.note
+      }
       return false
     }
+    case 'done': { const m = msg(b.id); if (m) { m.streaming = -1; m.done = true } return false }
     case 'typing': D.typing = b.on; return false
     case 'end': return true
   }
