@@ -1,0 +1,177 @@
+/* A8 · Ledger —— 中央阅读运河 + 页边注
+   ─────────────────────────────────────────────────────────
+   骨架取自学术排版的页边注（Tufte sidenote）：正文占中间窄窄一列，
+   出处卡片浮在正文右侧的页边空白处，跟引用它的那一段齐平。
+   和「左边正文右边固定栏」的差别就在「齐平」这两个字 ——
+   眼睛不用离开正在读的那一行。
+   衬线正文 17px / 行高 1.9，全站只有一个颜色（深青绿），
+   而且它只属于一件事：被验证过、能查到底的出处。 */
+
+.lg8 {
+  --lg8-bg: #fbf9f5;
+  --lg8-line: #e7e3da;
+  --lg8-line-2: #d8d3c8;
+  --lg8-t1: #23201b;
+  --lg8-t2: #55504a;
+  --lg8-t3: #8b857c;
+  --lg8-accent: #0f6e56;
+  --lg8-serif: 'Source Serif 4 Variable', Georgia, 'Songti SC', serif;
+  --lg8-mono: 'Geist Mono Variable', ui-monospace, SFMono-Regular, monospace;
+
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  background: var(--lg8-bg);
+  color: var(--lg8-t1);
+  font-family: var(--lg8-serif);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── 顶栏：问题本身（左缘与正文列对齐） ───────────────── */
+.lg8-top {
+  flex: none;
+  padding: 22px 24px 16px;
+  border-bottom: 1px solid var(--lg8-line);
+}
+.lg8-q {
+  max-width: 926px; margin: 0 auto;
+  font-size: 23px; font-weight: 400; line-height: 1.42; letter-spacing: -0.012em;
+}
+.lg8-meta {
+  max-width: 926px; margin: 8px auto 0;
+  display: flex; align-items: center; gap: 7px;
+  font-family: var(--lg8-mono); font-size: 11.5px; color: var(--lg8-t3);
+}
+.lg8-m-ok { color: var(--lg8-accent); }
+
+/* ── 正文 + 页边注：两列网格，天然齐平 ────────────────── */
+.lg8-body { flex: 1; min-height: 0; overflow-y: auto; }
+.lg8-doc {
+  display: grid;
+  grid-template-columns: minmax(0, 660px) 232px;
+  gap: 0 34px;
+  justify-content: center;
+  padding: 30px 24px 44px;
+}
+
+.lg8-p {
+  margin: 0 0 26px;
+  font-size: 17px; line-height: 1.9; color: var(--lg8-t1);
+  animation: lg8-in 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes lg8-in { from { opacity: 0; transform: translateY(5px); } }
+
+/* 有分歧的那一段：不替它掩饰，也不给它第二个颜色 */
+.lg8-p[data-warn='1'] {
+  padding-left: 17px;
+  border-left: 2px solid var(--lg8-line-2);
+  color: var(--lg8-t2);
+}
+
+.lg8-cite {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 15px; height: 15px; margin: 0 1px;
+  padding: 0 3px;
+  vertical-align: baseline; transform: translateY(-4px);
+  background: transparent; border: 0; border-radius: 3px;
+  font-family: var(--lg8-mono); font-size: 10px; font-weight: 500;
+  color: var(--lg8-accent); cursor: pointer;
+  transition: background-color 0.14s ease, color 0.14s ease;
+}
+.lg8-cite:hover, .lg8-cite[data-on='1'] {
+  background: rgba(15, 110, 86, 0.12);
+  color: #0a4f3e;
+}
+
+/* 页边注 */
+.lg8-side { padding-top: 3px; display: flex; flex-direction: column; gap: 8px; }
+.lg8-note-c {
+  display: flex; align-items: flex-start; gap: 7px;
+  padding: 7px 0 7px 10px;
+  border-left: 2px solid var(--lg8-line-2);
+  font-family: var(--lg8-mono); font-size: 11px; line-height: 1.55;
+  color: var(--lg8-t3);
+  cursor: default;
+  transition: border-color 0.16s ease, background-color 0.16s ease, color 0.16s ease;
+}
+.lg8-note-c[data-s='ok'] { border-left-color: rgba(15, 110, 86, 0.42); }
+.lg8-note-c[data-on='1'] {
+  border-left-color: var(--lg8-accent);
+  background: rgba(15, 110, 86, 0.06);
+  color: var(--lg8-t2);
+}
+.lg8-nc-n { flex: none; color: var(--lg8-accent); }
+.lg8-nc-b { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.lg8-nc-t { color: inherit; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lg8-nc-d { color: #a49e94; font-size: 10.5px; }
+.lg8-nc-s { flex: none; display: flex; align-items: center; color: var(--lg8-accent); font-size: 10px; }
+.lg8-spin { animation: lg8-spin 1s linear infinite; }
+@keyframes lg8-spin { to { transform: rotate(360deg); } }
+
+/* 追问续在正文下面，不是另开一轮 */
+.lg8-fu {
+  grid-column: 1;
+  margin: 0 0 26px; padding: 14px 16px;
+  border: 1px solid var(--lg8-line); border-radius: 10px;
+  background: rgba(255, 255, 255, 0.6);
+  animation: lg8-in 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.lg8-fu-q { margin-bottom: 7px; font-size: 13px; color: var(--lg8-t3); font-family: var(--lg8-mono); }
+.lg8-fu-a { font-size: 15.5px; line-height: 1.85; color: var(--lg8-t2); }
+
+/* ── 底部追问 ─────────────────────────────────────────── */
+.lg8-dock {
+  flex: none;
+  display: flex; flex-direction: column; align-items: center; gap: 7px;
+  padding: 13px 24px 16px;
+  border-top: 1px solid var(--lg8-line);
+  background: rgba(255, 255, 255, 0.5);
+}
+.lg8-composer {
+  display: flex; align-items: center; gap: 8px;
+  width: 100%; max-width: 660px;
+  padding: 5px 5px 5px 16px;
+  border: 1px solid var(--lg8-line-2); border-radius: 999px;
+  background: #fff;
+  transition: border-color 0.16s ease;
+}
+.lg8-composer:focus-within { border-color: rgba(15, 110, 86, 0.45); }
+.lg8-composer input {
+  flex: 1; min-width: 0; height: 30px;
+  background: transparent; border: 0; outline: none;
+  font-family: var(--lg8-serif); font-size: 14.5px; color: var(--lg8-t1);
+}
+.lg8-composer input::placeholder { color: #aba598; }
+.lg8-composer button {
+  flex: none;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px; border-radius: 999px;
+  background: rgba(15, 110, 86, 0.1); border: 0;
+  color: var(--lg8-accent); cursor: pointer;
+  transition: background-color 0.14s ease;
+}
+.lg8-composer button:disabled { opacity: 0.35; cursor: default; background: transparent; }
+.lg8-composer button:not(:disabled):hover { background: rgba(15, 110, 86, 0.2); }
+.lg8-note {
+  margin: 0; max-width: 660px; width: 100%;
+  font-family: var(--lg8-mono); font-size: 11px; color: var(--lg8-t3);
+}
+
+/* ── 响应式 / 降低动效 ────────────────────────────────── */
+@media (max-width: 940px) {
+  .lg8-doc { grid-template-columns: minmax(0, 1fr); gap: 0; padding: 24px 20px 36px; }
+  .lg8-side { padding: 0 0 22px; }
+  .lg8-note-c { max-width: 460px; }
+  .lg8-q { font-size: 20px; }
+  .lg8-p { font-size: 16.5px; }
+}
+@media (max-width: 560px) {
+  .lg8-top, .lg8-dock { padding-left: 16px; padding-right: 16px; }
+  .lg8-doc { padding: 20px 16px 30px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lg8-p, .lg8-fu { animation: none; }
+  .lg8-spin { animation: none; }
+}
