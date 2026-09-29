@@ -39,6 +39,7 @@ export const NAV: NavItem[] = [
   { no: '009', title: 'Workbench', route: '/009' },
   { no: '010', title: 'Home', route: '/010' },
   { no: '011', title: 'Bubble', route: '/011' },
+  { no: '012', title: 'The Plan', route: '/012' },
 ]
 
 export const ENTRIES: Entry[] = [
@@ -156,6 +157,16 @@ export const ENTRIES: Entry[] = [
     status: 'live',
     variants: [
       { id: 'a', name: 'Bubble', tag: '头像 · 昵称 · 气泡 · 时间', bg: '#ffffff', fg: '#1a1a1a', accent: '#0e8a5f', href: '/011' },
+    ],
+  },
+  {
+    no: '012',
+    slug: '/012',
+    title: 'The Plan',
+    question: 'Agent 已经开干了，你才发现它理解错了，除了打断重来还能怎么办？',
+    status: 'live',
+    variants: [
+      { id: 'a', name: 'The Plan', tag: '活的计划 · 改一步看涟漪', bg: '#f7f8f9', fg: '#14171a', accent: '#2f4bb8', href: '/012' },
     ],
   },
   { no: '—', slug: '/', title: '…', question: '下一个想法。', status: 'planned' },

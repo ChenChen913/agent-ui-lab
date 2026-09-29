@@ -320,6 +320,39 @@ function BubblePv() {
   )
 }
 
+/** 012 · 计划：一条竖向轨道，改一步下游亮成琥珀 */
+function PlanPv() {
+  return (
+    <Box bg="#f7f8f9">
+      <rect x="0" y="0" width={W} height="26" fill="#f7f8f9" />
+      <rect x="0" y="26" width={W} height="1" fill="#e3e6ea" />
+      <rect x="18" y="11" width="86" height="4" rx="2" fill="#4a5058" />
+      <rect x="280" y="11" width="22" height="4" rx="2" fill="#aeb4ba" />
+      <rect x="18" y="38" width="168" height="4" rx="2" fill="#868e96" />
+      <rect x="43" y="56" width="1.5" height="96" fill="#e3e6ea" />
+      <circle cx="44" cy="66" r="9" fill="#2f7d5c" />
+      <path d="M40 66 l3 3 l5 -5.5" stroke="#ffffff" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      <rect x="64" y="58" width="72" height="5" rx="2.5" fill="#8b9299" />
+      <rect x="64" y="70" width="118" height="3.5" rx="1.75" fill="#c2c8ce" />
+      <rect x="64" y="80" width="96" height="11" rx="4" fill="#f2f8f5" stroke="#dcebe3" />
+      <rect x="71" y="84" width="82" height="3.5" rx="1.75" fill="#7aa892" />
+      <circle cx="44" cy="106" r="9" fill="#ffffff" stroke="#b8791a" strokeWidth="1.6" />
+      <rect x="40.5" y="104" width="7" height="4" rx="1" fill="#b8791a" />
+      <rect x="64" y="98" width="88" height="5" rx="2.5" fill="#b8791a" />
+      <rect x="64" y="110" width="140" height="3.5" rx="1.75" fill="#c2c8ce" />
+      <rect x="64" y="121" width="186" height="30" rx="7" fill="#fdf8ee" stroke="#f0e2c6" />
+      <rect x="74" y="129" width="150" height="3.5" rx="1.75" fill="#c9ab6d" />
+      <rect x="74" y="138" width="40" height="9" rx="3.5" fill="#ffffff" stroke="#e3d4b4" />
+      <rect x="119" y="138" width="34" height="9" rx="3.5" fill="#ffffff" stroke="#e3d4b4" />
+      <circle cx="44" cy="140" r="9" fill="#ffffff" stroke="#e3e6ea" strokeWidth="1.6" />
+      <rect x="41" y="138.5" width="6" height="3.5" rx="1" fill="#c2c8ce" />
+      <rect x="0" y="152" width={W} height="1" fill="#e3e6ea" />
+      <rect x="18" y="156" width="46" height="12" rx="4" fill="none" stroke="#e3e6ea" />
+      <rect x="260" y="157" width="42" height="10" rx="4" fill="none" stroke="#e3e6ea" />
+    </Box>
+  )
+}
+
 export const PREVIEWS: Record<string, (p: PreviewProps) => JSX.Element> = {
   '001': Bench,
   '002': OneLine,
@@ -332,4 +365,5 @@ export const PREVIEWS: Record<string, (p: PreviewProps) => JSX.Element> = {
   '009': WorkbenchPv,
   '010': HomePv,
   '011': BubblePv,
+  '012': PlanPv,
 }
