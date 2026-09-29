@@ -1,0 +1,7 @@
+docs: 同步 013 到 015 的文档与计数
+
+实验从 12 个变成 15 个，两份 README 与 package.json 同步，中英逐项对齐。
+ROADMAP 里三个候选方案标记为已实现。
+
+顺带删掉 .c2.txt 与 .c3.txt —— 那是上一次提交用来传 commit message 的
+临时文件，被 git add -A 一起带进去了，不该在仓库里。

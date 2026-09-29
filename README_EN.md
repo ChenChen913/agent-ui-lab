@@ -4,7 +4,7 @@
   <a href="./README.md">简体中文</a> | <b>English</b>
 </p>
 
-Twelve standalone interface experiments on how an AI agent's work should look.
+Fifteen standalone interface experiments on how an AI agent's work should look.
 
 ![The gallery page with all ten experiments](docs/gallery.png)
 
@@ -12,7 +12,7 @@ Twelve standalone interface experiments on how an AI agent's work should look.
 
 - [Why this project](#why-this-project)
 - [Quick start](#quick-start)
-- [The twelve experiments](#the-twelve-experiments)
+- [The fifteen experiments](#the-fifteen-experiments)
 - [Usage](#usage)
 - [Configuration](#configuration)
 - [Project structure](#project-structure)
@@ -52,7 +52,7 @@ pnpm dev
 
 Open the address printed in the terminal (http://localhost:5173 by default). You land on the gallery page.
 
-## The twelve experiments
+## The fifteen experiments
 
 | No. | Name | The question it answers |
 |---|---|---|
@@ -68,8 +68,11 @@ Open the address printed in the terminal (http://localhost:5173 by default). You
 | 010 | Home | What if the home screen were the product itself, with the input floating in the center? |
 | 011 | Bubble | What if the agent looked like the chat app you already know by heart? |
 | 012 | The Plan | The agent already started, and you realise it misunderstood. What now, besides killing it? |
+| 013 | Weight | Should one screen give the same amount of process for one sentence and for twenty projects? |
+| 014 | Settle | Are the process and the result two things, or two stages of one thing? |
+| 015 | Return | The user was away for 20 minutes. What should they see when they come back? |
 
-Experiments 008 through 012 open on the empty state a user sees first. Press play in the top right to run the demo.
+Experiments 008 through 015 open on the empty state a user sees first. Press play in the top right to run the demo.
 
 Each experiment folder holds a `NOTES.md` recording what it explores, what it found, and what to try next.
 
@@ -80,7 +83,7 @@ The gallery lives at `/`. Every experiment has its own route:
 ```
 /            Gallery, the entry point for all ten
 /001/a      001 has three skins at /001/a, /001/b and /001/c
-/002 … /012 The rest
+/002 … /015 The rest
 ```
 
 Each experiment page has a control bar in the top right: back to the gallery, previous and next experiment, light and dark toggle, play and pause, restart, and speed (0.5x, 1x, 2x).
