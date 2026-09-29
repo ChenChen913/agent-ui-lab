@@ -12,7 +12,7 @@ Fifteen standalone interface experiments on how an AI agent's work should look.
 
 - [Why this project](#why-this-project)
 - [Quick start](#quick-start)
-- [The fifteen experiments](#the-fifteen-experiments)
+- [The two lines](#the-two-lines)
 - [Usage](#usage)
 - [Configuration](#configuration)
 - [Project structure](#project-structure)
@@ -52,7 +52,15 @@ pnpm dev
 
 Open the address printed in the terminal (http://localhost:5173 by default). You land on the gallery page.
 
-## The fifteen experiments
+## The two lines
+
+The project has two lines, and **every template belongs to exactly one**.
+
+### A · Agent process visualisation
+
+> When an agent is working, how do you let the user understand it?
+
+Conventional products compress an agent's work into one spinner. This line asks what else that whole process could be. **The six templates are six deliberately un-unified visual languages.**
 
 | No. | Name | The question it answers |
 |---|---|---|
@@ -62,6 +70,15 @@ Open the address printed in the terminal (http://localhost:5173 by default). You
 | 004 | Chronicle | What if an agent's work were shown as a timeline instead of a chat log? |
 | 005 | Desktop | What if an agent were not a web page but something that lives on your desktop? |
 | 006 | Spatial | What if an agent's state were expressed through spatial relationships instead of a list? |
+
+### B · Agent product UI
+
+> How should a person actually use an agent?
+
+Moving from "what is the agent doing" to "how does a person work with it". This line covers the product entry point, task creation, commission and negotiation, artifacts, and the ongoing interaction between a person and an agent.
+
+| No. | Name | The question it answers |
+|---|---|---|
 | 007 | The Brief | What if the interface were about the commission, not the chat log? |
 | 008 | Baseline | What should the layer a user sees right after signing in actually look like? |
 | 009 | Workbench | What if the output were not the last message but an artifact sitting next to the chat? |
@@ -71,10 +88,6 @@ Open the address printed in the terminal (http://localhost:5173 by default). You
 | 013 | Weight | Should one screen give the same amount of process for one sentence and for twenty projects? |
 | 014 | Settle | Are the process and the result two things, or two stages of one thing? |
 | 015 | Return | The user was away for 20 minutes. What should they see when they come back? |
-
-Experiments 008 through 015 open on the empty state a user sees first. Press play in the top right to run the demo.
-
-Each experiment folder holds a `NOTES.md` recording what it explores, what it found, and what to try next.
 
 ## Usage
 

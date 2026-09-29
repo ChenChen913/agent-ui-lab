@@ -1,9 +1,18 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ENTRIES, HERO, LAB_SUB, type Entry } from './registry'
+import { ENTRIES, HERO, LAB_SUB, LINES, type Entry } from './registry'
 import { PREVIEWS, type PreviewProps } from './previews'
 import ThemeToggle from './ThemeToggle'
 
+/**
+ * 总页面。
+ *
+ * 项目有两条主线，主页就分两栏，一栏一条，绝不混着排：
+ *   A · Agent 工作过程可视化 —— Agent 干活的时候，怎么让用户看懂
+ *   B · Agent 主界面         —— 用户应该如何使用 Agent
+ *
+ * 每个模板只属于一条线，卡片网格在每栏里重新开始。
+ */
 export default function LabIndex() {
   const live = ENTRIES.filter((e) => e.status === 'live' && PREVIEWS[e.no])
   const planned = ENTRIES.filter((e) => e.status === 'planned')
@@ -15,35 +24,43 @@ export default function LabIndex() {
           <ThemeToggle />
         </div>
 
-        {/* ── 首屏：居中的大标题 ───────────────────────────── */}
-        <header className="relative pb-14 pt-6 text-center">
+        <header className="relative pb-12 pt-6 text-center">
           <div className="lab-hero-glow" />
           <div className="relative">
             <div className="mb-7 font-mono text-[12px] tracking-[0.18em] lab-t3">
-              AGENT UI LAB · {live.length} 个实验
+              AGENT UI LAB · 两条主线 · {live.length} 个模板
             </div>
-
-            <h1 className="lab-hero lab-rise mx-auto text-[38px] font-medium leading-[1.16] tracking-[-0.035em] sm:text-[52px] lg:text-[64px]">
+            <h1 className="lab-hero lab-rise mx-auto text-balance text-[38px] font-medium leading-[1.16] tracking-[-0.035em] sm:text-[52px] lg:text-[64px]">
               {HERO.line1}
               <br />
               {HERO.line2}
             </h1>
-
-            <p
-              className="lab-rise mx-auto mt-8 max-w-2xl text-[14.5px] leading-[1.95] lab-t2"
-              style={{ animationDelay: '90ms' }}
-            >
+            <p className="lab-rise mx-auto mt-8 max-w-2xl text-[14.5px] leading-[1.95] lab-t2" style={{ animationDelay: '90ms' }}>
               {LAB_SUB}
             </p>
           </div>
         </header>
 
-        {/* ── 六个实验 ─────────────────────────────────────── */}
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {live.map((e) => <Card key={e.no} e={e} />)}
-        </div>
+        {LINES.map((line) => {
+          const items = live.filter((e) => e.line === line.id)
+          return (
+            <section key={line.id} className="mb-16">
+              <div className="lab-lh">
+                <span className="lab-lh-badge">{line.id.toUpperCase()}</span>
+                <h2 className="lab-lh-t">{line.name}</h2>
+                <span className="lab-lh-n">{items.length} 个模板</span>
+              </div>
+              <p className="lab-lh-q">{line.question}</p>
+              <p className="lab-lh-d">{line.desc}</p>
 
-        <section className="mt-14 border-t pt-7 lab-line">
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                {items.map((e) => <Card key={e.no} e={e} />)}
+              </div>
+            </section>
+          )
+        })}
+
+        <section className="mt-4 border-t pt-7 lab-line">
           <div className="mb-4 font-mono text-[12px] tracking-[0.16em] lab-t3">待做</div>
           <ul className="flex flex-col gap-2.5">
             {planned.map((e, i) => (
@@ -66,9 +83,8 @@ export default function LabIndex() {
 }
 
 /**
- * 六张卡片结构完全一致：
+ * 每个模板一张卡，结构完全一致：
  *   预览图（带变体切换器） / 编号 + 标题 / 一句话问题 / 分隔线 / 标签 + 进入
- * 不论有几个变体，底部永远是「左边一个标签，右边一个进入」。
  */
 function Card({ e }: { e: Entry }) {
   const P = PREVIEWS[e.no]
@@ -78,14 +94,11 @@ function Card({ e }: { e: Entry }) {
   const multi = vs.length > 1
 
   const to = v?.href ?? (v ? e.slug + '/' + v.id : e.slug)
-  const previewProps: PreviewProps = v
-    ? { bg: v.bg, fg: v.fg, accent: v.accent, bg2: v.bg2 }
-    : {}
+  const previewProps: PreviewProps = v ? { bg: v.bg, fg: v.fg, accent: v.accent, bg2: v.bg2 } : {}
   const label = v ? (multi ? v.name + ' · ' + v.tag : v.tag) : ''
 
   return (
     <article className="group relative flex flex-col overflow-hidden rounded-xl border lab-line lab-card lab-hover">
-      {/* 整张卡就是一个入口；变体切换器浮在它上面 */}
       <Link to={to} className="absolute inset-0 z-10" aria-label={'进入 ' + e.title} />
 
       <div className="relative h-[150px] overflow-hidden border-b lab-line-soft">
@@ -93,24 +106,14 @@ function Card({ e }: { e: Entry }) {
         {multi ? (
           <div
             className="absolute right-2.5 top-2.5 z-20 flex items-center gap-0.5 rounded-lg border p-0.5 lab-line"
-            style={{
-              background: 'color-mix(in srgb, var(--lab-card) 84%, transparent)',
-              backdropFilter: 'blur(8px)',
-            }}
+            style={{ background: 'color-mix(in srgb, var(--lab-card) 84%, transparent)', backdropFilter: 'blur(8px)' }}
           >
             {vs.map((x, i) => {
               const on = i === sel
               return (
                 <button
-                  key={x.id}
-                  onClick={() => setSel(i)}
-                  title={x.name}
-                  aria-label={x.name}
-                  aria-pressed={on}
-                  className={
-                    'h-6 w-6 rounded-md font-mono text-[11px] transition-colors ' +
-                    (on ? 'lab-t1' : 'lab-t3 lab-hover-plain')
-                  }
+                  key={x.id} onClick={() => setSel(i)} title={x.name} aria-label={x.name} aria-pressed={on}
+                  className={'h-6 w-6 rounded-md font-mono text-[11px] transition-colors ' + (on ? 'lab-t1' : 'lab-t3 lab-hover-plain')}
                   style={on ? { background: 'var(--lab-accent-soft)', color: 'var(--lab-accent)' } : undefined}
                 >
                   {x.id.toUpperCase()}
