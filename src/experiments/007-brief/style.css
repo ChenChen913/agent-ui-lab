@@ -1,0 +1,351 @@
+/* ─────────────────────────────────────────────────────────────
+   007 · The Brief —— 「夜里的公文」
+   深色底上摊着一份亮色的文件。文件是主角，背景退到看不见。
+   没有卡片、没有圆角、没有阴影：这是文件，不是控件。
+   ───────────────────────────────────────────────────────────── */
+.bp {
+  --bp-bg: #131211;
+  --bp-line: #383430;
+  --bp-line-2: #201e1c;
+  --bp-ink: #ece7dd;
+  --bp-ink-2: #9a938a;
+  --bp-ink-3: #8c857b;
+  --bp-seal: #c8623f;
+  --bp-done: #7fa07a;
+
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bp-bg);
+  color: var(--bp-ink);
+  font-family: 'Source Serif 4 Variable', Georgia, 'Songti SC', serif;
+}
+
+.bp-doc {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 26px 44px 22px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--bp-line) transparent;
+}
+.bp-doc::-webkit-scrollbar { width: 8px; }
+.bp-doc::-webkit-scrollbar-thumb { background: var(--bp-line); }
+
+/* ── 抬头 ─────────────────────────────────────────────── */
+.bp-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-bottom: 13px;
+  border-bottom: 1px solid var(--bp-line);
+  font-family: 'Geist Mono Variable', ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--bp-ink-3);
+}
+.bp-head-r { display: flex; align-items: baseline; gap: 14px; }
+.bp-head-r b { font-weight: 400; color: var(--bp-ink-2); }
+.bp-head-r em { font-style: normal; font-variant-numeric: tabular-nums; }
+
+/* ── 条款：左边距一条竖线，编号挂在线上 ─────────────────── */
+.bp-clauses { position: relative; padding: 22px 0 0 92px; }
+.bp-clauses::before {
+  content: '';
+  position: absolute;
+  left: 62px;
+  top: 22px;
+  bottom: 0;
+  width: 1px;
+  background: var(--bp-line);
+}
+
+.bp-clause {
+  position: relative;
+  padding-bottom: 26px;
+  animation: bp-in 0.34s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes bp-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.bp-no {
+  position: absolute;
+  left: -92px;
+  width: 52px;
+  text-align: right;
+  font-family: 'Geist Mono Variable', ui-monospace, monospace;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--bp-ink-3);
+  transition: color 0.3s ease;
+}
+
+.bp-title {
+  font-family: 'Geist Mono Variable', ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--bp-ink-3);
+  margin-bottom: 8px;
+}
+
+/* 条款正文：这是要读的东西，所以给到 19px */
+.bp-text {
+  margin: 0;
+  font-size: 19px;
+  line-height: 1.6;
+  letter-spacing: -0.005em;
+  color: var(--bp-ink);
+  transition: color 0.3s ease;
+}
+
+/* ── 状态行：一条横线 + 一个记号 ───────────────────────── */
+.bp-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 13px;
+  font-family: 'Geist Mono Variable', ui-monospace, monospace;
+  font-size: 11.5px;
+  letter-spacing: 0.06em;
+  color: var(--bp-ink-3);
+}
+.bp-meta.is-toggle { cursor: pointer; }
+.bp-meta.is-toggle:hover .bp-rule { background: var(--bp-ink-3); }
+.bp-rule { flex: 1; height: 1px; background: var(--bp-line); transition: background 0.2s ease; }
+.bp-mark { display: flex; align-items: center; min-width: 12px; }
+.bp-check path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 16;
+  stroke-dashoffset: 0;
+}
+.bp-check { width: 13px; height: 13px; display: block; }
+.bp-note { color: var(--bp-ink-3); }
+
+/* ── 条款状态 ─────────────────────────────────────────── */
+.bp-clause[data-state='done'] .bp-text { color: var(--bp-ink-2); }
+.bp-clause[data-state='done'] .bp-mark { color: var(--bp-done); }
+.bp-clause[data-state='done'] .bp-check path { animation: bp-draw 0.23s ease-out both; }
+@keyframes bp-draw { from { stroke-dashoffset: 16; } to { stroke-dashoffset: 0; } }
+
+.bp-clause[data-state='working'] .bp-mark { color: var(--bp-ink); animation: bp-pulse 1.4s ease-in-out infinite; }
+.bp-clause[data-state='working'] .bp-status { color: var(--bp-ink-2); }
+@keyframes bp-pulse { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
+
+.bp-clause[data-state='asking'] .bp-no,
+.bp-clause[data-state='asking'] .bp-mark,
+.bp-clause[data-state='asking'] .bp-status { color: var(--bp-seal); }
+.bp-clause[data-state='asking'] .bp-rule { background: color-mix(in srgb, var(--bp-seal) 42%, transparent); }
+
+.bp-clause[data-state='unmet'] .bp-text,
+.bp-clause[data-state='unmet'] .bp-mark,
+.bp-clause[data-state='unmet'] .bp-note { color: var(--bp-seal); }
+.bp-clause[data-state='unmet'] .bp-rule { background: color-mix(in srgb, var(--bp-seal) 42%, transparent); }
+
+.bp-clause[data-state='error'] .bp-mark,
+.bp-clause[data-state='error'] .bp-note { color: var(--bp-seal); }
+
+/* ── 展开块：问题 / 兑现过程 ──────────────────────────── */
+.bp-block {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.bp-block[data-open='1'] { grid-template-rows: 1fr; }
+.bp-block-in { overflow: hidden; }
+
+.bp-q {
+  margin: 16px 0 12px;
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--bp-ink-2);
+}
+
+.bp-opts { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 4px; }
+.bp-opts button {
+  font: inherit;
+  font-size: 14px;
+  padding: 7px 15px;
+  background: transparent;
+  border: 1px solid var(--bp-line);
+  border-radius: 0;
+  color: var(--bp-ink);
+  cursor: pointer;
+  transition: border-color 0.18s ease, color 0.18s ease;
+}
+.bp-opts button:hover { border-color: var(--bp-seal); color: var(--bp-seal); }
+
+.bp-steps {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
+  font-family: 'Geist Mono Variable', ui-monospace, monospace;
+  font-size: 12px;
+}
+.bp-steps li {
+  display: flex;
+  gap: 10px;
+  padding: 5px 0;
+  color: var(--bp-ink-3);
+  transition: color 0.25s ease;
+}
+.bp-steps li[data-s='working'] { color: var(--bp-ink); }
+.bp-step-mark { width: 12px; flex: none; }
+
+.bp-again {
+  font: inherit;
+  font-family: 'Geist Mono Variable', ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  padding: 4px 10px;
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--bp-seal) 50%, transparent);
+  border-radius: 0;
+  color: var(--bp-seal);
+  cursor: pointer;
+  transition: background-color 0.18s ease;
+}
+.bp-again:hover { background: color-mix(in srgb, var(--bp-seal) 14%, transparent); }
+
+/* ── 印章 ─────────────────────────────────────────────── */
+.bp-stamp {
+  width: 70px;
+  height: 70px;
+  margin: 0 0 6px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  border: 1.5px solid var(--bp-seal);
+  border-radius: 3px;
+  color: var(--bp-seal);
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  opacity: 0;
+  transform: rotate(-6deg);
+}
+.bp-stamp em {
+  font-style: normal;
+  font-family: 'Geist Mono Variable', ui-monospace, monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  opacity: 0.7;
+}
+.bp[data-stage='done'] .bp-stamp { animation: bp-stamp 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.06s both; }
+@keyframes bp-stamp {
+  from { opacity: 0; transform: rotate(-14deg) scale(1.5); }
+  70%  { opacity: 1; transform: rotate(-5deg) scale(0.96); }
+  to   { opacity: 1; transform: rotate(-6deg) scale(1); }
+}
+
+/* ── 底部：一条输入线 ─────────────────────────────────── */
+.bp-foot {
+  flex: none;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 12px 44px 20px;
+  border-top: 1px solid var(--bp-line);
+}
+.bp-hint {
+  min-height: 15px;
+  margin-bottom: 9px;
+  font-family: 'Geist Mono Variable', ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--bp-seal);
+}
+.bp-bar { display: flex; align-items: center; gap: 14px; }
+
+.bp-ghost {
+  flex: none;
+  font: inherit;
+  font-family: 'Geist Mono Variable', ui-monospace, monospace;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  padding: 8px 13px;
+  background: transparent;
+  border: 1px solid var(--bp-line);
+  border-radius: 0;
+  color: var(--bp-ink-2);
+  cursor: pointer;
+  transition: border-color 0.18s ease, color 0.18s ease;
+}
+.bp-ghost:hover { border-color: var(--bp-ink-3); color: var(--bp-ink); }
+
+.bp-field {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--bp-line);
+  font-size: 16px;
+  cursor: text;
+  transition: border-color 0.2s ease;
+}
+.bp-field:hover { border-color: var(--bp-ink-3); }
+.bp-field[data-empty='1'] .bp-field-text { color: var(--bp-ink-3); }
+.bp-field-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bp-caret {
+  flex: none;
+  width: 1.5px;
+  height: 17px;
+  background: var(--bp-ink);
+  animation: bp-blink 1.05s steps(1, end) infinite;
+}
+@keyframes bp-blink { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
+
+.bp-go {
+  flex: none;
+  font: inherit;
+  font-size: 15px;
+  padding: 9px 20px;
+  background: var(--bp-seal);
+  border: 1px solid var(--bp-seal);
+  border-radius: 0;
+  color: #fff;
+  cursor: pointer;
+  transition: opacity 0.18s ease;
+}
+.bp-go:hover { opacity: 0.86; }
+
+.bp-input {
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 1px; height: 1px;
+  padding: 0; border: 0; opacity: 0;
+  pointer-events: none;
+  font: inherit;
+}
+
+@media (max-width: 720px) {
+  .bp-doc { padding: 22px 20px 20px; }
+  .bp-clauses { padding-left: 56px; }
+  .bp-clauses::before { left: 34px; }
+  .bp-no { left: -56px; width: 34px; font-size: 12px; }
+  .bp-text { font-size: 17px; }
+  .bp-foot { padding: 10px 20px 16px; }
+  .bp-stamp { width: 64px; height: 64px; font-size: 13px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bp-clause, .bp-check path, .bp-stamp { animation: none !important; }
+  .bp-clause { opacity: 1; }
+  .bp-stamp { opacity: 1; transform: rotate(-6deg); }
+  .bp-caret, .bp-clause[data-state='working'] .bp-mark { animation: none; }
+  .bp-block { transition: none; }
+}

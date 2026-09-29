@@ -10,6 +10,7 @@ import Terminal from './experiments/003-terminal'
 import Chronicle from './experiments/004-chronicle'
 import Desktop from './experiments/005-desktop'
 import Spatial from './experiments/006-spatial'
+import Brief from './experiments/007-brief'
 
 const BENCH: { id: string; name: string; Comp: (p: Ctl) => React.ReactElement }[] = [
   { id: 'a', name: 'A · 极简黑白', Comp: BenchA },
@@ -62,6 +63,11 @@ export default function App() {
         <Route
           path="/006"
           element={<Frame no="006" title="Spatial" render={(ctl) => <Spatial {...ctl} />} />}
+        />
+
+        <Route
+          path="/007"
+          element={<Frame no="007" title="The Brief" render={(ctl) => <Brief {...ctl} />} />}
         />
 
         <Route path="*" element={<Navigate to="/" replace />} />

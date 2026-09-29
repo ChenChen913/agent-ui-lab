@@ -34,6 +34,7 @@ export const NAV: NavItem[] = [
   { no: '004', title: 'Chronicle', route: '/004' },
   { no: '005', title: 'Desktop', route: '/005' },
   { no: '006', title: 'Spatial', route: '/006' },
+  { no: '007', title: 'The Brief', route: '/007' },
 ]
 
 export const ENTRIES: Entry[] = [
@@ -101,6 +102,16 @@ export const ENTRIES: Entry[] = [
     status: 'live',
     variants: [
       { id: 'a', name: 'Spatial', tag: '空间 / 景深 / 相机', bg: '#08090c', fg: '#e6e4df', accent: '#6ea8d8', href: '/006' },
+    ],
+  },
+  {
+    no: '007',
+    slug: '/007',
+    title: 'The Brief',
+    question: '如果界面的主角是「这份委托」，而不是聊天记录，会怎么样？',
+    status: 'live',
+    variants: [
+      { id: 'a', name: 'The Brief', tag: '条款 · 谈判 · 逐条兑现', bg: '#131211', fg: '#ece7dd', accent: '#c8623f', href: '/007' },
     ],
   },
   { no: '—', slug: '/', title: '…', question: '下一个想法。', status: 'planned' },
