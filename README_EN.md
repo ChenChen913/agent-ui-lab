@@ -2,11 +2,17 @@
 
 <p align="center">
   <a href="./README.md">简体中文</a> | <b>English</b>
+  <br><br>
+  <a href="https://chenchen913.github.io/agent-ui-lab/"><b>▶ Live demo</b></a>
+  &nbsp;·&nbsp;
+  <a href="https://github.com/ChenChen913/agent-ui-lab">Source</a>
 </p>
 
 Fifteen standalone interface experiments on how an AI agent's work should look.
 
-![The gallery page with all ten experiments](docs/gallery.png)
+**Live: <https://chenchen913.github.io/agent-ui-lab/>** — every push to `main` redeploys it. To run it locally, see [Quick start](#quick-start).
+
+![The gallery page with all fifteen templates](docs/gallery.png)
 
 ## Table of contents
 
@@ -31,15 +37,20 @@ This project starts from one line:
 
 > **Less architecture, more experiments. Less infrastructure, more interface. Less consistency, more divergence.**
 
-So there is no component library, no design system, no SDK, and no agent runtime here. Each of the ten experiments is a standalone interface with its own colors, type, and layout. They never import each other, and nothing gets abstracted for the sake of reuse. The one question that never changes:
+So there is no component library, no design system, no SDK, and no agent runtime here. Each of the fifteen templates is a standalone interface with its own colors, type, and layout. They never import each other, and nothing gets abstracted for the sake of reuse.
 
-> **When an agent is working, can the user tell what is going on?**
+The project has two lines, each answering one question:
 
-The project has two phases. Experiments 001 through 006 ask "how else can an agent's work be shown?" From 007 onward, the question becomes "if this were a real agent UI people actually use, what else could it look like?"
+> **A · Agent product UI — how should a person actually use an agent?**
+> **B · Agent process visualisation — when an agent is working, how do you let the user understand it?**
+
+The gallery is split by these two lines. Every template belongs to exactly one, and each line is numbered from 1.
 
 ## Quick start
 
-Requirements: Node.js 20 or newer, and pnpm.
+**The quickest way in is the live demo: <https://chenchen913.github.io/agent-ui-lab/>**
+
+To change the code locally, you need Node.js 20 or newer and pnpm.
 
 Tested on Node.js v24.21.0 and pnpm 11.7.0.
 
@@ -50,7 +61,7 @@ pnpm install
 pnpm dev
 ```
 
-Open the address printed in the terminal (http://localhost:5173 by default). You land on the gallery page.
+Open the address printed in the terminal (http://localhost:5273 by default). You land on the gallery page.
 
 ## The two lines
 
@@ -170,6 +181,7 @@ A: That is not blank, it is the empty state a user sees after signing in. Press 
 - Only the desktop layout is fully designed. Mobile is only handled well enough not to break
 - No test framework and no CI
 - The terminal in 003 implements only the few commands the demo needs (`clear`, Ctrl-C, and so on)
+- The live build uses hash routing, so a template URL looks like `https://chenchen913.github.io/agent-ui-lab/#/008`
 - Clauses in 007 cannot be edited in place, only rewritten by answering
 
 ## Contributing

@@ -2,11 +2,17 @@
 
 <p align="center">
   <b>简体中文</b> | <a href="./README_EN.md">English</a>
+  <br><br>
+  <a href="https://chenchen913.github.io/agent-ui-lab/"><b>▶ 在线访问</b></a>
+  &nbsp;·&nbsp;
+  <a href="https://github.com/ChenChen913/agent-ui-lab">源码</a>
 </p>
 
 Fifteen standalone interface experiments on how an AI agent's work should look.
 
-十个彼此独立的界面实验，研究 AI Agent 干活的样子。
+十五个彼此独立的界面模板，研究 AI Agent 的界面应该长什么样。
+
+**在线地址：<https://chenchen913.github.io/agent-ui-lab/>** —— 推到 main 会自动重新部署。想本地跑见[快速开始](#快速开始)。
 
 ![总页面](docs/gallery.png)
 
@@ -33,15 +39,20 @@ Fifteen standalone interface experiments on how an AI agent's work should look.
 
 > **少做架构，多做实验。少做基础设施，多做界面。少考虑统一，多考虑发散。**
 
-所以这里没有组件库，没有设计系统，没有 SDK，也没有 Agent 运行时。十个实验各自是一个独立的小界面，有自己的颜色、字体和排版，**互相不 import，也不为了复用而抽象**。唯一不变的问题是那一句：
+所以这里没有组件库，没有设计系统，没有 SDK，也没有 Agent 运行时。十五个模板各自是一个独立的小界面，有自己的颜色、字体和排版，**互相不 import，也不为了复用而抽象**。
 
-> **Agent 干活的过程，用户看得懂吗？**
+整个项目分两条主线，每条线在回答一个问题：
 
-项目分两个阶段。001 到 006 问的是「Agent 的工作过程还能怎么表达」；从 007 开始问的是「如果这是一个真正给人使用的 Agent UI，它还能长什么样」。
+> **A · Agent 主界面 —— 用户应该如何使用 Agent？**
+> **B · Agent 工作过程可视化 —— Agent 在干活的时候，怎么让用户看懂？**
+
+主页按这两条线分区，每个模板只属于一条，两条线各自从 1 开始编号。
 
 ## 快速开始
 
-前置要求：Node.js 20 以上、pnpm。
+**最省事的办法是直接打开线上版：<https://chenchen913.github.io/agent-ui-lab/>**
+
+想在本地改代码，前置要求是 Node.js 20 以上和 pnpm。
 
 实测环境是 Node.js v24.21.0 与 pnpm 11.7.0。
 
@@ -52,7 +63,7 @@ pnpm install
 pnpm dev
 ```
 
-打开终端里打印的地址（默认 http://localhost:5173 ），先看到的是总页面。
+打开终端里打印的地址（默认 http://localhost:5273 ），先看到的是总页面。
 
 ## 两条主线
 
@@ -173,6 +184,7 @@ A：那不是空白，是用户登录后看到的空状态。点右上角的播�
 - 项目没有配置测试框架，也没有 CI
 - 003 的终端只实现了演示需要的少数命令（`clear`、Ctrl-C 等）
 - 007 的条款不能就地编辑，只能通过回答来改写
+- 线上版用的是 hash 路由，所以子页面地址长这样：`https://chenchen913.github.io/agent-ui-lab/#/008`
 
 ## 如何贡献
 
