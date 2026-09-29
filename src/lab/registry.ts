@@ -1,7 +1,7 @@
 export interface Variant {
   id: string
   name: string
-  tag: string
+  tag: I18n
   /** 画廊预览色块 */
   bg: string
   fg: string
@@ -15,8 +15,8 @@ export interface Variant {
 export interface Entry {
   no: string
   slug: string
-  title: string
-  question: string
+  title: I18n
+  question: I18n
   status: 'live' | 'planned'
   /** 属于哪条主线 */
   line: Line
@@ -30,30 +30,40 @@ export interface Entry {
    主页按这两条线分区，每个模板只能属于一条。
    ───────────────────────────────────────────────────────────── */
 export type Line = 'a' | 'b'
+export type Lang = 'zh' | 'en'
+
+/** 界面上每一句要显示的话都写成两种语言 */
+export interface I18n { zh: string; en: string }
 
 export interface LineMeta {
   id: Line
   /** 分区标题 */
-  name: string
+  name: I18n
   /** 一句话：这条线在研究什么 */
-  question: string
+  question: I18n
   /** 两三句：这条线包含什么、不包含什么 */
-  desc: string
+  desc: I18n
 }
 
 /** 展示顺序：主界面在前，过程可视化在后 */
 export const LINES: LineMeta[] = [
   {
     id: 'a',
-    name: 'Agent 主界面',
-    question: '用户应该如何使用 Agent？',
-    desc: '从「Agent 正在干什么」转向「人怎么用它」。这一线研究的是产品入口、任务创建、委托与谈判、产物，以及人和 Agent 的持续交互。',
+    name: { zh: 'Agent 主界面', en: 'Agent product UI' },
+    question: { zh: '用户应该如何使用 Agent？', en: 'How should a person actually use an agent?' },
+    desc: {
+      zh: '从「Agent 正在干什么」转向「人怎么用它」。这一线研究的是产品入口、任务创建、委托与谈判、产物，以及人和 Agent 的持续交互。',
+      en: 'Moving from what the agent is doing to how a person works with it. This line covers the entry point, task creation, commission and negotiation, artifacts, and the ongoing interaction between a person and an agent.',
+    },
   },
   {
     id: 'b',
-    name: 'Agent 工作过程可视化',
-    question: 'Agent 在干活的时候，怎么让用户看懂？',
-    desc: '传统产品把 Agent 的工作压成一句 Loading。这一线探索的是：那整个过程除了聊天消息，还能怎么被表达出来。六个模板是六种完全不同的视觉语言，故意不统一。',
+    name: { zh: 'Agent 工作过程可视化', en: 'Agent process visualisation' },
+    question: { zh: 'Agent 在干活的时候，怎么让用户看懂？', en: 'When an agent is working, how do you let the user understand it?' },
+    desc: {
+      zh: '传统产品把 Agent 的工作压成一句 Loading。这一线探索的是：那整个过程除了聊天消息，还能怎么被表达出来。六个模板是六种完全不同的视觉语言，故意不统一。',
+      en: 'Conventional products compress an agent work into one spinner. This line asks what else that whole process could be. The six templates are six deliberately un-unified visual languages.',
+    },
   },
 ]
 
@@ -74,8 +84,26 @@ export function stampedNo(no: string): string {
 }
 
 /** 首屏主标题（分两行）与副标题 */
-export const HERO = { line1: 'Agent 的界面', line2: '不该只有一种' }
-export const LAB_SUB = '两条主线：过程怎么被看见，以及人怎么使用 Agent。十五个模板，各自独立。'
+export const HERO = {
+  line1: { zh: 'Agent 的界面', en: 'Agent interfaces' },
+  line2: { zh: '不该只有一种', en: 'need not look alike' },
+}
+export const LAB_SUB: I18n = {
+  zh: '两条主线：过程怎么被看见，以及人怎么使用 Agent。十五个模板，各自独立。',
+  en: 'Two lines: how the process becomes visible, and how a person works with an agent. Fifteen templates, each independent.',
+}
+
+/** 主页上那些零碎的界面文案 */
+export const UI: Record<string, I18n> = {
+  eyebrow: { zh: '两条主线 · 15 个模板', en: 'Two lines · 15 templates' },
+  count: { zh: '个模板', en: 'templates' },
+  enter: { zh: '进入', en: 'Open' },
+  planned: { zh: '待做', en: 'Planned' },
+  lab: { zh: '实验室', en: 'Lab' },
+  source: { zh: '源码', en: 'Source' },
+  footL: { zh: 'Agent UI Lab · 个人实验场 · 不做 SDK，不做 Runtime', en: 'Agent UI Lab · a personal lab · no SDK, no runtime' },
+  footR: { zh: '点卡片进入 · 进去之后左上角返回，或者用右上角直接翻页', en: 'Click a card to open it · use the top-left to go back, or the top-right to page through' },
+}
 
 /** 源码地址，顶栏那个 GitHub 图标指向它 */
 export const GITHUB = 'https://github.com/ChenChen913/agent-ui-lab'
@@ -105,25 +133,25 @@ export const ENTRIES: Entry[] = [
     no: '001',
     slug: '/001',
     line: 'b',
-    title: 'The Bench',
-    question: 'Agent 干活的时候，界面除了转圈还能是什么样？',
+    title: { zh: '案头', en: 'The Bench' },
+    question: { zh: 'Agent 干活的时候，界面除了转圈还能是什么样？', en: 'When an agent is working, what can the interface be besides a spinner?' },
     status: 'live',
     variants: [
-      { id: 'a', name: '极简黑白', tag: '排版 / 层级', bg: '#ffffff', fg: '#0a0a0a', accent: '#d93a2b' },
-      { id: 'b', name: '暖色纸张', tag: '温度 / 质感', bg: '#f7f4ee', fg: '#2a2622', accent: '#b5502e' },
-      { id: 'c', name: '冷调玻璃', tag: '材质 / 动效', bg: '#0b0e14', fg: '#e8ecf2', accent: '#4fd1c5' },
+      { id: 'a', name: '极简黑白', tag: { zh: '排版 / 层级', en: 'Typography / hierarchy' }, bg: '#ffffff', fg: '#0a0a0a', accent: '#d93a2b' },
+      { id: 'b', name: '暖色纸张', tag: { zh: '温度 / 质感', en: 'Warmth / texture' }, bg: '#f7f4ee', fg: '#2a2622', accent: '#b5502e' },
+      { id: 'c', name: '冷调玻璃', tag: { zh: '材质 / 动效', en: 'Material / motion' }, bg: '#0b0e14', fg: '#e8ecf2', accent: '#4fd1c5' },
     ],
   },
   {
     no: '002',
     slug: '/002',
     line: 'b',
-    title: 'One Line',
-    question: '如果整个界面只允许存在一条线，Agent 还能怎么工作？',
+    title: { zh: '一线', en: 'One Line' },
+    question: { zh: '如果整个界面只允许存在一条线，Agent 还能怎么工作？', en: 'If the whole interface were allowed exactly one line, how could an agent still work?' },
     status: 'live',
     variants: [
       {
-        id: 'a', name: '一线', tag: '编码 / 动效 / 0 色彩',
+        id: 'a', name: '一线', tag: { zh: '编码 / 动效 / 0 色彩', en: 'Encoding / motion / zero colour' },
         bg: '#ffffff', fg: '#111111', accent: '#111111',
         bg2: '#0b0b0c', href: '/002',
       },
@@ -133,129 +161,129 @@ export const ENTRIES: Entry[] = [
     no: '003',
     slug: '/003',
     line: 'b',
-    title: 'Terminal',
-    question: '终端本身很粗糙，能不能把它设计成一个高级的 Agent Interface？',
+    title: { zh: '终端', en: 'Terminal' },
+    question: { zh: '终端本身很粗糙，能不能把它设计成一个高级的 Agent Interface？', en: 'Terminals are crude. Can one be designed into a first-class agent interface?' },
     status: 'live',
     variants: [
-      { id: 'a', name: 'Terminal', tag: '调色板 / 文本动效', bg: '#0e1012', fg: '#cbc8c0', accent: '#d6a45f', href: '/003' },
+      { id: 'a', name: 'Terminal', tag: { zh: '调色板 / 文本动效', en: 'Palette / text motion' }, bg: '#0e1012', fg: '#cbc8c0', accent: '#d6a45f', href: '/003' },
     ],
   },
   {
     no: '004',
     slug: '/004',
     line: 'b',
-    title: 'Chronicle',
-    question: '如果不用传统聊天记录，而是用时间轴表达 Agent 的工作过程，会怎么样？',
+    title: { zh: '编年', en: 'Chronicle' },
+    question: { zh: '如果不用传统聊天记录，而是用时间轴表达 Agent 的工作过程，会怎么样？', en: 'What if an agent\'s work were shown as a timeline instead of a chat log?' },
     status: 'live',
     variants: [
-      { id: 'a', name: 'Chronicle', tag: '时间轴 / 泳道 / 可拖动', bg: '#eef1f3', fg: '#16232e', accent: '#c4472c', href: '/004' },
+      { id: 'a', name: 'Chronicle', tag: { zh: '时间轴 / 泳道 / 可拖动', en: 'Timeline / lanes / draggable' }, bg: '#eef1f3', fg: '#16232e', accent: '#c4472c', href: '/004' },
     ],
   },
   {
     no: '005',
     slug: '/005',
     line: 'b',
-    title: 'Desktop',
-    question: '如果 Agent 不是一个网页，而是一个活在桌面上的存在，会怎么样？',
+    title: { zh: '桌面', en: 'Desktop' },
+    question: { zh: '如果 Agent 不是一个网页，而是一个活在桌面上的存在，会怎么样？', en: 'What if an agent were not a web page but something that lives on your desktop?' },
     status: 'live',
     variants: [
-      { id: 'a', name: 'Desktop', tag: '桌面 / 窗口 / 常驻本体', bg: '#a7b3c0', fg: '#1b2027', accent: '#3f8fa8', href: '/005' },
+      { id: 'a', name: 'Desktop', tag: { zh: '桌面 / 窗口 / 常驻本体', en: 'Desktop / windows / a presence' }, bg: '#a7b3c0', fg: '#1b2027', accent: '#3f8fa8', href: '/005' },
     ],
   },
   {
     no: '006',
     slug: '/006',
     line: 'b',
-    title: 'Spatial',
-    question: '如果 Agent 的状态不是用列表表达，而是用空间关系表达，会怎么样？',
+    title: { zh: '场', en: 'Spatial' },
+    question: { zh: '如果 Agent 的状态不是用列表表达，而是用空间关系表达，会怎么样？', en: 'What if an agent\'s state were expressed through spatial relationships instead of a list?' },
     status: 'live',
     variants: [
-      { id: 'a', name: 'Spatial', tag: '空间 / 景深 / 相机', bg: '#08090c', fg: '#e6e4df', accent: '#6ea8d8', href: '/006' },
+      { id: 'a', name: 'Spatial', tag: { zh: '空间 / 景深 / 相机', en: 'Space / depth of field / camera' }, bg: '#08090c', fg: '#e6e4df', accent: '#6ea8d8', href: '/006' },
     ],
   },
   {
     no: '007',
     slug: '/007',
     line: 'a',
-    title: 'The Brief',
-    question: '如果界面的主角是「这份委托」，而不是聊天记录，会怎么样？',
+    title: { zh: '委托书', en: 'The Brief' },
+    question: { zh: '如果界面的主角是「这份委托」，而不是聊天记录，会怎么样？', en: 'What if the interface were about the commission, not the chat log?' },
     status: 'live',
     variants: [
-      { id: 'a', name: 'The Brief', tag: '条款 · 谈判 · 逐条兑现', bg: '#131211', fg: '#ece7dd', accent: '#c8623f', href: '/007' },
+      { id: 'a', name: 'The Brief', tag: { zh: '条款 · 谈判 · 逐条兑现', en: 'Clauses · negotiation · delivered item by item' }, bg: '#131211', fg: '#ece7dd', accent: '#c8623f', href: '/007' },
     ],
   },
   {
     no: '008',
     slug: '/008',
     line: 'a',
-    title: 'Baseline',
-    question: '用户登录之后第一眼看到的那一层，应该长什么样？',
+    title: { zh: '基准', en: 'Baseline' },
+    question: { zh: '用户登录之后第一眼看到的那一层，应该长什么样？', en: 'What should the layer a user sees right after signing in actually look like?' },
     status: 'live',
     variants: [
-      { id: 'a', name: 'Baseline', tag: '通用 · 无气泡 · 悬浮输入框', bg: '#fbfbfc', fg: '#15181d', accent: '#2f6bd8', href: '/008' },
+      { id: 'a', name: 'Baseline', tag: { zh: '通用 · 无气泡 · 悬浮输入框', en: 'General · no bubbles · floating composer' }, bg: '#fbfbfc', fg: '#15181d', accent: '#2f6bd8', href: '/008' },
     ],
   },
   {
     no: '009',
     slug: '/009',
     line: 'a',
-    title: 'Workbench',
-    question: '如果产出不是最后一条消息，而是一个放在旁边的产物呢？',
+    title: { zh: '工作台', en: 'Workbench' },
+    question: { zh: '如果产出不是最后一条消息，而是一个放在旁边的产物呢？', en: 'What if the output were not the last message but an artifact sitting next to the chat?' },
     status: 'live',
     variants: [
-      { id: 'a', name: 'Workbench', tag: '活动面板 · 工作区 · 双层', bg: '#f6f6f4', fg: '#191a18', accent: '#2e6b52', href: '/009' },
+      { id: 'a', name: 'Workbench', tag: { zh: '活动面板 · 工作区 · 双层', en: 'Activity · workspace · two layers' }, bg: '#f6f6f4', fg: '#191a18', accent: '#2e6b52', href: '/009' },
     ],
   },
   {
     no: '010',
     slug: '/010',
     line: 'a',
-    title: 'Home',
-    question: '如果首页本身就是这个产品，输入框悬在正中，会怎么样？',
+    title: { zh: '首页', en: 'Home' },
+    question: { zh: '如果首页本身就是这个产品，输入框悬在正中，会怎么样？', en: 'What if the home screen were the product itself, with the input floating in the center?' },
     status: 'live',
     variants: [
-      { id: 'a', name: 'Home', tag: '首页 · 轻量状态 · Context', bg: '#f8f7f5', fg: '#17171a', accent: '#17171a', href: '/010' },
+      { id: 'a', name: 'Home', tag: { zh: '首页 · 轻量状态 · Context', en: 'Home · light status · context' }, bg: '#f8f7f5', fg: '#17171a', accent: '#17171a', href: '/010' },
     ],
   },
   {
     no: '011',
     slug: '/011',
     line: 'a',
-    title: 'Bubble',
-    question: '如果 Agent 就长成你最熟悉的那个聊天软件的样子呢？',
+    title: { zh: '气泡', en: 'Bubble' },
+    question: { zh: '如果 Agent 就长成你最熟悉的那个聊天软件的样子呢？', en: 'What if the agent looked like the chat app you already know by heart?' },
     status: 'live',
     variants: [
-      { id: 'a', name: 'Bubble', tag: '头像 · 昵称 · 气泡 · 时间', bg: '#ffffff', fg: '#1a1a1a', accent: '#0e8a5f', href: '/011' },
+      { id: 'a', name: 'Bubble', tag: { zh: '头像 · 昵称 · 气泡 · 时间', en: 'Avatar · name · bubble · time' }, bg: '#ffffff', fg: '#1a1a1a', accent: '#0e8a5f', href: '/011' },
     ],
   },
   {
     no: '012',
     slug: '/012',
     line: 'a',
-    title: 'The Plan',
-    question: 'Agent 已经开干了，你才发现它理解错了，除了打断重来还能怎么办？',
+    title: { zh: '计划', en: 'The Plan' },
+    question: { zh: 'Agent 已经开干了，你才发现它理解错了，除了打断重来还能怎么办？', en: 'The agent already started, and you realise it misunderstood. What now, besides killing it?' },
     status: 'live',
     variants: [
-      { id: 'a', name: 'The Plan', tag: '活的计划 · 改一步看涟漪', bg: '#f7f8f9', fg: '#14171a', accent: '#2f4bb8', href: '/012' },
+      { id: 'a', name: 'The Plan', tag: { zh: '活的计划 · 改一步看涟漪', en: 'A live plan · edit a step, see the ripple' }, bg: '#f7f8f9', fg: '#14171a', accent: '#2f4bb8', href: '/012' },
     ],
   },
   {
-    no: '013', slug: '/013', line: 'a', title: 'Weight',
-    question: '同一块界面，面对一句话和二十个项目，应该给出同样分量的过程吗？',
+    no: '013', slug: '/013', line: 'a', title: { zh: '分量', en: 'Weight' },
+    question: { zh: '同一块界面，面对一句话和二十个项目，应该给出同样分量的过程吗？', en: 'Should one screen give the same amount of process for one sentence and for twenty projects?' },
     status: 'live',
-    variants: [{ id: 'a', name: 'Weight', tag: '分量随任务变 · 自己长大', bg: '#fafaf9', fg: '#1c1c1a', accent: '#c2410c', href: '/013' }],
+    variants: [{ id: 'a', name: 'Weight', tag: { zh: '分量随任务变 · 自己长大', en: 'Weight follows the task · it grows by itself' }, bg: '#fafaf9', fg: '#1c1c1a', accent: '#c2410c', href: '/013' }],
   },
   {
-    no: '014', slug: '/014', line: 'a', title: 'Settle',
-    question: '过程和结果，是两个东西，还是同一个东西的两个阶段？',
+    no: '014', slug: '/014', line: 'a', title: { zh: '沉淀', en: 'Settle' },
+    question: { zh: '过程和结果，是两个东西，还是同一个东西的两个阶段？', en: 'Are the process and the result two things, or two stages of one thing?' },
     status: 'live',
-    variants: [{ id: 'a', name: 'Settle', tag: '过程即草稿 · 撤来源看少掉什么', bg: '#f2f1ee', fg: '#1b1a18', accent: '#1f5f8b', href: '/014' }],
+    variants: [{ id: 'a', name: 'Settle', tag: { zh: '过程即草稿 · 撤来源看少掉什么', en: 'Process as draft · drop a source, the doc loses it' }, bg: '#f2f1ee', fg: '#1b1a18', accent: '#1f5f8b', href: '/014' }],
   },
   {
-    no: '015', slug: '/015', line: 'a', title: 'Return',
-    question: '用户离开 20 分钟再回来，界面上应该是什么？',
+    no: '015', slug: '/015', line: 'a', title: { zh: '回来', en: 'Return' },
+    question: { zh: '用户离开 20 分钟再回来，界面上应该是什么？', en: 'The user was away for 20 minutes. What should they see when they come back?' },
     status: 'live',
-    variants: [{ id: 'a', name: 'Return', tag: '简报 · 替你做的决定 · 时间带', bg: '#f4f6f8', fg: '#14171b', accent: '#b8811c', href: '/015' }],
+    variants: [{ id: 'a', name: 'Return', tag: { zh: '简报 · 替你做的决定 · 时间带', en: 'Briefing · decisions I made · a time band' }, bg: '#f4f6f8', fg: '#14171b', accent: '#b8811c', href: '/015' }],
   },
-  { no: '—', slug: '/', title: '…', question: '下一个想法。', status: 'planned', line: 'a' },
+  { no: '—', slug: '/', title: { zh: '…', en: '…' }, question: { zh: '下一个想法。', en: 'The next idea.' }, status: 'planned', line: 'a' },
 ]

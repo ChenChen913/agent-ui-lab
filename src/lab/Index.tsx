@@ -1,20 +1,23 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ENTRIES, GITHUB, HERO, LAB_SUB, LINES, lineIndex, type Entry } from './registry'
-import GithubMark from './GithubMark'
+import { ENTRIES, GITHUB, HERO, LAB_SUB, LINES, UI, lineIndex, type Entry } from './registry'
 import { PREVIEWS, type PreviewProps } from './previews'
+import { useLang } from './lang'
+import LangToggle from './LangToggle'
 import ThemeToggle from './ThemeToggle'
+import GithubMark from './GithubMark'
 
 /**
- * 总页面。
+ * 总页面。中英文两版，右上角切换。
  *
  * 项目有两条主线，主页就分两栏，一栏一条，绝不混着排：
- *   A · Agent 工作过程可视化 —— Agent 干活的时候，怎么让用户看懂
- *   B · Agent 主界面         —— 用户应该如何使用 Agent
+ *   A · Agent 主界面         —— 用户应该如何使用 Agent
+ *   B · Agent 工作过程可视化 —— Agent 干活的时候，怎么让用户看懂
  *
  * 每个模板只属于一条线，卡片网格在每栏里重新开始。
  */
 export default function LabIndex() {
+  const { lang, setLang, t } = useLang()
   const live = ENTRIES.filter((e) => e.status === 'live' && PREVIEWS[e.no])
   const planned = ENTRIES.filter((e) => e.status === 'planned')
 
@@ -22,26 +25,25 @@ export default function LabIndex() {
     <div className="min-h-full lab-bg">
       <div className="mx-auto max-w-6xl px-8 pb-14 pt-8">
         <div className="mb-3 flex items-center justify-end gap-2">
-          <a className="lab-gh" href={GITHUB} target="_blank" rel="noreferrer" title="GitHub 源码">
+          <a className="lab-gh" href={GITHUB} target="_blank" rel="noreferrer" title="GitHub">
             <GithubMark size={14} />
-            <span>源码</span>
+            <span>{t(UI.source)}</span>
           </a>
-          <ThemeToggle />
+          <LangToggle lang={lang} setLang={setLang} />
+          <ThemeToggle lang={lang} />
         </div>
 
         <header className="relative pb-12 pt-6 text-center">
           <div className="lab-hero-glow" />
           <div className="relative">
-            <div className="mb-7 font-mono text-[12px] tracking-[0.18em] lab-t3">
-              AGENT UI LAB · 两条主线 · {live.length} 个模板
-            </div>
+            <div className="mb-7 font-mono text-[12px] tracking-[0.18em] lab-t3">AGENT UI LAB · {t(UI.eyebrow)}</div>
             <h1 className="lab-hero lab-rise mx-auto text-balance text-[38px] font-medium leading-[1.16] tracking-[-0.035em] sm:text-[52px] lg:text-[64px]">
-              {HERO.line1}
+              {t(HERO.line1)}
               <br />
-              {HERO.line2}
+              {t(HERO.line2)}
             </h1>
             <p className="lab-rise mx-auto mt-8 max-w-2xl text-[14.5px] leading-[1.95] lab-t2" style={{ animationDelay: '90ms' }}>
-              {LAB_SUB}
+              {t(LAB_SUB)}
             </p>
           </div>
         </header>
@@ -52,35 +54,35 @@ export default function LabIndex() {
             <section key={line.id} className="mb-16">
               <div className="lab-lh">
                 <span className="lab-lh-badge">{line.id.toUpperCase()}</span>
-                <h2 className="lab-lh-t">{line.name}</h2>
-                <span className="lab-lh-n">{items.length} 个模板</span>
+                <h2 className="lab-lh-t">{t(line.name)}</h2>
+                <span className="lab-lh-n">{items.length} {t(UI.count)}</span>
               </div>
-              <p className="lab-lh-q">{line.question}</p>
-              <p className="lab-lh-d">{line.desc}</p>
+              <p className="lab-lh-q">{t(line.question)}</p>
+              <p className="lab-lh-d">{t(line.desc)}</p>
 
               <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-                {items.map((e) => <Card key={e.no} e={e} />)}
+                {items.map((e) => <Card key={e.no} e={e} t={t} />)}
               </div>
             </section>
           )
         })}
 
         <section className="mt-4 border-t pt-7 lab-line">
-          <div className="mb-4 font-mono text-[12px] tracking-[0.16em] lab-t3">待做</div>
+          <div className="mb-4 font-mono text-[12px] tracking-[0.16em] lab-t3">{t(UI.planned)}</div>
           <ul className="flex flex-col gap-2.5">
             {planned.map((e, i) => (
               <li key={i} className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
                 <span className="w-9 font-mono text-[12.5px] tabular-nums lab-t3">{e.no}</span>
-                <span className="text-[14px] font-medium lab-t2">{e.title}</span>
-                <span className="text-[14px] lab-t3">{e.question}</span>
+                <span className="text-[14px] font-medium lab-t2">{t(e.title)}</span>
+                <span className="text-[14px] lab-t3">{t(e.question)}</span>
               </li>
             ))}
           </ul>
         </section>
 
         <footer className="mt-12 flex flex-wrap items-center justify-between gap-x-8 gap-y-2 border-t pt-6 text-[12.5px] lab-t3 lab-line-soft">
-          <span>Agent UI Lab · 个人实验场 · 不做 SDK，不做 Runtime</span>
-          <span>点卡片进入 · 进去之后左上角返回，或者用右上角直接翻页</span>
+          <span>{t(UI.footL)}</span>
+          <span>{t(UI.footR)}</span>
         </footer>
       </div>
     </div>
@@ -89,9 +91,9 @@ export default function LabIndex() {
 
 /**
  * 每个模板一张卡，结构完全一致：
- *   预览图（带变体切换器） / 编号 + 标题 / 一句话问题 / 分隔线 / 标签 + 进入
+ *   预览图（带变体切换器） / 编号 + 名称 / 一句话问题 / 分隔线 / 标签 + 进入
  */
-function Card({ e }: { e: Entry }) {
+function Card({ e, t }: { e: Entry; t: (v: { zh: string; en: string }) => string }) {
   const P = PREVIEWS[e.no]
   const vs = e.variants ?? []
   const [sel, setSel] = useState(0)
@@ -100,11 +102,11 @@ function Card({ e }: { e: Entry }) {
 
   const to = v?.href ?? (v ? e.slug + '/' + v.id : e.slug)
   const previewProps: PreviewProps = v ? { bg: v.bg, fg: v.fg, accent: v.accent, bg2: v.bg2, vn: v.id } : {}
-  const label = v ? (multi ? v.name + ' · ' + v.tag : v.tag) : ''
+  const label = v ? (multi ? t(v.name ? { zh: v.name, en: v.name } : v.tag) : t(v.tag)) : ''
 
   return (
     <article className="group relative flex flex-col overflow-hidden rounded-xl border lab-line lab-card lab-hover">
-      <Link to={to} className="absolute inset-0 z-10" aria-label={'进入 ' + e.title} />
+      <Link to={to} className="absolute inset-0 z-10" aria-label={t(e.title)} />
 
       <div className="relative h-[240px] overflow-hidden border-b lab-line-soft">
         <P {...previewProps} />
@@ -117,7 +119,7 @@ function Card({ e }: { e: Entry }) {
               const on = i === sel
               return (
                 <button
-                  key={x.id} onClick={() => setSel(i)} title={x.name} aria-label={x.name} aria-pressed={on}
+                  key={x.id} onClick={() => setSel(i)} title={t(x.tag)} aria-label={t(x.tag)} aria-pressed={on}
                   className={'h-6 w-6 rounded-md font-mono text-[11px] transition-colors ' + (on ? 'lab-t1' : 'lab-t3 lab-hover-plain')}
                   style={on ? { background: 'var(--lab-accent-soft)', color: 'var(--lab-accent)' } : undefined}
                 >
@@ -132,16 +134,16 @@ function Card({ e }: { e: Entry }) {
       <div className="px-4 pt-4">
         <div className="flex items-baseline gap-3">
           <span className="font-mono text-[17px] font-semibold tabular-nums lab-t3">{lineIndex(e)}</span>
-          <h3 className="text-[21px] font-semibold tracking-[-0.024em] lab-t1">{e.title}</h3>
+          <h3 className="text-[21px] font-semibold tracking-[-0.024em] lab-t1">{t(e.title)}</h3>
         </div>
-        <p className="mt-2.5 min-h-[48px] text-[13.5px] leading-[1.8] lab-t2">{e.question}</p>
+        <p className="mt-2.5 min-h-[48px] text-[13.5px] leading-[1.8] lab-t2">{t(e.question)}</p>
       </div>
 
       <div className="mt-auto border-t px-4 pb-4 pt-3.5 lab-line-soft">
         <div className="flex items-center justify-between gap-3">
           <span className="truncate font-mono text-[11.5px] tracking-wide lab-t3">{label}</span>
           <span className="flex-none text-[12.5px] text-[color:var(--lab-t2)] transition-colors group-hover:text-[color:var(--lab-accent)]">
-            进入 →
+            {t(UI.enter)} →
           </span>
         </div>
       </div>

@@ -2,7 +2,9 @@ import { useState, type ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { ArrowLeft, ArrowRight, Pause, Play, RotateCcw } from 'lucide-react'
 import GithubMark from './GithubMark'
-import { GITHUB, NAV, stampedNo } from './registry'
+import { GITHUB, NAV, UI, stampedNo } from './registry'
+import { useLang } from './lang'
+import LangToggle from './LangToggle'
 import ThemeToggle from './ThemeToggle'
 import type { Ctl } from './ctl'
 
@@ -23,6 +25,7 @@ export default function Frame({ no, title, variants, current, autoPlay = true, r
   const [speed, setSpeed] = useState(1)
   const [runId, setRunId] = useState(0)
   const navigate = useNavigate()
+  const { lang, setLang, t } = useLang()
 
   const i = NAV.findIndex((n) => n.no === no)
   const prev = i > 0 ? NAV[i - 1] : null
@@ -49,7 +52,7 @@ export default function Frame({ no, title, variants, current, autoPlay = true, r
       <header className="flex h-[52px] flex-none items-center gap-2.5 border-b px-4 lab-line">
         <Link to="/" className="flex items-center gap-1.5 text-[12.5px] lab-t2 lab-hover-plain">
           <ArrowLeft size={15} strokeWidth={2} />
-          实验室
+          {t(UI.lab)}
         </Link>
 
         {divider}
@@ -99,7 +102,9 @@ export default function Frame({ no, title, variants, current, autoPlay = true, r
             <GithubMark size={15} />
           </a>
 
-          <ThemeToggle compact />
+          <LangToggle lang={lang} setLang={setLang} compact />
+
+          <ThemeToggle compact lang={lang} />
 
           {divider}
 
