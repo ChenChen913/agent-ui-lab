@@ -4,7 +4,7 @@
   <b>简体中文</b> | <a href="./README_EN.md">English</a>
 </p>
 
-Ten standalone interface experiments on how an AI agent's work should look.
+Eleven standalone interface experiments on how an AI agent's work should look.
 
 十个彼此独立的界面实验，研究 AI Agent 干活的样子。
 
@@ -14,7 +14,7 @@ Ten standalone interface experiments on how an AI agent's work should look.
 
 - [为什么做这个项目](#为什么做这个项目)
 - [快速开始](#快速开始)
-- [十个实验](#十个实验)
+- [十一个实验](#十一个实验)
 - [用法](#用法)
 - [配置](#配置)
 - [项目结构](#项目结构)
@@ -54,7 +54,7 @@ pnpm dev
 
 打开终端里打印的地址（默认 http://localhost:5173 ），先看到的是总页面。
 
-## 十个实验
+## 十一个实验
 
 | 编号 | 名称 | 它在回答什么 |
 |---|---|---|
@@ -68,8 +68,9 @@ pnpm dev
 | 008 | Baseline | 用户登录之后第一眼看到的那一层，应该长什么样？ |
 | 009 | Workbench | 如果产出不是最后一条消息，而是一个放在旁边的产物呢？ |
 | 010 | Home | 如果首页本身就是这个产品，输入框悬在正中，会怎么样？ |
+| 011 | Bubble | 如果 Agent 就长成你最熟悉的那个聊天软件的样子呢？ |
 
-008 到 010 默认停在用户刚打开时的空状态，点右上角的播放键才会开始演示。
+008 到 011 默认停在用户刚打开时的空状态，点右上角的播放键才会开始演示。
 
 每个实验目录里有一份 `NOTES.md`，记录「我在探索什么 / 发现了什么 / 下次想试什么」。
 
@@ -80,7 +81,7 @@ pnpm dev
 ```
 /            总页面，十个实验的入口
 /001/a       001 的三套皮肤分别是 /001/a、/001/b、/001/c
-/002 … /010  其余实验
+/002 … /011  其余实验
 ```
 
 每个实验页面右上角有一条控制栏：返回总页面、切上一个 / 下一个实验、切换白天黑夜、播放 / 暂停、重播、调速（0.5 倍 / 1 倍 / 2 倍）。
