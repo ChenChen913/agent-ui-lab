@@ -78,13 +78,13 @@ Moving from "what is the agent doing" to "how does a person work with it". This 
 | No. | Name | The question it answers |
 |---|---|---|
 | 1 | The Brief | What if the interface were about the commission, not the chat log? |
-| 2 | Baseline | What should the layer a user sees right after signing in actually look like? |
-| 3 | Workbench | What if the output were not the last message but an artifact sitting next to the chat? |
-| 4 | Home | What if the home screen were the product itself, with the input floating in the center? |
+| 2 | In & Out | What does the road from opening the product to getting a result look like? |
+| 3 | Workbench | Is the process a log of the result, or its draft? |
+| 4 | Mission Control | You dispatch five agents at once. What is the interface, besides five chats side by side? |
 | 5 | Bubble | What if the agent looked like the chat app you already know by heart? |
 | 6 | The Plan | The agent already started, and you realise it misunderstood. What now, besides killing it? |
 | 7 | Weight | Should one screen give the same amount of process for one sentence and for twenty projects? |
-| 8 | Settle | Are the process and the result two things, or two stages of one thing? |
+| 8 | Ledger | What makes a search agent’s answer worth trusting? |
 | 9 | Return | The user was away for 20 minutes. What should they see when they come back? |
 
 ### B · Agent process visualisation
@@ -201,7 +201,7 @@ A: That is not unfinished work, it is a deliberate first frame: the moment a use
 - The terminal in 003 implements only the few commands the demo needs (`clear`, Ctrl-C, and so on)
 - The live build uses hash routing, so a template URL looks like `https://chenchen913.github.io/agent-ui-lab/#/008`
 - Clauses in 007 cannot be edited in place, only rewritten by answering
-- Undo in 014 restores a source wholesale; it cannot remove a single step
+- Agents in 010 cannot be re-tasked mid-run; you can only pause them or answer their gate
 
 ## Contributing
 

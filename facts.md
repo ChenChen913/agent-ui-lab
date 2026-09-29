@@ -48,14 +48,15 @@
     - `src/experiments/*/NOTES.md`（15 份，001 至 015）
 13. **规模**（命令 → 结果）：
     - `(Get-ChildItem 'src' -Recurse -File).Count` → 97
-    - `(Get-ChildItem 'src' -Recurse -File | Get-Content | Measure-Object -Line).Lines` → 12976
+    - `(Get-ChildItem 'src' -Recurse -File | Get-Content | Measure-Object -Line).Lines` → 13131
     - `(Get-ChildItem 'src\experiments' -Recurse -Filter 'NOTES.md').Count` → 15
     - `(Get-ChildItem 'public\previews' -File).Count` → 17
     - `(Get-ChildItem 'src\experiments' -Directory).Count` → 15
     - `(Select-String -Path 'src\App.tsx' -Pattern 'path="' -AllMatches).Matches.Count` → 16
 14. **构建产物**（`pnpm build`）：
     - 入口 `index.js` 277.72 kB（gzip 90.34 kB），`index.css` 20.60 kB（gzip 5.12 kB）
-    - JS chunk 共 34 个：十五个实验各自独立，打开谁才下载谁
+    - JS chunk 共 30 个：十五个实验各自独立，打开谁才下载谁
+    - 2026-09 结构调整：008 合并原 010，009 合并原 014，010 重写为 Mission Control，014 重写为 Ledger
     - 对比：分包之前是单个 753.64 kB（gzip 233.40 kB）
 
 ## B. 需人工补充
