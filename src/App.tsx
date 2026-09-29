@@ -14,6 +14,7 @@ import Brief from './experiments/007-brief'
 import Baseline from './experiments/008-baseline'
 import Workbench from './experiments/009-workbench'
 import Home from './experiments/010-home'
+import Bubble from './experiments/011-bubble'
 
 const BENCH: { id: string; name: string; Comp: (p: Ctl) => React.ReactElement }[] = [
   { id: 'a', name: 'A · 极简黑白', Comp: BenchA },
@@ -86,6 +87,11 @@ export default function App() {
         <Route
           path="/010"
           element={<Frame no="010" title="Home" autoPlay={false} render={(ctl) => <Home {...ctl} />} />}
+        />
+
+        <Route
+          path="/011"
+          element={<Frame no="011" title="Bubble" autoPlay={false} render={(ctl) => <Bubble {...ctl} />} />}
         />
 
         <Route path="*" element={<Navigate to="/" replace />} />

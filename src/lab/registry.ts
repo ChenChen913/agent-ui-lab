@@ -38,6 +38,7 @@ export const NAV: NavItem[] = [
   { no: '008', title: 'Baseline', route: '/008' },
   { no: '009', title: 'Workbench', route: '/009' },
   { no: '010', title: 'Home', route: '/010' },
+  { no: '011', title: 'Bubble', route: '/011' },
 ]
 
 export const ENTRIES: Entry[] = [
@@ -145,6 +146,16 @@ export const ENTRIES: Entry[] = [
     status: 'live',
     variants: [
       { id: 'a', name: 'Home', tag: '首页 · 轻量状态 · Context', bg: '#f8f7f5', fg: '#17171a', accent: '#17171a', href: '/010' },
+    ],
+  },
+  {
+    no: '011',
+    slug: '/011',
+    title: 'Bubble',
+    question: '如果 Agent 就长成你最熟悉的那个聊天软件的样子呢？',
+    status: 'live',
+    variants: [
+      { id: 'a', name: 'Bubble', tag: '气泡 · 头像昵称 · 时间', bg: '#f5f5f5', fg: '#191919', accent: '#95ec69', href: '/011' },
     ],
   },
   { no: '—', slug: '/', title: '…', question: '下一个想法。', status: 'planned' },
