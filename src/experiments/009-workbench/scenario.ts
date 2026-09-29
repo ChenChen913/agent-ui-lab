@@ -1,12 +1,14 @@
 /**
- * 009 · Workbench —— 剧本
+ * 009 · 过程与产物 —— 剧本（Workbench + 原 014 Settle 合并版）
  *
  * 「聊天 + 工作状态」双层结构：左边是对话，右边是 Workspace。
  * 重点不是聊天，是让用户看见 Agent 到底在干什么、以及产出了什么。
  *
- * 这一版的关键时刻：报告不是「最后一条消息」，它出现在右边的 Workspace 里，边写边长。
+ * 合并进来的是原 014 的观点：过程是产物的草稿。
+ * 右边每一段的角上都有一个角标，指向产出它的那一步；
+ * 撤掉一步，文档里属于它的段落一起塌掉 —— 看少掉什么，才知道每一步值多少。
  *
- * t 是毫秒，总长 21 秒。
+ * t 是毫秒，总长 25 秒。
  */
 
 export type Block =
@@ -17,7 +19,14 @@ export type Block =
   | { kind: 'quote'; text: string }
 
 export type ActState = 'pending' | 'running' | 'done'
-export interface Act { id: string; label: string; state: ActState; note?: string }
+export interface Act { id: string; label: string; state: ActState; note?: string; dropped?: boolean }
+
+/** Workspace 里的一段产物。src 指向产出它的那一步（acts 的下标） */
+export interface WsItem {
+  block: Block
+  src: number
+  state: 'writing' | 'done' | 'dropped'
+}
 
 export interface Msg {
   id: string; role: 'user' | 'agent'
@@ -41,12 +50,14 @@ export type Beat =
   | { t: number; op: 'finish'; id: string }
   | { t: number; op: 'ws'; open: boolean }
   | { t: number; op: 'wsTitle'; title: string }
-  | { t: number; op: 'wsBlock'; block: Block }
+  | { t: number; op: 'wsBlock'; block: Block; src: number }
   | { t: number; op: 'wsStream'; index: number }
   | { t: number; op: 'wsDone' }
+  | { t: number; op: 'drop'; i: number }
+  | { t: number; op: 'restore'; i: number }
   | { t: number; op: 'end' }
 
-export const TOTAL = 21000
+export const TOTAL = 25000
 export const DEFAULT_ASK = '研究一下新能源汽车市场'
 export const AGENT = { name: 'Atlas', initial: 'A' }
 
@@ -95,15 +106,19 @@ export const SCENARIO: Beat[] = [
   { t: 11400, op: 'act', id: 'm1', i: 2, state: 'done', note: '3 处出入' },
   { t: 11600, op: 'act', id: 'm1', i: 3, state: 'running' },
 
-  { t: 12000, op: 'wsBlock', block: REPORT[0] },
+  { t: 12000, op: 'wsBlock', block: REPORT[0], src: 0 },
   { t: 12600, op: 'wsStream', index: 0 },
-  { t: 13600, op: 'wsBlock', block: REPORT[1] },
+  { t: 13600, op: 'wsBlock', block: REPORT[1], src: 1 },
   { t: 14200, op: 'wsStream', index: 1 },
-  { t: 16200, op: 'wsBlock', block: REPORT[2] },
+  { t: 16200, op: 'wsBlock', block: REPORT[2], src: 2 },
   { t: 16800, op: 'wsStream', index: 2 },
-  { t: 18600, op: 'wsBlock', block: REPORT[3] },
+  { t: 18600, op: 'wsBlock', block: REPORT[3], src: 2 },
   { t: 19200, op: 'wsStream', index: 3 },
   { t: 20600, op: 'wsDone' },
   { t: 20800, op: 'act', id: 'm1', i: 3, state: 'done', note: '3.2s' },
-  { t: 21000, op: 'end' },
+
+  // 撤一步看少掉什么 —— 这一段是给眼睛看的说明书
+  { t: 21800, op: 'drop', i: 2 },
+  { t: 24200, op: 'restore', i: 2 },
+  { t: 25000, op: 'end' },
 ]

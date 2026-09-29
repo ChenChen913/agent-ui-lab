@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import {
   ArrowUp, Book, Check, ChevronDown, FileText, Layers, MoreHorizontal,
-  Paperclip, PanelRight, Plus, Settings, Square, Wrench, X, Zap,
+  Paperclip, PanelRight, Plus, RotateCcw, Settings, Square, Wrench, X, XCircle, Zap,
 } from 'lucide-react'
 import { AGENT, HISTORY, type Act, type Block, type Msg } from './scenario'
 import { useWorkbench } from './useWorkbench'
@@ -9,14 +9,17 @@ import type { Ctl } from '../../lab/ctl'
 import './style.css'
 
 /**
- * 009 · Workbench —— 聊天 + 工作状态双层结构
+ * 009 · 过程与产物 —— 聊天 + 工作状态双层结构（Workbench + 原 014 Settle）
  *
  * 左边是对话，右边是 Workspace。
- * 这一版的重点：报告不是「最后一条消息」，它出现在右边的面板里，边写边长。
+ * 报告不是「最后一条消息」，它出现在右边的面板里，边写边长；
+ * 而且每一段都连着产出它的那一步 —— 撤掉一步，看文档少掉什么。
  */
 export default function Workbench({ playing, speed, runId }: Ctl) {
   const { state, api } = useWorkbench({ playing, speed, runId })
   const [focus, setFocus] = useState(false)
+  /** 当前高亮的一步（acts 下标）；悬停步骤或段落时设置，两边互相呼应 */
+  const [hl, setHl] = useState<number | null>(null)
   const taRef = useRef<HTMLTextAreaElement>(null)
   const bodyRef = useRef<HTMLDivElement>(null)
   const wsBodyRef = useRef<HTMLDivElement>(null)
@@ -32,7 +35,7 @@ export default function Workbench({ playing, speed, runId }: Ctl) {
 
   // 对话和报告都跟着内容走
   useEffect(() => { const e = bodyRef.current; if (e) e.scrollTop = e.scrollHeight }, [state.messages, state.thinking])
-  useEffect(() => { const e = wsBodyRef.current; if (e) e.scrollTop = e.scrollHeight }, [state.ws.blocks, state.ws.streaming])
+  useEffect(() => { const e = wsBodyRef.current; if (e) e.scrollTop = e.scrollHeight }, [state.ws.items, state.ws.streaming])
 
   const submit = () => { if (state.typed.trim()) api.send(state.typed) }
 
@@ -94,7 +97,12 @@ export default function Workbench({ playing, speed, runId }: Ctl) {
               </div>
             ) : (
               <div className="wk-thread">
-                {state.messages.map((m) => <Row key={m.id} m={m} onToggle={() => api.toggleActs(m.id)} />)}
+                {state.messages.map((m) => (
+                  <Row
+                    key={m.id} m={m} onToggle={() => api.toggleActs(m.id)}
+                    hl={hl} setHl={setHl} onDrop={api.dropSrc} onRestore={api.restoreSrc}
+                  />
+                ))}
                 {state.thinking && <div className="wk-think"><i />正在理解任务</div>}
               </div>
             )}
@@ -134,24 +142,33 @@ export default function Workbench({ playing, speed, runId }: Ctl) {
           </header>
 
           <div className="wk-ws-b" ref={wsBodyRef}>
-            {state.ws.blocks.length === 0 ? (
+            {state.ws.items.length === 0 ? (
               <div className="wk-ws-empty">
                 <Layers size={20} strokeWidth={1.5} />
                 <p>Agent 产出的报告、表格、代码会出现在这里。</p>
               </div>
             ) : (
               <article className="wk-doc">
-                {state.ws.blocks.map((b, i) => (
-                  <div key={i} className={'wk-db' + (i === state.ws.streaming ? ' is-stream' : '')}>
-                    <DocBlock b={b} />
+                {state.ws.items.map((it, i) => (
+                  <div
+                    key={i}
+                    className={'wk-db' + (i === state.ws.streaming ? ' is-stream' : '')}
+                    data-state={it.state}
+                    data-hl={hl === it.src ? '1' : '0'}
+                    onMouseEnter={() => setHl(it.src)}
+                    onMouseLeave={() => setHl(null)}
+                  >
+                    <span className="wk-db-src">{it.state === 'dropped' ? '已随「撤掉的一步」消失' : '来自第 ' + (it.src + 1) + ' 步'}</span>
+                    <DocBlock b={it.block} />
                   </div>
                 ))}
               </article>
             )}
           </div>
 
-          {state.ws.blocks.length > 0 && (
+          {state.ws.items.length > 0 && (
             <footer className="wk-ws-f">
+              <span className="wk-ws-tip">每段的角标是产出它的那一步。悬停或撤掉一步，看产物少掉什么。</span>
               <button className="wk-wf-b">下载 .md</button>
               <button className="wk-wf-b">在新标签打开</button>
             </footer>
@@ -162,7 +179,10 @@ export default function Workbench({ playing, speed, runId }: Ctl) {
   )
 }
 
-function Row({ m, onToggle }: { m: Msg; onToggle: () => void }) {
+function Row({ m, onToggle, hl, setHl, onDrop, onRestore }: {
+  m: Msg; onToggle: () => void; hl: number | null
+  setHl: (i: number | null) => void; onDrop: (i: number) => void; onRestore: (i: number) => void
+}) {
   if (m.role === 'user') return <div className="wk-u"><div className="wk-u-in">{m.text}</div></div>
 
   const acts = m.acts ?? []
@@ -190,7 +210,16 @@ function Row({ m, onToggle }: { m: Msg; onToggle: () => void }) {
             <div className="wk-acts-b">
               <div className="wk-acts-bi">
                 <ol className="wk-steps">
-                  {acts.map((a, i) => <Step key={a.id} a={a} last={i === acts.length - 1} active={i === cur} />)}
+                  {acts.map((a, i) => (
+                    <Step
+                      key={a.id} a={a} last={i === acts.length - 1} active={i === cur}
+                      hl={hl === i}
+                      onEnter={() => setHl(i)}
+                      onLeave={() => setHl(null)}
+                      onDrop={() => onDrop(i)}
+                      onRestore={() => onRestore(i)}
+                    />
+                  ))}
                 </ol>
               </div>
             </div>
@@ -207,15 +236,32 @@ function Row({ m, onToggle }: { m: Msg; onToggle: () => void }) {
   )
 }
 
-function Step({ a, last, active }: { a: Act; last: boolean; active: boolean }) {
+function Step({ a, last, active, hl, onEnter, onLeave, onDrop, onRestore }: {
+  a: Act; last: boolean; active: boolean; hl: boolean
+  onEnter: () => void; onLeave: () => void; onDrop: () => void; onRestore: () => void
+}) {
   return (
-    <li className="wk-step" data-s={a.state} data-active={active ? '1' : '0'}>
+    <li
+      className="wk-step" data-s={a.state} data-active={active ? '1' : '0'} data-dropped={a.dropped ? '1' : '0'} data-hl={hl ? '1' : '0'}
+      onMouseEnter={onEnter} onMouseLeave={onLeave}
+    >
       <span className="wk-step-rail">
         <span className="wk-step-dot" />
         {!last && <span className="wk-step-line" />}
       </span>
       <span className="wk-step-l">{a.label}</span>
       {a.note && <em className="wk-step-n">{a.note}</em>}
+      {a.state === 'done' && !a.dropped && (
+        <button className="wk-step-x" onClick={onDrop} title={'撤掉「' + a.label + '」，看产物少掉什么'}>
+          <X size={12} strokeWidth={2.2} />
+        </button>
+      )}
+      {a.dropped && (
+        <button className="wk-step-undo" onClick={onRestore} title="放回来">
+          <RotateCcw size={12} strokeWidth={2.2} />
+          放回来
+        </button>
+      )}
     </li>
   )
 }

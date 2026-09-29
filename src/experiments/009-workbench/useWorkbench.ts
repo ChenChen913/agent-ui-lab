@@ -1,17 +1,17 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useBeatLoop, typingFrame, type BeatRunner } from '../../shared/beat'
-import { DEFAULT_ASK, SCENARIO, type Act, type Block, type Beat, type Msg } from './scenario'
+import { DEFAULT_ASK, SCENARIO, type Act, type Beat, type Msg, type WsItem } from './scenario'
 
 export interface WkState {
   typed: string
   messages: Msg[]
   thinking: boolean
-  ws: { open: boolean; title: string; blocks: Block[]; streaming: number; done: boolean }
+  ws: { open: boolean; title: string; items: WsItem[]; streaming: number; done: boolean }
 }
 
 const fresh = (): WkState => ({
   typed: '', messages: [], thinking: false,
-  ws: { open: false, title: '', blocks: [], streaming: -1, done: false },
+  ws: { open: false, title: '', items: [], streaming: -1, done: false },
 })
 
 let uid = 0
@@ -33,7 +33,7 @@ export function useWorkbench({ playing, speed, runId }: { playing: boolean; spee
     setState({
       ...D,
       messages: D.messages.map((m) => ({ ...m, blocks: m.blocks ? [...m.blocks] : undefined, acts: m.acts ? m.acts.map((a) => ({ ...a })) : undefined })),
-      ws: { ...D.ws, blocks: [...D.ws.blocks] },
+      ws: { ...D.ws, items: D.ws.items.map((it) => ({ ...it })) },
     })
   }, [])
 
@@ -79,6 +79,25 @@ export function useWorkbench({ playing, speed, runId }: { playing: boolean; spee
       commit()
     }, [commit]),
 
+    dropSrc: useCallback((i: number) => {
+      const D = r.current.disc
+      D.ws.items = D.ws.items.map((it) => (it.src === i && it.state !== 'dropped' ? { ...it, state: 'dropped' } : it))
+      for (const m of D.messages) {
+        const a = m.acts?.[i]
+        if (a && a.state === 'done') m.acts = m.acts!.map((x, j) => (j === i ? { ...x, dropped: true } : x))
+      }
+      commit()
+    }, [commit]),
+
+    restoreSrc: useCallback((i: number) => {
+      const D = r.current.disc
+      D.ws.items = D.ws.items.map((it) => (it.src === i && it.state === 'dropped' ? { ...it, state: 'done' } : it))
+      for (const m of D.messages) {
+        if (m.acts?.[i]) m.acts = m.acts!.map((x, j) => (j === i ? { ...x, dropped: false } : x))
+      }
+      commit()
+    }, [commit]),
+
     stop: useCallback(() => {
       clearTimers()
       const D = r.current.disc
@@ -86,6 +105,7 @@ export function useWorkbench({ playing, speed, runId }: { playing: boolean; spee
       const m = [...D.messages].reverse().find((x) => x.role === 'agent')
       if (m) { m.streaming = -1; m.done = true; m.acts = m.acts?.map((a) => (a.state === 'running' ? { ...a, state: 'done' as const } : a)) }
       D.ws.streaming = -1
+      D.ws.items = D.ws.items.map((it) => (it.state === 'writing' ? { ...it, state: 'done' } : it))
       commit()
     }, [commit]),
 
@@ -129,9 +149,28 @@ function applyBeat(S: BeatRunner<WkState>, b: Beat): boolean {
     case 'finish': { const m = D.messages.find((x) => x.id === b.id); if (m) { m.streaming = -1; m.done = true } return false }
     case 'ws': D.ws.open = b.open; return false
     case 'wsTitle': D.ws.title = b.title; return false
-    case 'wsBlock': D.ws.blocks = [...D.ws.blocks, b.block]; return false
+    case 'wsBlock': D.ws.items = [...D.ws.items, { block: b.block, src: b.src, state: 'writing' }]; return false
     case 'wsStream': D.ws.streaming = b.index; return false
-    case 'wsDone': D.ws.streaming = -1; D.ws.done = true; return false
+    case 'wsDone': {
+      D.ws.streaming = -1
+      D.ws.done = true
+      D.ws.items = D.ws.items.map((it) => (it.state === 'writing' ? { ...it, state: 'done' } : it))
+      return false
+    }
+    case 'drop': {
+      D.ws.items = D.ws.items.map((it) => (it.src === b.i && it.state !== 'dropped' ? { ...it, state: 'dropped' } : it))
+      for (const m of D.messages) {
+        if (m.acts?.[b.i] && m.acts[b.i].state === 'done') m.acts = m.acts!.map((x, j) => (j === b.i ? { ...x, dropped: true } : x))
+      }
+      return false
+    }
+    case 'restore': {
+      D.ws.items = D.ws.items.map((it) => (it.src === b.i && it.state === 'dropped' ? { ...it, state: 'done' } : it))
+      for (const m of D.messages) {
+        if (m.acts?.[b.i]) m.acts = m.acts!.map((x, j) => (j === b.i ? { ...x, dropped: false } : x))
+      }
+      return false
+    }
     case 'end': return true
   }
 }
