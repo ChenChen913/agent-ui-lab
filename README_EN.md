@@ -124,7 +124,7 @@ All data is mock data hard-coded in `src/experiments/*/scenario.ts`.
 
 ```
 src/
-├── experiments/          Ten experiments, one folder each, self-contained
+├── experiments/          Fifteen templates, one folder each, self-contained
 │   ├── 001-bench/        scenario / engine / index / style.css / NOTES.md
 │   └── …
 ├── lab/                  The lab shell
@@ -165,7 +165,7 @@ Since 002, all animation follows one pattern: **the per-frame loop only writes C
 
 **Q: Why does every experiment write its own styles instead of sharing?**
 
-A: Sharing would slowly make all ten look alike, and that destroys the point of comparing them. A `shared/` directory only appears once the same thing has been written three times. It has not happened yet.
+A: Sharing would slowly make all fifteen look alike, and that destroys the point of comparing them. A `shared/` directory only appears once the same thing has been written three times. It has not happened yet.
 
 **Q: Can I wire this up to a real LLM?**
 
