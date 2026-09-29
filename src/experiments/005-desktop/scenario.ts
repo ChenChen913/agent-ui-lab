@@ -88,7 +88,7 @@ export const SCENARIO: Beat[] = [
   // ── ⑤ 卡住了，需要人拍板 ────────────────────────────────
   { t: 12500, op: 'win', id: 'w2', state: 'warn' },
   { t: 13000, op: 'presence', state: 'waiting' },
-  { t: 13400, op: 'open', id: 'w3', title: CONFIRM.title, kind: 'confirm', x: 31, y: 40, items: 1 },
+  { t: 13400, op: 'open', id: 'w3', title: CONFIRM.title, kind: 'confirm', x: 25, y: 40, items: 1 },
   { t: 17600, op: 'close', id: 'w3' },
 
   // ── ⑥ 批准 → 继续 → 全部完成 ────────────────────────────

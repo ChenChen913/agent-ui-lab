@@ -33,7 +33,6 @@ interface Live {
   elapsed: number
   idx: number
   key: number
-  entries: Entry[]
   bars: Map<string, BarAnim>
   activeBar: string | null
   taskKey: number | null
@@ -47,7 +46,7 @@ interface Live {
 
 function freshLive(): Live {
   return {
-    elapsed: 0, idx: 0, key: 0, entries: [], bars: new Map(),
+    elapsed: 0, idx: 0, key: 0, bars: new Map(),
     activeBar: null, taskKey: null, taskStart: 0, typing: null,
     typedLen: 0, pendingCmd: DEFAULT_CMD, spinAt: -1e9, spinIdx: 0,
   }
@@ -81,8 +80,8 @@ export function useTerminal(opts: { playing: boolean; speed: number; runId: numb
     const { live: L, disc: D } = r.current
     if (!D.running) return
     closeTask(L, D)
-    L.entries.push({ key: ++L.key, kind: 'note', text: '^C', tone: 'err', indent: 0 })
-    L.entries.push({ key: ++L.key, kind: 'blank' })
+    D.entries.push({ key: ++L.key, kind: 'note', text: '^C', tone: 'err', indent: 0 })
+    D.entries.push({ key: ++L.key, kind: 'blank' })
     D.running = false
     D.status = { ...D.status, text: '已中断', tone: 'err', spin: false, pct: null }
     setState({ ...D, entries: [...D.entries] })
@@ -90,7 +89,7 @@ export function useTerminal(opts: { playing: boolean; speed: number; runId: numb
 
   const clearLog = useCallback(() => {
     const { live: L, disc: D } = r.current
-    L.entries = []
+    D.entries = []
     setState({ ...D, entries: [] })
   }, [])
 
@@ -118,7 +117,7 @@ export function useTerminal(opts: { playing: boolean; speed: number; runId: numb
         const filled = Math.round(p * b.cells)
         if (filled !== b.filled) {
           b.filled = filled
-          const e = L.entries.find((x) => x.key === b.key)
+          const e = D.entries.find((x) => x.key === b.key)
           if (e && e.kind === 'bar') {
             e.filled = filled
             e.pct = Math.round(p * 100)
@@ -159,7 +158,7 @@ export function useTerminal(opts: { playing: boolean; speed: number; runId: numb
 
 function closeTask(L: Live, D: TermState) {
   if (L.taskKey == null) return
-  const e = L.entries.find((x) => x.key === L.taskKey)
+  const e = D.entries.find((x) => x.key === L.taskKey)
   if (e && e.kind === 'task') e.ms = L.elapsed - L.taskStart
   L.taskKey = null
 }
@@ -169,7 +168,7 @@ function applyBeat(L: Live, D: TermState, b: Beat, cmdOverride?: string): boolea
     case 'cmd':
       L.typing = { text: cmdOverride || b.text, dur: b.dur, t0: L.elapsed }
       L.typedLen = 0
-      L.entries = []
+      D.entries = []
       L.bars.clear()
       L.activeBar = null
       L.taskKey = null
@@ -185,8 +184,8 @@ function applyBeat(L: Live, D: TermState, b: Beat, cmdOverride?: string): boolea
     case 'send':
       L.typing = null
       D.typing = ''
-      L.entries.push({ key: ++L.key, kind: 'cmd', text: L.pendingCmd })
-      L.entries.push({ key: ++L.key, kind: 'blank' })
+      D.entries.push({ key: ++L.key, kind: 'cmd', text: L.pendingCmd })
+      D.entries.push({ key: ++L.key, kind: 'blank' })
       D.running = true
       D.status = { ...D.status, spin: true, tone: 'accent' }
       return true
@@ -195,22 +194,22 @@ function applyBeat(L: Live, D: TermState, b: Beat, cmdOverride?: string): boolea
       closeTask(L, D)
       L.taskStart = L.elapsed
       L.taskKey = ++L.key
-      L.entries.push({ key: L.taskKey, kind: 'task', text: b.text, ms: null })
+      D.entries.push({ key: L.taskKey, kind: 'task', text: b.text, ms: null })
       D.status = { ...D.status, step: D.status.step + 1, pct: null }
       return true
 
     case 'note':
-      L.entries.push({ key: ++L.key, kind: 'note', text: b.text, tone: b.tone ?? 'fg', indent: b.indent ?? 1 })
+      D.entries.push({ key: ++L.key, kind: 'note', text: b.text, tone: b.tone ?? 'fg', indent: b.indent ?? 1 })
       return true
 
     case 'blank':
-      L.entries.push({ key: ++L.key, kind: 'blank' })
+      D.entries.push({ key: ++L.key, kind: 'blank' })
       return true
 
     case 'bar': {
       const cells = b.cells ?? CELLS
       const key = ++L.key
-      L.entries.push({ key, kind: 'bar', label: b.label, filled: 0, cells, pct: 0, done: false })
+      D.entries.push({ key, kind: 'bar', label: b.label, filled: 0, cells, pct: 0, done: false })
       L.bars.set(b.id, { key, t0: L.elapsed, dur: b.dur, cells, filled: 0 })
       L.activeBar = b.id
       D.status = { ...D.status, pct: 0 }
@@ -223,8 +222,8 @@ function applyBeat(L: Live, D: TermState, b: Beat, cmdOverride?: string): boolea
 
     case 'result':
       closeTask(L, D)
-      L.entries.push({ key: ++L.key, kind: 'blank' })
-      L.entries.push({ key: ++L.key, kind: 'result', title: b.title, head: b.head, lines: b.lines })
+      D.entries.push({ key: ++L.key, kind: 'blank' })
+      D.entries.push({ key: ++L.key, kind: 'result', title: b.title, head: b.head, lines: b.lines })
       D.running = false
       D.revealed = true
       D.status = { text: '就绪', tone: 'dim', spin: false, pct: null, step: D.status.step }

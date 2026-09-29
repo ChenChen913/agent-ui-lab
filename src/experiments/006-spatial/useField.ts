@@ -134,7 +134,7 @@ export function useField(opts: {
         ne.el.style.filter = blur > 0.4 ? 'blur(' + blur.toFixed(2) + 'px)' : 'none'
         ne.el.style.opacity = (0.16 + near * 0.84).toFixed(3)
         if (ne.dot) ne.dot.style.transform = 'translate(-50%,-50%) scale(' + k.toFixed(3) + ')'
-        if (ne.label) ne.label.style.opacity = clamp((near - 0.44) * 2.7, 0, 1).toFixed(3)
+        if (ne.label) ne.label.style.opacity = clamp((near - 0.28) * 2.2, 0, 1).toFixed(3)
       }
 
       // ⑤ 连线

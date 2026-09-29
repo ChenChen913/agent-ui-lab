@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { ArrowLeft, Pause, Play, RotateCcw } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Pause, Play, RotateCcw } from 'lucide-react'
+import { NAV } from './registry'
 import type { Ctl } from './ctl'
 
 const SPEEDS = [0.5, 1, 2]
@@ -18,6 +19,10 @@ export default function Frame({ no, title, variants, current, render }: FramePro
   const [speed, setSpeed] = useState(1)
   const [runId, setRunId] = useState(0)
   const navigate = useNavigate()
+
+  const i = NAV.findIndex((n) => n.no === no)
+  const prev = i > 0 ? NAV[i - 1] : null
+  const next = i >= 0 && i < NAV.length - 1 ? NAV[i + 1] : null
 
   const restart = (next?: string) => {
     if (next !== undefined) {
@@ -66,6 +71,33 @@ export default function Frame({ no, title, variants, current, render }: FramePro
         </nav>
 
         <div className="ml-auto flex items-center gap-2">
+          {prev ? (
+            <Link
+              to={prev.route}
+              title={prev.no + ' · ' + prev.title}
+              className="flex h-7 w-[54px] items-center justify-center gap-1 rounded-md text-[11.5px] text-[#6d7583] transition-colors hover:bg-[#15181f] hover:text-[#e7e9ee]"
+            >
+              <ArrowLeft size={12} strokeWidth={1.75} />
+              {prev.no}
+            </Link>
+          ) : (
+            <span className="h-7 w-[54px]" />
+          )}
+          {next ? (
+            <Link
+              to={next.route}
+              title={next.no + ' · ' + next.title}
+              className="flex h-7 w-[54px] items-center justify-center gap-1 rounded-md text-[11.5px] text-[#6d7583] transition-colors hover:bg-[#15181f] hover:text-[#e7e9ee]"
+            >
+              {next.no}
+              <ArrowRight size={12} strokeWidth={1.75} />
+            </Link>
+          ) : (
+            <span className="h-7 w-[54px]" />
+          )}
+
+          <div className="mx-1 h-4 w-px bg-[#22262e]" />
+
           <button
             onClick={() => setPlaying((p) => !p)}
             title={playing ? '暂停' : '播放'}

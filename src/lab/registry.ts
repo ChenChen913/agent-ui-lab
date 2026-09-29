@@ -23,6 +23,17 @@ export interface Entry {
 
 export const LAB_INTRO = '把「Agent 干活的过程」设计出来 —— 一次一个实验。'
 
+/** 按顺序浏览用：每个实验的主入口。Frame 用它渲染 ‹ › 翻页。 */
+export interface NavItem { no: string; title: string; route: string }
+export const NAV: NavItem[] = [
+  { no: '001', title: 'The Bench', route: '/001/a' },
+  { no: '002', title: 'One Line', route: '/002' },
+  { no: '003', title: 'Terminal', route: '/003' },
+  { no: '004', title: 'Chronicle', route: '/004' },
+  { no: '005', title: 'Desktop', route: '/005' },
+  { no: '006', title: 'Spatial', route: '/006' },
+]
+
 export const ENTRIES: Entry[] = [
   {
     no: '001',
