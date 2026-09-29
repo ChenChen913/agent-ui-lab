@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 /**
  * 演示节拍引擎
  * ─────────────────────────────────────────────────────────────
- * 008 到 015 这八个实验用的是同一套推进方式：
+ * A2 到 A9 这八个产品态实验用的是同一套推进方式：
  *
  *   · scenario 是一串带时间戳的 Beat，按 t 的先后发生
  *   · 逐帧只往 ref 里写 CSS 变量和 DOM 样式，React 不参与每帧渲染
@@ -82,7 +82,7 @@ export function useBeatLoop<D, B extends Beat>(o: {
 }
 
 /**
- * 打字机的逐帧推进：008 到 013 共用。
+ * 打字机的逐帧推进：需要逐字吐字的实验共用。
  * 返回 true 表示这一帧有东西变了，需要 commit。
  */
 export function typingFrame<D extends { typed: string }>(st: BeatRunner<D>): boolean {

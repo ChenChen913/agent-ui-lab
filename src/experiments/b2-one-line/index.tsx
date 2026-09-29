@@ -5,7 +5,7 @@ import type { Ctl } from '../../lab/ctl'
 import './style.css'
 
 /**
- * 002 · One Line —— 「一支笔画一条线」
+ * B2 · One Line —— 「一支笔画一条线」
  *
  * 整个界面就是一支笔在纸上画一条线；Agent 干活的过程 = 这条线被画出来的过程。
  * 所有 Agent 状态都从「线是一根有张力的弦」这一条物理规律推导出来：
@@ -181,7 +181,7 @@ export default function OneLine({ playing, speed, runId }: Ctl) {
       </div>
 
       <div className="ol-legend">
-        <span>002 · ONE LINE</span>
+        <span>B2 · ONE LINE</span>
         <span>{(TOTAL / 1000).toFixed(1)}s · 13 个状态 · 0 种颜色</span>
       </div>
     </div>

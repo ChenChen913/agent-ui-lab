@@ -5,7 +5,7 @@ import type { Ctl } from '../../lab/ctl'
 import './style.css'
 
 /**
- * 005 · Desktop —— 「Agent 不是网页，是活在你桌面上的一个存在」
+ * B5 · Desktop —— 「Agent 不是网页，是活在你桌面上的一个存在」
  *
  * 三个层次：
  *   ① 桌面本身 —— 一个地方，不是一个页面。环境光随 Agent 状态微微变化。

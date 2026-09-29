@@ -5,7 +5,7 @@ import type { Ctl } from '../../lab/ctl'
 import './style.css'
 
 /**
- * 006 · Spatial —— 「一片场」
+ * B6 · Spatial —— 「一片场」
  *
  * Agent 处理过的每一样东西，在这片场里有一个位置。
  * 相关的东西靠得近，重要的大，久远的暗。

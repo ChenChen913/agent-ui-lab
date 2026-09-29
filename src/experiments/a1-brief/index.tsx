@@ -6,7 +6,7 @@ import type { Ctl } from '../../lab/ctl'
 import './style.css'
 
 /**
- * 007 · The Brief —— 「委托书」
+ * A1 · The Brief —— 「委托书」
  *
  * 核心观点：界面的主角是这份委托，不是聊天记录。
  * 对话只是把委托谈清楚的过程；谈成之后它被条款吸收掉，消失。

@@ -33,9 +33,9 @@
    | typescript | ^5.9.3 | 类型 |
    | @fontsource-variable/geist | ^5.3.0 | 无衬线 |
    | @fontsource-variable/geist-mono | ^5.3.0 | 等宽 |
-   | @fontsource-variable/source-serif-4 | ^5.3.0 | 衬线（007 用） |
-   | @fontsource-variable/fraunces | ^5.3.0 | 衬线（001-B 用） |
-   | @fontsource-variable/jetbrains-mono | ^5.3.0 | 等宽（003 用） |
+   | @fontsource-variable/source-serif-4 | ^5.3.0 | 衬线（A1 用） |
+   | @fontsource-variable/fraunces | ^5.3.0 | 衬线（B1 纸张皮肤用） |
+   | @fontsource-variable/jetbrains-mono | ^5.3.0 | 等宽（B3 用） |
 10. **环境变量 / 配置项**：**不需要任何密钥，也不需要任何配置。**
     命令：`Get-ChildItem -Path src -Recurse -Include *.ts,*.tsx | Select-String -Pattern 'import\.meta\.env|process\.env'` → 命中 1 条：`src/lab/previews.tsx` 的 `import.meta.env.BASE_URL`，Vite 内建的构建常量，用来拼 GitHub Pages 的子路径。
 
@@ -45,7 +45,7 @@
 11. **CLI 参数 / 公开 API**：无。这是一个应用，不是库
 12. **已有文档**：
     - `README.md` / `README_EN.md`
-    - `src/experiments/*/NOTES.md`（15 份，001 至 015）
+    - `src/experiments/*/NOTES.md`（15 份，A1–A9 / B1–B6）
 13. **规模**（命令 → 结果）：
     - `(Get-ChildItem 'src' -Recurse -File).Count` → 97
     - `(Get-ChildItem 'src' -Recurse -File | Get-Content | Measure-Object -Line).Lines` → 13131
@@ -56,7 +56,8 @@
 14. **构建产物**（`pnpm build`）：
     - 入口 `index.js` 277.72 kB（gzip 90.34 kB），`index.css` 20.60 kB（gzip 5.12 kB）
     - JS chunk 共 30 个：十五个实验各自独立，打开谁才下载谁
-    - 2026-09 结构调整：008 合并原 010，009 合并原 014，010 重写为 Mission Control，014 重写为 Ledger
+    - 2026-09 二次调整：编号改为 A1–A9 / B1–B6（目录、路由、预览图同名），
+      A4 重写为卡片流，A6 横向甘特，A7 仪表 + 日志流，A8 页边注
     - 对比：分包之前是单个 753.64 kB（gzip 233.40 kB）
 
 ## B. 需人工补充
@@ -67,7 +68,7 @@
 - **目标用户 / 前置知识**：前端工程师；需要会 React 与 TypeScript
 - **与同类方案的差异**：不是组件库，不是设计系统，不是 SDK。十五个模板之间不共享视觉语言
 - **已知限制 / 明确不做的事**：全部是 Mock 数据；不接真实 LLM；不做后端、数据库、登录
-- **演示素材路径**：`docs/gallery.png`、`docs/007-brief.png`、`docs/008-baseline.png`、`docs/009-workbench.png`、`docs/010-home.png`
+- **演示素材路径**：`docs/gallery.png`（总页面截图）；各模板卡片预览在 `public/previews/`
 - **目标读者画像**：想看不同信息组织方式的前端与设计工程
 - **期望读者读完能做什么**：打开线上版或本地跑起来，逐个点开十五个模板，挑一个方向自己接着试
 

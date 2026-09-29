@@ -5,7 +5,7 @@ import type { Ctl } from '../../lab/ctl'
 import './style.css'
 
 /**
- * 004 · Chronicle —— 「时间不是序号，是长度」
+ * B4 · Chronicle —— 「时间不是序号，是长度」
  *
  * X 轴是真实毫秒。一根条有多长，它真的就花了多久。
  * 并行的三路调研变成三条上下对齐的泳道 —— 谁慢一眼就看出来。

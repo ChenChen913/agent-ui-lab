@@ -15,7 +15,7 @@ export interface FrameProps {
   title: string
   variants?: { id: string; name: string }[]
   current?: string
-  /** 默认自动播放；008 起的「产品态」实验停在用户刚打开的空状态，点播放才演示 */
+  /** 默认自动播放；A2 起的「产品态」实验停在用户刚打开的空状态，点播放才演示 */
   autoPlay?: boolean
   render: (ctl: Ctl) => ReactNode
 }

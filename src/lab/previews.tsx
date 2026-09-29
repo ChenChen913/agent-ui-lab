@@ -6,7 +6,7 @@ import type { JSX } from 'react'
  * 每张都抓在演示跑到最有代表性的那一刻（时间点写在 scripts 里没有，
  * 是逐个人肉挑的）。截图尺寸 1280×560，卡片把顶部的实验外壳那条黑边裁掉。
  *
- * 001 有三套皮肤，所以它有三张图；变体切换器一按，预览跟着换。
+ * B1 有三套皮肤，所以它有三张图；变体切换器一按，预览跟着换。
  */
 
 export interface PreviewProps {
@@ -14,7 +14,7 @@ export interface PreviewProps {
   fg?: string
   accent?: string
   bg2?: string
-  /** 变体 id；只有 001 有多张图 */
+  /** 变体 id；只有 B1 有多张图 */
   vn?: string
 }
 

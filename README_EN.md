@@ -77,15 +77,15 @@ Moving from "what is the agent doing" to "how does a person work with it". This 
 
 | No. | Name | The question it answers |
 |---|---|---|
-| 1 | The Brief | What if the interface were about the commission, not the chat log? |
-| 2 | In & Out | What does the road from opening the product to getting a result look like? |
-| 3 | Workbench | Is the process a log of the result, or its draft? |
-| 4 | Mission Control | You dispatch five agents at once. What is the interface, besides five chats side by side? |
-| 5 | Bubble | What if the agent looked like the chat app you already know by heart? |
-| 6 | The Plan | The agent already started, and you realise it misunderstood. What now, besides killing it? |
-| 7 | Weight | Should one screen give the same amount of process for one sentence and for twenty projects? |
-| 8 | Ledger | What makes a search agent’s answer worth trusting? |
-| 9 | Return | The user was away for 20 minutes. What should they see when they come back? |
+| A1 | The Brief | What if the interface were about the commission, not the chat log? |
+| A2 | In & Out | What does the road from opening the product to getting a result look like? |
+| A3 | Workbench | Is the process a log of the result, or its draft? |
+| A4 | Mission Control | You dispatch five agents at once. What is the interface, besides five chats side by side? |
+| A5 | Bubble | What if the agent looked like the chat app you already know by heart? |
+| A6 | The Plan | The agent already started, and you realise it misunderstood. What now, besides killing it? |
+| A7 | Weight | Should one screen give the same amount of process for one sentence and for twenty projects? |
+| A8 | Ledger | What makes a search agent’s answer worth trusting? |
+| A9 | Return | The user was away for 20 minutes. What should they see when they come back? |
 
 ### B · Agent process visualisation
 
@@ -95,12 +95,12 @@ Conventional products compress an agent's work into one spinner. This line asks 
 
 | No. | Name | The question it answers |
 |---|---|---|
-| 1 | The Bench | When an agent is working, what can the interface be besides a spinner? |
-| 2 | One Line | If the whole interface were allowed exactly one line, how could an agent still work? |
-| 3 | Terminal | Terminals are crude. Can one be designed into a first-class agent interface? |
-| 4 | Chronicle | What if an agent's work were shown as a timeline instead of a chat log? |
-| 5 | Desktop | What if an agent were not a web page but something that lives on your desktop? |
-| 6 | Spatial | What if an agent's state were expressed through spatial relationships instead of a list? |
+| B1 | The Bench | When an agent is working, what can the interface be besides a spinner? |
+| B2 | One Line | If the whole interface were allowed exactly one line, how could an agent still work? |
+| B3 | Terminal | Terminals are crude. Can one be designed into a first-class agent interface? |
+| B4 | Chronicle | What if an agent's work were shown as a timeline instead of a chat log? |
+| B5 | Desktop | What if an agent were not a web page but something that lives on your desktop? |
+| B6 | Spatial | What if an agent's state were expressed through spatial relationships instead of a list? |
 
 ## Usage
 
@@ -108,13 +108,13 @@ The gallery lives at `/`. Every experiment has its own route:
 
 ```
 /            Gallery, the entry point for all fifteen
-/001/a      001 has three skins at /001/a, /001/b and /001/c
-/002 … /015 The rest
+/b1/a        B1 has three skins at /b1/a, /b1/b and /b1/c
+/b2 … /b6    The rest of line B; /a1 … /a9 are the nine of line A
 ```
 
 Each experiment page has a control bar in the top right: back to the gallery, previous and next experiment, light and dark toggle, play and pause, restart, and speed (0.5x, 1x, 2x).
 
-**Every experiment is operable, not just viewable.** You can type into the inputs, click the buttons, drag and zoom the canvas in 006, and rewrite a step in place in 012. The scripted demo is only one of several paths through it, and it stops on its own once the script runs out instead of idling in the background.
+**Every experiment is operable, not just viewable.** You can type into the inputs, click the buttons, drag and zoom the canvas in B6, and rewrite a step in place in A6. The scripted demo is only one of several paths through it, and it stops on its own once the script runs out instead of idling in the background.
 
 ## Configuration
 
@@ -133,7 +133,7 @@ All data is mock data hard-coded in `src/experiments/*/scenario.ts`.
 ```
 src/
 ├── experiments/          Fifteen templates, one folder each, self-contained
-│   ├── 001-bench/        scenario / engine / index / style.css / NOTES.md
+│   ├── a1-brief/        scenario / engine / index / style.css / NOTES.md
 │   └── …
 ├── lab/                  The lab shell
 │   ├── Index.tsx         Gallery page
@@ -142,7 +142,7 @@ src/
 │   ├── registry.ts       Experiment list and route table
 │   └── theme.ts          Light and dark
 ├── shared/               The only place reuse is allowed
-│   └── beat.ts           Demo beat engine, used by 008 through 015
+│   └── beat.ts           Demo beat engine, used by the A-line experiments (A2–A9)
 └── styles/               Global styles and shell color tokens
 docs/                     Screenshots used by the README
 ```
@@ -173,7 +173,7 @@ Every experiment follows the same path, in this order:
 
 Every experiment has to be genuinely clickable. A still image is not enough, and neither is a looping animation.
 
-Since 002, all animation follows one pattern: **the per-frame loop only writes CSS variables and DOM styles, and React re-renders only on discrete beats**. A demo running tens of seconds usually triggers only tens of re-renders.
+Since B2, all animation follows one pattern: **the per-frame loop only writes CSS variables and DOM styles, and React re-renders only on discrete beats**. A demo running tens of seconds usually triggers only tens of re-renders.
 
 ## FAQ
 
@@ -181,27 +181,27 @@ Since 002, all animation follows one pattern: **the per-frame loop only writes C
 
 A: Sharing would slowly make all fifteen look alike, and that destroys the point of comparing them. So not a single line of CSS is shared.
 
-The one exception is `src/shared/beat.ts`. The demo beat loop in 008 through 015 had been copied verbatim six times — advancing time, interpolating the typewriter, clearing timers, byte for byte identical each time. It is pure plumbing with no bearing on appearance, so extracting it changes nobody's looks. It also means one fix lands eight times over: "stop when the script is done" went from missing in eight places to correct in one.
+The one exception is `src/shared/beat.ts`. The demo beat loop in A2 through A9 had been copied verbatim six times — advancing time, interpolating the typewriter, clearing timers, byte for byte identical each time. It is pure plumbing with no bearing on appearance, so extracting it changes nobody's looks. It also means one fix lands eight times over: "stop when the script is done" went from missing in eight places to correct in one.
 
 **Q: Can I wire this up to a real LLM?**
 
 A: No, and there is no plan to. This project studies interfaces. Adding a model would only pull attention away from layout and interaction.
 
-**Q: Why do 008 through 015 open almost empty?**
+**Q: Why do A2 through A9 open almost empty?**
 
 A: That is not unfinished work, it is a deliberate first frame: the moment a user opens the product and has not yet handed over a task. Press play in the top right for the full demo, or just start using it — the inputs in these experiments all work.
 
-001 through 007 autoplay instead, because the process itself is what they are studying.
+B1 through B6 and A1 autoplay instead, because the process itself is what they are studying.
 
 ## Known limitations
 
 - All data is mock. There is no real model call, no backend, no database, and no login
 - Desktop is the primary viewport. Mobile gets breakpoint handling, and every stylesheet ships a `prefers-reduced-motion` fallback, but no design has been done specifically for phones
 - No automated tests. CI only runs `pnpm build` and deploys to GitHub Pages (`.github/workflows/deploy.yml`)
-- The terminal in 003 implements only the few commands the demo needs (`clear`, Ctrl-C, and so on)
-- The live build uses hash routing, so a template URL looks like `https://chenchen913.github.io/agent-ui-lab/#/008`
-- Clauses in 007 cannot be edited in place, only rewritten by answering
-- Agents in 010 cannot be re-tasked mid-run; you can only pause them or answer their gate
+- The terminal in B3 implements only the few commands the demo needs (`clear`, Ctrl-C, and so on)
+- The live build uses hash routing, so a template URL looks like `https://chenchen913.github.io/agent-ui-lab/#/a2`
+- Clauses in A1 cannot be edited in place, only rewritten by answering
+- Agents in A4 cannot be re-tasked mid-run; you can only pause them or answer their gate
 
 ## Contributing
 

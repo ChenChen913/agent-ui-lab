@@ -9,7 +9,7 @@ import type { Ctl } from '../../lab/ctl'
 import './style.css'
 
 /**
- * 009 · 过程与产物 —— 聊天 + 工作状态双层结构（Workbench + 原 014 Settle）
+ * A3 · 过程与产物 —— 聊天 + 工作状态双层结构（Workbench + 原 014 Settle）
  *
  * 左边是对话，右边是 Workspace。
  * 报告不是「最后一条消息」，它出现在右边的面板里，边写边长；

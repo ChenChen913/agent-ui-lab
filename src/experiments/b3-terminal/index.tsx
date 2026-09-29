@@ -5,7 +5,7 @@ import type { Ctl } from '../../lab/ctl'
 import './style.css'
 
 /**
- * 003 · Terminal —— 「Agent 就是一个跑在终端里的进程」
+ * B3 · Terminal —— 「Agent 就是一个跑在终端里的进程」
  *
  * 核心区分（整个设计的骨架）：
  *   \n 追加  = 已定论 → 写进 scrollback，永久
