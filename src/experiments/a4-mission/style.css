@@ -1,0 +1,282 @@
+/* A4 · Mission Control —— 多 Agent 并行控制塔
+   ─────────────────────────────────────────────────────────
+   视觉参考 Linear 的暗色系统：
+   深蓝黑底 + 一层发丝线 + 只有一个彩色（indigo #5e6ad2）。
+   状态色是例外，且刻意只在「需要你看一眼」的那一刻出现 ——
+   跑着的卡是蓝，等你拍板的整张泛琥珀，落地的是绿，除此之外全是灰阶。
+   圆角一律很小（6–8px），边框比阴影多，层级靠白透明度分层。 */
+
+.mc4 {
+  --mc4-bg: #0b0f14;
+  --mc4-panel: #12161c;
+  --mc4-card: #171b22;
+  --mc4-line: rgba(255, 255, 255, 0.07);
+  --mc4-line-2: rgba(255, 255, 255, 0.13);
+  --mc4-t1: #e6e9ee;
+  --mc4-t2: #98a1ac;
+  --mc4-t3: #6b7380;
+  --mc4-accent: #5e6ad2;
+  --mc4-accent-h: #7170ff;
+  --mc4-run: #5e6ad2;
+  --mc4-wait: #f2994a;
+  --mc4-done: #4cb782;
+  --mc4-mono: 'Geist Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  background: var(--mc4-bg);
+  color: var(--mc4-t1);
+  font-size: 13px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── 顶栏：一行汇总，不占戏 ───────────────────────────── */
+.mc4-top {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  height: 46px;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--mc4-line);
+  background: var(--mc4-panel);
+}
+.mc4-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+.mc4-live {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--mc4-done);
+  box-shadow: 0 0 0 3px rgba(76, 183, 130, 0.16);
+  animation: mc4-pulse 2.4s ease-in-out infinite;
+}
+@keyframes mc4-pulse { 50% { opacity: 0.45; } }
+
+.mc4-stats { display: flex; align-items: center; gap: 16px; }
+.mc4-stat {
+  display: inline-flex; align-items: baseline; gap: 5px;
+  font-family: var(--mc4-mono); font-size: 11.5px; color: var(--mc4-t3);
+}
+.mc4-stat b { font-size: 13px; font-weight: 500; color: var(--mc4-t2); }
+.mc4-stat[data-tone='run'] b { color: var(--mc4-run); }
+.mc4-stat[data-tone='wait'] b { color: var(--mc4-wait); }
+.mc4-stat[data-tone='done'] b { color: var(--mc4-done); }
+
+.mc4-spend {
+  margin-left: auto;
+  font-family: var(--mc4-mono); font-size: 11.5px; color: var(--mc4-t3);
+  font-variant-numeric: tabular-nums;
+}
+.mc4-spend b { font-size: 13px; font-weight: 500; color: var(--mc4-t1); }
+
+/* ── 主体：卡片网格 ───────────────────────────────────── */
+.mc4-body { flex: 1; min-height: 0; overflow-y: auto; padding: 16px 20px 20px; }
+.mc4-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(268px, 1fr));
+  gap: 12px;
+  align-content: start;
+}
+
+.mc4-card {
+  position: relative;
+  display: flex; flex-direction: column;
+  padding: 13px 14px 11px 19px;
+  background: var(--mc4-card);
+  border: 1px solid var(--mc4-line);
+  border-radius: 8px;
+  overflow: hidden;
+  animation: mc4-in 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: border-color 0.18s ease;
+}
+@keyframes mc4-in { from { opacity: 0; transform: translateY(6px); } }
+.mc4-card:hover { border-color: var(--mc4-line-2); }
+
+/* 左边那条 4px 色带是卡上唯一的彩色来源 */
+.mc4-band {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+  background: #3a414d;
+  transition: background-color 0.2s ease;
+}
+.mc4-card[data-s='running'] .mc4-band { background: var(--mc4-run); }
+.mc4-card[data-s='done'] .mc4-band { background: var(--mc4-done); }
+.mc4-card[data-s='paused'] .mc4-band { background: #5a6270; }
+
+/* 等你拍板：整张卡泛琥珀，但不加边框描边那么用力 */
+.mc4-card[data-s='waiting'] {
+  border-color: rgba(242, 153, 74, 0.34);
+  background: linear-gradient(180deg, rgba(242, 153, 74, 0.07), rgba(242, 153, 74, 0.02));
+}
+.mc4-card[data-s='waiting'] .mc4-band { background: var(--mc4-wait); }
+
+.mc4-h { display: flex; align-items: center; gap: 8px; }
+.mc4-name {
+  flex: 1; min-width: 0;
+  font-family: var(--mc4-mono); font-size: 12.5px; font-weight: 500;
+  color: var(--mc4-t1);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.mc4-badge {
+  flex: none;
+  padding: 2px 7px; border-radius: 999px;
+  font-size: 10.5px; letter-spacing: 0.02em;
+  color: var(--mc4-t3);
+  background: rgba(255, 255, 255, 0.05);
+}
+.mc4-card[data-s='running'] .mc4-badge { color: #a8b0f0; background: rgba(94, 106, 210, 0.16); }
+.mc4-card[data-s='waiting'] .mc4-badge { color: #f5c290; background: rgba(242, 153, 74, 0.16); }
+.mc4-card[data-s='done'] .mc4-badge { color: #8fd0ab; background: rgba(76, 183, 130, 0.14); }
+
+.mc4-branch {
+  margin-top: 4px;
+  font-family: var(--mc4-mono); font-size: 10.5px; color: var(--mc4-t3);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.mc4-note {
+  margin: 9px 0 11px;
+  font-size: 12.5px; line-height: 1.5; color: var(--mc4-t2);
+  min-height: 2.9em;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+
+.mc4-bar { height: 3px; border-radius: 2px; background: rgba(255, 255, 255, 0.08); overflow: hidden; }
+.mc4-bar i {
+  display: block; height: 100%; border-radius: 2px;
+  background: var(--mc4-run);
+  transition: width 0.2s linear;
+}
+.mc4-card[data-s='done'] .mc4-bar i { background: var(--mc4-done); }
+.mc4-card[data-s='waiting'] .mc4-bar i { background: var(--mc4-wait); }
+.mc4-card[data-s='paused'] .mc4-bar i { background: #5a6270; }
+
+.mc4-f {
+  display: flex; align-items: center; gap: 10px;
+  margin-top: 10px;
+  font-family: var(--mc4-mono); font-size: 10.5px; color: var(--mc4-t3);
+  font-variant-numeric: tabular-nums;
+}
+.mc4-art {
+  flex: 1; min-width: 0;
+  color: var(--mc4-t2);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.mc4-art.is-dim { color: #454c58; }
+.mc4-ops { flex: none; display: flex; gap: 2px; opacity: 0; transition: opacity 0.15s ease; }
+.mc4-card:hover .mc4-ops, .mc4-card:focus-within .mc4-ops { opacity: 1; }
+.mc4-ops button {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 20px; height: 20px;
+  background: transparent; border: 0; border-radius: 5px;
+  color: var(--mc4-t3); cursor: pointer;
+  transition: background-color 0.14s ease, color 0.14s ease;
+}
+.mc4-ops button:hover { background: rgba(255, 255, 255, 0.07); color: var(--mc4-t1); }
+
+/* ── 现场派一个：一张虚线卡 ───────────────────────────── */
+.mc4-new {
+  display: flex; align-items: center; gap: 8px;
+  min-height: 78px; padding: 12px 14px;
+  border: 1px dashed var(--mc4-line-2); border-radius: 8px;
+  background: transparent;
+  transition: border-color 0.16s ease, background-color 0.16s ease;
+}
+.mc4-new:hover { border-color: rgba(94, 106, 210, 0.5); background: rgba(94, 106, 210, 0.05); }
+.mc4-new input {
+  flex: 1; min-width: 0;
+  background: transparent; border: 0; outline: none;
+  font-family: var(--mc4-mono); font-size: 12px; color: var(--mc4-t1);
+}
+.mc4-new input::placeholder { color: #565e6b; }
+.mc4-new button {
+  flex: none;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 24px; height: 24px; border-radius: 6px;
+  background: rgba(94, 106, 210, 0.16); border: 1px solid rgba(94, 106, 210, 0.4);
+  color: #a8b0f0; cursor: pointer;
+  transition: background-color 0.14s ease;
+}
+.mc4-new button:disabled { opacity: 0.4; cursor: default; }
+.mc4-new button:not(:disabled):hover { background: rgba(94, 106, 210, 0.28); }
+
+/* ── 空状态：网格里的第一张卡，不是居中的口号 ─────────── */
+.mc4-empty {
+  max-width: 520px;
+  padding: 26px 24px 22px;
+  border: 1px dashed var(--mc4-line-2); border-radius: 10px;
+}
+.mc4-e-h { margin: 0 0 8px; font-size: 15px; font-weight: 500; letter-spacing: -0.01em; }
+.mc4-e-p { margin: 0 0 16px; font-size: 12.5px; line-height: 1.75; color: var(--mc4-t2); }
+.mc4-new.is-empty { min-height: 44px; }
+
+/* ── 待你拍板：这一页唯一的交互高潮 ───────────────────── */
+.mc4-gate {
+  flex: none;
+  padding: 14px 20px 18px;
+  border-top: 1px solid rgba(242, 153, 74, 0.28);
+  background: linear-gradient(180deg, rgba(242, 153, 74, 0.06), rgba(242, 153, 74, 0));
+}
+.mc4-gate-h {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 10px;
+  font-size: 12px; font-weight: 500;
+  color: #f5c290;
+  letter-spacing: 0.01em;
+}
+.mc4-gate-n {
+  padding: 1px 7px; border-radius: 999px;
+  font-family: var(--mc4-mono); font-size: 10.5px;
+  background: rgba(242, 153, 74, 0.18); color: #f5c290;
+}
+.mc4-g {
+  padding: 13px 15px;
+  border: 1px solid rgba(242, 153, 74, 0.3); border-radius: 8px;
+  background: rgba(242, 153, 74, 0.06);
+  animation: mc4-in 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.mc4-g + .mc4-g { margin-top: 8px; }
+.mc4-g-top { display: flex; flex-direction: column; gap: 5px; }
+.mc4-g-who { font-family: var(--mc4-mono); font-size: 11px; color: #f5c290; }
+.mc4-g-q { margin: 0; font-size: 13px; line-height: 1.65; color: var(--mc4-t1); }
+.mc4-g-opts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 12px; }
+.mc4-g-opt {
+  padding: 7px 13px;
+  background: rgba(94, 106, 210, 0.18);
+  border: 1px solid rgba(94, 106, 210, 0.45); border-radius: 6px;
+  font: inherit; font-size: 12.5px; color: #c3c8f6; cursor: pointer;
+  transition: background-color 0.14s ease, border-color 0.14s ease;
+}
+.mc4-g-opt:hover { background: rgba(94, 106, 210, 0.3); border-color: var(--mc4-accent-h); }
+.mc4-g-kill {
+  margin-left: auto;
+  padding: 7px 11px;
+  background: transparent; border: 1px solid var(--mc4-line-2); border-radius: 6px;
+  font: inherit; font-size: 12px; color: var(--mc4-t3); cursor: pointer;
+  transition: color 0.14s ease, border-color 0.14s ease;
+}
+.mc4-g-kill:hover { color: #f09a7a; border-color: rgba(240, 154, 122, 0.45); }
+
+/* ── 响应式 / 降低动效 ────────────────────────────────── */
+@media (max-width: 900px) {
+  .mc4-body { padding: 14px; }
+  .mc4-grid { grid-template-columns: repeat(auto-fill, minmax(232px, 1fr)); }
+  .mc4-gate { padding: 12px 14px 16px; }
+  .mc4-top { gap: 12px; padding: 0 14px; }
+  .mc4-stats { gap: 10px; }
+}
+@media (max-width: 560px) {
+  .mc4-grid { grid-template-columns: 1fr; }
+  .mc4-spend { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mc4-card, .mc4-g { animation: none; }
+  .mc4-live { animation: none; }
+  .mc4-bar i { transition: none; }
+}
