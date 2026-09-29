@@ -12,11 +12,13 @@ export interface FrameProps {
   title: string
   variants?: { id: string; name: string }[]
   current?: string
+  /** 默认自动播放；008 起的「产品态」实验停在用户刚打开的空状态，点播放才演示 */
+  autoPlay?: boolean
   render: (ctl: Ctl) => ReactNode
 }
 
-export default function Frame({ no, title, variants, current, render }: FrameProps) {
-  const [playing, setPlaying] = useState(true)
+export default function Frame({ no, title, variants, current, autoPlay = true, render }: FrameProps) {
+  const [playing, setPlaying] = useState(autoPlay)
   const [speed, setSpeed] = useState(1)
   const [runId, setRunId] = useState(0)
   const navigate = useNavigate()

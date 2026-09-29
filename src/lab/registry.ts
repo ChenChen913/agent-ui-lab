@@ -35,6 +35,9 @@ export const NAV: NavItem[] = [
   { no: '005', title: 'Desktop', route: '/005' },
   { no: '006', title: 'Spatial', route: '/006' },
   { no: '007', title: 'The Brief', route: '/007' },
+  { no: '008', title: 'Baseline', route: '/008' },
+  { no: '009', title: 'Workbench', route: '/009' },
+  { no: '010', title: 'Home', route: '/010' },
 ]
 
 export const ENTRIES: Entry[] = [
@@ -112,6 +115,36 @@ export const ENTRIES: Entry[] = [
     status: 'live',
     variants: [
       { id: 'a', name: 'The Brief', tag: '条款 · 谈判 · 逐条兑现', bg: '#131211', fg: '#ece7dd', accent: '#c8623f', href: '/007' },
+    ],
+  },
+  {
+    no: '008',
+    slug: '/008',
+    title: 'Baseline',
+    question: '用户登录之后第一眼看到的那一层，应该长什么样？',
+    status: 'live',
+    variants: [
+      { id: 'a', name: 'Baseline', tag: '通用 · 无气泡 · 悬浮输入框', bg: '#fbfbfc', fg: '#15181d', accent: '#2f6bd8', href: '/008' },
+    ],
+  },
+  {
+    no: '009',
+    slug: '/009',
+    title: 'Workbench',
+    question: '如果产出不是最后一条消息，而是一个放在旁边的产物呢？',
+    status: 'live',
+    variants: [
+      { id: 'a', name: 'Workbench', tag: '活动面板 · 工作区 · 双层', bg: '#f6f6f4', fg: '#191a18', accent: '#2e6b52', href: '/009' },
+    ],
+  },
+  {
+    no: '010',
+    slug: '/010',
+    title: 'Home',
+    question: '如果首页本身就是这个产品，输入框悬在正中，会怎么样？',
+    status: 'live',
+    variants: [
+      { id: 'a', name: 'Home', tag: '首页 · 轻量状态 · Context', bg: '#f8f7f5', fg: '#17171a', accent: '#17171a', href: '/010' },
     ],
   },
   { no: '—', slug: '/', title: '…', question: '下一个想法。', status: 'planned' },

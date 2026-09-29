@@ -11,6 +11,9 @@ import Chronicle from './experiments/004-chronicle'
 import Desktop from './experiments/005-desktop'
 import Spatial from './experiments/006-spatial'
 import Brief from './experiments/007-brief'
+import Baseline from './experiments/008-baseline'
+import Workbench from './experiments/009-workbench'
+import Home from './experiments/010-home'
 
 const BENCH: { id: string; name: string; Comp: (p: Ctl) => React.ReactElement }[] = [
   { id: 'a', name: 'A · 极简黑白', Comp: BenchA },
@@ -68,6 +71,21 @@ export default function App() {
         <Route
           path="/007"
           element={<Frame no="007" title="The Brief" render={(ctl) => <Brief {...ctl} />} />}
+        />
+
+        <Route
+          path="/008"
+          element={<Frame no="008" title="Baseline" autoPlay={false} render={(ctl) => <Baseline {...ctl} />} />}
+        />
+
+        <Route
+          path="/009"
+          element={<Frame no="009" title="Workbench" autoPlay={false} render={(ctl) => <Workbench {...ctl} />} />}
+        />
+
+        <Route
+          path="/010"
+          element={<Frame no="010" title="Home" autoPlay={false} render={(ctl) => <Home {...ctl} />} />}
         />
 
         <Route path="*" element={<Navigate to="/" replace />} />

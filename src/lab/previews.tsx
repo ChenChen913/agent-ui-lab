@@ -165,6 +165,129 @@ function Spatial() {
   )
 }
 
+/** 008 · 通用聊天式：侧栏 + 无气泡对话 + 悬浮输入框 */
+function BaselinePv() {
+  return (
+    <Box bg="#fbfbfc">
+      <rect x="0" y="0" width="62" height={H} fill="#f3f4f6" />
+      <rect x="0" y="0" width="1" height={H} fill="#e9ebef" />
+      <rect x="10" y="12" width="15" height="15" rx="4.5" fill="#15181d" />
+      <rect x="30" y="17" width="22" height="4" rx="2" fill="#5a626e" />
+      <rect x="10" y="36" width="42" height="15" rx="4.5" fill="#ffffff" stroke="#e5e7eb" />
+      <rect x="16" y="41" width="26" height="4" rx="2" fill="#8b929e" />
+      {[58, 88, 118].map((y) => <rect key={y} x="10" y={y} width="18" height="3" rx="1.5" fill="#b9bec7" />)}
+      {[70, 82, 94, 124, 136].map((y) => <rect key={y} x="10" y={y} width="38" height="4" rx="2" fill="#c8ccd3" />)}
+      <rect x="150" y="30" width="118" height="17" rx="8" fill="#f0f1f4" />
+      <rect x="176" y="36" width="80" height="4" rx="2" fill="#8b929e" />
+      <rect x="80" y="60" width="16" height="16" rx="5" fill="#15181d" />
+      <rect x="104" y="62" width="150" height="4" rx="2" fill="#5a626e" />
+      <rect x="104" y="72" width="120" height="4" rx="2" fill="#c8ccd3" />
+      <rect x="104" y="88" width="88" height="14" rx="7" fill="#f7f8fa" stroke="#eef0f3" />
+      <rect x="112" y="93" width="5" height="5" rx="2.5" fill="#2f6bd8" />
+      <rect x="121" y="94" width="62" height="3" rx="1.5" fill="#aab0b9" />
+      <rect x="80" y="120" width="228" height="30" rx="10" fill="#ffffff" stroke="#e5e7eb" />
+      <rect x="92" y="130" width="70" height="4" rx="2" fill="#c8ccd3" />
+      <rect x="92" y="139" width="12" height="3" rx="1.5" fill="#d5d9e0" />
+      <rect x="110" y="139" width="12" height="3" rx="1.5" fill="#d5d9e0" />
+      <circle cx="292" cy="135" r="8" fill="#15181d" />
+      <rect x="289.5" y="132" width="5" height="6" rx="1" fill="#ffffff" />
+    </Box>
+  )
+}
+
+/** 009 · 工作台：左边对话，右边产物 */
+function WorkbenchPv() {
+  return (
+    <Box bg="#f6f6f4">
+      <rect x="0" y="0" width="52" height={H} fill="#f6f6f4" />
+      <rect x="52" y="0" width="1" height={H} fill="#e6e5e1" />
+      <rect x="10" y="11" width="16" height="16" rx="5" fill="#2e6b52" />
+      <rect x="30" y="14" width="14" height="4" rx="2" fill="#5c5f5a" />
+      <circle cx="32" cy="23" r="2" fill="#3f9c6b" />
+      <rect x="36" y="21.5" width="12" height="3" rx="1.5" fill="#a9aca6" />
+      <rect x="10" y="34" width="32" height="14" rx="5" fill="#191a18" />
+      <rect x="10" y="56" width="14" height="3" rx="1.5" fill="#b9bcb6" />
+      <rect x="10" y="68" width="34" height="6" rx="3" fill="#ffffff" stroke="#e6e5e1" />
+      <rect x="10" y="80" width="34" height="5" rx="2.5" fill="#c5c8c2" />
+      <rect x="80" y="26" width="120" height="16" rx="8" fill="#f0efec" />
+      <rect x="106" y="32" width="76" height="4" rx="2" fill="#8b8e88" />
+      <rect x="80" y="52" width="18" height="18" rx="6" fill="#2e6b52" />
+      <rect x="80" y="80" width="200" height="26" rx="9" fill="#fcfcfb" stroke="#e6e5e1" />
+      <circle cx="96" cy="93" r="5.5" fill="none" stroke="#2e6b52" strokeWidth="1.6" strokeDasharray="10 6" />
+      <rect x="110" y="91" width="120" height="4" rx="2" fill="#8b8e88" />
+      <rect x="106" y="120" width="140" height="4" rx="2" fill="#5c5f5a" />
+      <rect x="106" y="131" width="100" height="4" rx="2" fill="#b9bcb6" />
+      <rect x="238" y="0" width="1" height={H} fill="#e6e5e1" />
+      <rect x="239" y="0" width="81" height={H} fill="#ffffff" />
+      <rect x="250" y="14" width="40" height="4" rx="2" fill="#5c5f5a" />
+      <rect x="250" y="34" width="30" height="5" rx="2.5" fill="#191a18" />
+      <rect x="250" y="48" width="58" height="3" rx="1.5" fill="#b9bcb6" />
+      <rect x="250" y="55" width="52" height="3" rx="1.5" fill="#b9bcb6" />
+      <rect x="250" y="62" width="56" height="3" rx="1.5" fill="#b9bcb6" />
+      <rect x="250" y="69" width="34" height="3" rx="1.5" fill="#b9bcb6" />
+      <rect x="250" y="84" width="58" height="26" rx="4" fill="#f8f8f6" stroke="#efeeea" />
+      <rect x="250" y="120" width="24" height="5" rx="2.5" fill="#191a18" />
+      <rect x="250" y="132" width="58" height="3" rx="1.5" fill="#b9bcb6" />
+      <rect x="250" y="139" width="44" height="3" rx="1.5" fill="#b9bcb6" />
+    </Box>
+  )
+}
+
+/** 010 · 首页：悬在正中的输入框 */
+function HomePv() {
+  return (
+    <Box bg="#f8f7f5">
+      <rect x="20" y="16" width="20" height="20" rx="6.5" fill="#17171a" />
+      <rect x="128" y="34" width="64" height="11" rx="5.5" fill="#17171a" />
+      <rect x="112" y="54" width="96" height="4" rx="2" fill="#b6b5b1" />
+      {[0, 1, 2].map((i) => <rect key={i} x={44 + i * 80} y="72" width="70" height="20" rx="7" fill="none" stroke="#e8e7e3" />)}
+      {[0, 1, 2].map((i) => (
+        <g key={i}>
+          <rect x={54 + i * 80} y="78" width="34" height="3.5" rx="1.75" fill="#5f6066" />
+          <rect x={54 + i * 80} y="85" width="24" height="2.5" rx="1.25" fill="#b6b5b1" />
+        </g>
+      ))}
+      <rect x="40" y="104" width="240" height="42" rx="13" fill="#ffffff" stroke="#e8e7e3" />
+      <rect x="56" y="116" width="76" height="4" rx="2" fill="#c9c8c4" />
+      <circle cx="60" cy="134" r="4.5" fill="none" stroke="#a9a8a4" strokeWidth="1.4" />
+      <rect x="70" y="132" width="24" height="3" rx="1.5" fill="#b6b5b1" />
+      <rect x="102" y="132" width="20" height="3" rx="1.5" fill="#b6b5b1" />
+      <circle cx="256" cy="133" r="9" fill="#17171a" />
+      <rect x="253" y="129.5" width="6" height="7" rx="1" fill="#ffffff" />
+    </Box>
+  )
+}
+
+/** 007 · 委托书：左边距竖线 + 条款 + 印章 */
+function Brief() {
+  return (
+    <Box bg="#131211">
+      <rect x="44" y="22" width="1" height="126" fill="#3a3632" />
+      <rect x="22" y="16" width="52" height="3" rx="1.5" fill="#6d665e" />
+      <rect x="252" y="16" width="46" height="3" rx="1.5" fill="#6d665e" />
+      <rect x="22" y="34" width="9" height="4" rx="2" fill="#8c857b" />
+      <rect x="58" y="32" width="24" height="2.5" rx="1.25" fill="#6d665e" />
+      <rect x="58" y="42" width="78" height="6" rx="3" fill="#ece7dd" />
+      <rect x="58" y="60" width="216" height="1" fill="#3a3632" />
+      <path d="M268 57 l3 3 l6 -7" stroke="#7fa07a" strokeWidth="1.7" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      <rect x="284" y="55" width="14" height="3" rx="1.5" fill="#6d665e" />
+      <rect x="22" y="68" width="9" height="4" rx="2" fill="#8c857b" />
+      <rect x="58" y="66" width="24" height="2.5" rx="1.25" fill="#6d665e" />
+      <rect x="58" y="76" width="64" height="6" rx="3" fill="#ece7dd" />
+      <rect x="58" y="94" width="216" height="1" fill="#3a3632" />
+      <path d="M268 91 l3 3 l6 -7" stroke="#7fa07a" strokeWidth="1.7" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      <rect x="284" y="89" width="14" height="3" rx="1.5" fill="#6d665e" />
+      <rect x="22" y="102" width="9" height="4" rx="2" fill="#c8623f" />
+      <rect x="58" y="100" width="24" height="2.5" rx="1.25" fill="#6d665e" />
+      <rect x="58" y="110" width="58" height="6" rx="3" fill="#c8623f" />
+      <rect x="58" y="128" width="216" height="1" fill="#5c3a2c" />
+      <path d="M268 125 l4 4 l4 -4 M272 129 l0 -4" stroke="#c8623f" strokeWidth="1.7" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      <rect x="284" y="123" width="14" height="3" rx="1.5" fill="#c8623f" />
+      <rect x="236" y="136" width="34" height="16" rx="1.5" fill="none" stroke="#c8623f" strokeWidth="1.4" />
+    </Box>
+  )
+}
+
 export const PREVIEWS: Record<string, (p: PreviewProps) => JSX.Element> = {
   '001': Bench,
   '002': OneLine,
@@ -172,4 +295,8 @@ export const PREVIEWS: Record<string, (p: PreviewProps) => JSX.Element> = {
   '004': Chronicle,
   '005': Desktop,
   '006': Spatial,
+  '007': Brief,
+  '008': BaselinePv,
+  '009': WorkbenchPv,
+  '010': HomePv,
 }
