@@ -25,6 +25,9 @@
 
   --lab-accent: #8fb0d8;
   --lab-accent-soft: rgba(143, 176, 216, 0.14);
+
+  /* 主标题渐变的收尾色。只降一点点，保证大字依然清晰 */
+  --lab-hero-end: #a9b5c6;
 }
 
 :root[data-lab-theme='light'] {
@@ -42,6 +45,8 @@
 
   --lab-accent: #2f6ba8;
   --lab-accent-soft: rgba(47, 107, 168, 0.1);
+
+  --lab-hero-end: #414b59;
 }
 
 html, body, #root { height: 100%; }
@@ -76,3 +81,38 @@ body {
 
 .lab-hover-plain { transition: color 0.18s ease; }
 .lab-hover-plain:hover { color: var(--lab-t1); }
+
+/* ── 主标题：大字号 + 紧字距 + 一道很浅的纵向渐变 ──────────────
+   参考的是苹果 / 谷歌官网首屏那种做法：靠尺寸和留白撑起来，
+   渐变只负责让下半部分稍微收一点，不做任何装饰。 */
+.lab-hero {
+  background-image: linear-gradient(
+    177deg,
+    var(--lab-t1) 0%,
+    var(--lab-t1) 46%,
+    var(--lab-hero-end) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.lab-hero-glow {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -130px;
+  height: 300px;
+  pointer-events: none;
+  background: radial-gradient(46% 100% at 50% 0%, var(--lab-accent-soft), transparent 72%);
+}
+
+.lab-rise { animation: lab-rise 0.72s cubic-bezier(0.16, 1, 0.3, 1) both; }
+@keyframes lab-rise {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lab-rise { animation: none; }
+}
