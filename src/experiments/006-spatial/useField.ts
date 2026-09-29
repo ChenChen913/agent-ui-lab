@@ -15,7 +15,7 @@ interface NodeEl { el: HTMLElement; dot: HTMLElement | null; label: HTMLElement 
 interface EdgeEl { el: SVGLineElement; a: string; b: string; da: number; db: number; kind: string }
 
 const clamp = (v: number, a: number, b: number) => (v < a ? a : v > b ? b : v)
-const FR = 300          // 聚焦半径（世界坐标）：这个半径以内是清楚的
+const FR = 420          // 聚焦半径（世界坐标）：这个半径以内是清楚的
 const DEFAULT_Z = 0.9
 
 const emptyDisc = () => ({
@@ -128,13 +128,14 @@ export function useField(opts: {
         const sy = H / 2 + (p.y - cam.y) * cam.z * persp
         const dist = Math.hypot(p.x - fp.x, p.y - fp.y)
         const near = clamp(1 - dist / FR, 0, 1)
-        const blur = (1 - near) * 5.4 + Math.abs(ne.depth) * 0.009
+        const blur = (1 - near) * 3.4 + Math.abs(ne.depth) * 0.009
         const k = cam.z * persp * (0.7 + near * 0.5)
         ne.el.style.transform = 'translate3d(' + sx.toFixed(1) + 'px,' + sy.toFixed(1) + 'px,0)'
         ne.el.style.filter = blur > 0.4 ? 'blur(' + blur.toFixed(2) + 'px)' : 'none'
-        ne.el.style.opacity = (0.16 + near * 0.84).toFixed(3)
+        ne.el.style.opacity = (0.34 + near * 0.66).toFixed(3)
         if (ne.dot) ne.dot.style.transform = 'translate(-50%,-50%) scale(' + k.toFixed(3) + ')'
-        if (ne.label) ne.label.style.opacity = clamp((near - 0.28) * 2.2, 0, 1).toFixed(3)
+        // 标签只在真正锐利的节点上出现 —— 模糊的文字读起来只是噪点
+        if (ne.label) ne.label.style.opacity = clamp((near - 0.6) * 2.5, 0, 1).toFixed(3)
       }
 
       // ⑤ 连线
@@ -150,7 +151,7 @@ export function useField(opts: {
         le.el.setAttribute('x1', ax.toFixed(1)); le.el.setAttribute('y1', ay.toFixed(1))
         le.el.setAttribute('x2', bx.toFixed(1)); le.el.setAttribute('y2', by.toFixed(1))
         const mid = Math.hypot((pa.x + pb.x) / 2 - fp.x, (pa.y + pb.y) / 2 - fp.y)
-        le.el.style.opacity = (0.08 + clamp(1 - mid / (FR * 1.6), 0, 1) * 0.6).toFixed(3)
+        le.el.style.opacity = (0.16 + clamp(1 - mid / (FR * 1.6), 0, 1) * 0.62).toFixed(3)
       }
 
       if (zoomRef.current) zoomRef.current.textContent = cam.z.toFixed(2) + '×'

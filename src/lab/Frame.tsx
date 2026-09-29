@@ -2,6 +2,7 @@ import { useState, type ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { ArrowLeft, ArrowRight, Pause, Play, RotateCcw } from 'lucide-react'
 import { NAV } from './registry'
+import ThemeToggle from './ThemeToggle'
 import type { Ctl } from './ctl'
 
 const SPEEDS = [0.5, 1, 2]
@@ -24,45 +25,46 @@ export default function Frame({ no, title, variants, current, render }: FramePro
   const prev = i > 0 ? NAV[i - 1] : null
   const next = i >= 0 && i < NAV.length - 1 ? NAV[i + 1] : null
 
-  const restart = (next?: string) => {
-    if (next !== undefined) {
-      navigate(`/${no}/${next}`)
-    }
+  const restart = (nextId?: string) => {
+    if (nextId !== undefined) navigate('/' + no + '/' + nextId)
     setRunId((n) => n + 1)
     setPlaying(true)
   }
 
+  const iconBtn =
+    'flex h-8 w-8 items-center justify-center rounded-md lab-t2 lab-hover-plain'
+  const navBtn =
+    'flex h-8 w-[58px] items-center justify-center gap-1 rounded-md text-[12.5px] lab-t2 lab-hover-plain'
+  const tab = (on: boolean) =>
+    'rounded-md px-2.5 py-1.5 text-[12.5px] transition-colors ' +
+    (on ? 'font-medium lab-hover-plain' : 'lab-t3 lab-hover-plain')
+
+  const divider = <div className="mx-1 h-4 w-px" style={{ background: 'var(--lab-line)' }} />
+
   return (
-    <div className="flex h-full flex-col bg-[#0b0c0f]">
-      <header className="flex h-12 flex-none items-center gap-4 border-b border-[#1a1e25] px-4">
-        <Link
-          to="/"
-          className="flex items-center gap-1.5 text-[12px] text-[#7b8494] transition-colors hover:text-[#c9cfda]"
-        >
-          <ArrowLeft size={14} strokeWidth={1.75} />
+    <div className="flex h-full flex-col lab-bg">
+      <header className="flex h-[52px] flex-none items-center gap-2.5 border-b px-4 lab-line">
+        <Link to="/" className="flex items-center gap-1.5 text-[12.5px] lab-t2 lab-hover-plain">
+          <ArrowLeft size={15} strokeWidth={2} />
           实验室
         </Link>
 
-        <div className="h-4 w-px bg-[#22262e]" />
+        {divider}
 
         <div className="flex items-baseline gap-2">
-          <span className="font-mono text-[11px] tabular-nums text-[#5f6675]">{no}</span>
-          <span className="text-[12.5px] font-medium text-[#dfe3ea]">{title}</span>
+          <span className="font-mono text-[12px] tabular-nums lab-t3">{no}</span>
+          <span className="text-[14px] font-medium lab-t1">{title}</span>
         </div>
 
-        <nav className={'ml-2 flex items-center gap-1 ' + (variants && variants.length > 1 ? '' : 'hidden')}>
+        <nav className={'ml-1 flex items-center gap-1 ' + (variants && variants.length > 1 ? '' : 'hidden')}>
           {(variants ?? []).map((v) => {
             const on = v.id === current
             return (
               <button
                 key={v.id}
                 onClick={() => restart(v.id)}
-                className={
-                  'rounded-md px-2.5 py-1 text-[12px] transition-colors ' +
-                  (on
-                    ? 'bg-[#1c2029] text-[#e7e9ee]'
-                    : 'text-[#6d7583] hover:bg-[#15181f] hover:text-[#aeb5c1]')
-                }
+                className={tab(on)}
+                style={on ? { background: 'var(--lab-accent-soft)', color: 'var(--lab-accent)' } : undefined}
               >
                 {v.name}
               </button>
@@ -70,63 +72,57 @@ export default function Frame({ no, title, variants, current, render }: FramePro
           })}
         </nav>
 
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ml-auto flex items-center gap-1.5">
           {prev ? (
-            <Link
-              to={prev.route}
-              title={prev.no + ' · ' + prev.title}
-              className="flex h-7 w-[54px] items-center justify-center gap-1 rounded-md text-[11.5px] text-[#6d7583] transition-colors hover:bg-[#15181f] hover:text-[#e7e9ee]"
-            >
-              <ArrowLeft size={12} strokeWidth={1.75} />
+            <Link to={prev.route} title={prev.no + ' · ' + prev.title} className={navBtn}>
+              <ArrowLeft size={13} strokeWidth={2} />
               {prev.no}
             </Link>
           ) : (
-            <span className="h-7 w-[54px]" />
+            <span className="h-8 w-[58px]" />
           )}
           {next ? (
-            <Link
-              to={next.route}
-              title={next.no + ' · ' + next.title}
-              className="flex h-7 w-[54px] items-center justify-center gap-1 rounded-md text-[11.5px] text-[#6d7583] transition-colors hover:bg-[#15181f] hover:text-[#e7e9ee]"
-            >
+            <Link to={next.route} title={next.no + ' · ' + next.title} className={navBtn}>
               {next.no}
-              <ArrowRight size={12} strokeWidth={1.75} />
+              <ArrowRight size={13} strokeWidth={2} />
             </Link>
           ) : (
-            <span className="h-7 w-[54px]" />
+            <span className="h-8 w-[58px]" />
           )}
 
-          <div className="mx-1 h-4 w-px bg-[#22262e]" />
+          {divider}
 
-          <button
-            onClick={() => setPlaying((p) => !p)}
-            title={playing ? '暂停' : '播放'}
-            className="flex h-7 w-7 items-center justify-center rounded-md text-[#8b93a3] transition-colors hover:bg-[#15181f] hover:text-[#e7e9ee]"
-          >
-            {playing ? <Pause size={14} strokeWidth={1.75} /> : <Play size={14} strokeWidth={1.75} />}
+          <ThemeToggle compact />
+
+          {divider}
+
+          <button onClick={() => setPlaying((p) => !p)} title={playing ? '暂停' : '播放'} className={iconBtn}>
+            {playing ? <Pause size={15} strokeWidth={2} /> : <Play size={15} strokeWidth={2} />}
+          </button>
+          <button onClick={() => restart()} title="重播" className={iconBtn}>
+            <RotateCcw size={15} strokeWidth={2} />
           </button>
 
-          <button
-            onClick={() => restart()}
-            title="重播"
-            className="flex h-7 w-7 items-center justify-center rounded-md text-[#8b93a3] transition-colors hover:bg-[#15181f] hover:text-[#e7e9ee]"
+          <div
+            className="ml-0.5 flex items-center gap-0.5 rounded-md p-0.5"
+            style={{ background: 'var(--lab-panel)', border: '1px solid var(--lab-line)' }}
           >
-            <RotateCcw size={14} strokeWidth={1.75} />
-          </button>
-
-          <div className="flex items-center gap-0.5 rounded-md bg-[#12151b] p-0.5">
-            {SPEEDS.map((s) => (
-              <button
-                key={s}
-                onClick={() => setSpeed(s)}
-                className={
-                  'rounded px-1.5 py-0.5 font-mono text-[10.5px] transition-colors ' +
-                  (s === speed ? 'bg-[#232833] text-[#e7e9ee]' : 'text-[#6d7583] hover:text-[#aeb5c1]')
-                }
-              >
-                {s}×
-              </button>
-            ))}
+            {SPEEDS.map((s) => {
+              const on = s === speed
+              return (
+                <button
+                  key={s}
+                  onClick={() => setSpeed(s)}
+                  className={
+                    'rounded px-2 py-1 font-mono text-[11.5px] transition-colors ' +
+                    (on ? 'lab-t1' : 'lab-t3 lab-hover-plain')
+                  }
+                  style={on ? { background: 'var(--lab-accent-soft)' } : undefined}
+                >
+                  {s}×
+                </button>
+              )
+            })}
           </div>
         </div>
       </header>

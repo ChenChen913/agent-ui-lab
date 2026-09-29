@@ -5,19 +5,74 @@
   --font-mono: 'Geist Mono Variable', ui-monospace, monospace;
 }
 
-:root { color-scheme: dark; }
+/* ─────────────────────────────────────────────────────────────
+   实验室外壳的配色（画廊 + 实验外壳那一圈 chrome）。
+   实验内部的视觉语言是各自独立的，不受这里影响。
+   两个主题共用同一组变量名，所以切换只需要改 data-lab-theme。
+   ───────────────────────────────────────────────────────────── */
+:root {
+  color-scheme: dark;
+
+  --lab-bg: #14161b;
+  --lab-panel: #1a1d24;
+  --lab-card: #1d2129;
+  --lab-line: #333a45;
+  --lab-line-soft: #262b33;
+
+  --lab-t1: #f3f5f8;
+  --lab-t2: #c2c9d4;
+  --lab-t3: #949dac;
+
+  --lab-accent: #8fb0d8;
+  --lab-accent-soft: rgba(143, 176, 216, 0.14);
+}
+
+:root[data-lab-theme='light'] {
+  color-scheme: light;
+
+  --lab-bg: #f2f3f5;
+  --lab-panel: #ffffff;
+  --lab-card: #ffffff;
+  --lab-line: #d8dce2;
+  --lab-line-soft: #e8ebef;
+
+  --lab-t1: #111418;
+  --lab-t2: #3d4653;
+  --lab-t3: #66707e;
+
+  --lab-accent: #2f6ba8;
+  --lab-accent-soft: rgba(47, 107, 168, 0.1);
+}
 
 html, body, #root { height: 100%; }
 
 body {
   margin: 0;
-  background: #0b0c0f;
-  color: #e7e9ee;
+  background: var(--lab-bg);
+  color: var(--lab-t1);
   font-family: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
 * { box-sizing: border-box; }
+::selection { background: var(--lab-accent-soft); }
 
-::selection { background: #2b3140; }
+/* 颜色一律走这三个类，避免 Tailwind 任意值在 color / font-size 之间产生歧义 */
+.lab-t1 { color: var(--lab-t1); }
+.lab-t2 { color: var(--lab-t2); }
+.lab-t3 { color: var(--lab-t3); }
+.lab-accent { color: var(--lab-accent); }
+
+.lab-bg { background: var(--lab-bg); }
+.lab-panel { background: var(--lab-panel); }
+.lab-card { background: var(--lab-card); }
+
+.lab-line { border-color: var(--lab-line); }
+.lab-line-soft { border-color: var(--lab-line-soft); }
+
+.lab-hover { transition: border-color 0.18s ease, color 0.18s ease, background-color 0.18s ease; }
+.lab-hover:hover { border-color: var(--lab-accent); color: var(--lab-t1); }
+
+.lab-hover-plain { transition: color 0.18s ease; }
+.lab-hover-plain:hover { color: var(--lab-t1); }

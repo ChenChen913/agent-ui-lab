@@ -21,7 +21,7 @@ export interface Entry {
   variants?: Variant[]
 }
 
-export const LAB_INTRO = '把「Agent 干活的过程」设计出来 —— 一次一个实验。'
+export const LAB_INTRO = '把「Agent 干活的过程」设计出来，一次一个实验。'
 
 /** 按顺序浏览用：每个实验的主入口。Frame 用它渲染 ‹ › 翻页。 */
 export interface NavItem { no: string; title: string; route: string }
