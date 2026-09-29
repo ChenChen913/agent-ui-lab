@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { useBeatLoop, typingFrame, type BeatRunner } from '../../shared/beat'
 import { DEFAULT_ASK, PLAN, SCENARIO, ripple, type Beat, type Step } from './scenario'
 
 export interface P12State {
@@ -23,7 +24,7 @@ let ci = 0
 
 export function usePlan({ playing, speed, runId }: { playing: boolean; speed: number; runId: number }) {
   const [state, setState] = useState<P12State>(fresh)
-  const r = useRef({ elapsed: 0, idx: 0, typing: null as any, typedLen: 0, disc: fresh(), mode: 'demo' as 'demo' | 'live' })
+  const r = useRef<BeatRunner<P12State>>({ elapsed: 0, idx: 0, typing: null, typedLen: 0, disc: fresh(), mode: 'demo' })
   const timers = useRef<number[]>([])
 
   const commit = useCallback(() => {
@@ -40,33 +41,7 @@ export function usePlan({ playing, speed, runId }: { playing: boolean; speed: nu
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [runId])
 
-  useEffect(() => {
-    if (!playing) return
-    let raf = 0
-    let last = performance.now()
-    const tick = (now: number) => {
-      const S = r.current, D = S.disc
-      S.elapsed += (now - last) * speed
-      last = now
-      let dirty = false
-      if (S.mode === 'demo') {
-        while (S.idx < SCENARIO.length && SCENARIO[S.idx].t <= S.elapsed) {
-          const stop = applyBeat(S, SCENARIO[S.idx]); S.idx++; dirty = true
-          if (stop) break
-        }
-        if (S.typing) {
-          const p = Math.min(1, (S.elapsed - S.typing.t0) / S.typing.dur)
-          const n = Math.round(p * S.typing.text.length)
-          if (n !== S.typedLen) { S.typedLen = n; D.typed = S.typing.text.slice(0, n); dirty = true }
-          if (p >= 1) S.typing = null
-        }
-      }
-      if (dirty) commit()
-      raf = requestAnimationFrame(tick)
-    }
-    raf = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(raf)
-  }, [playing, speed, runId, commit])
+  useBeatLoop({ playing, speed, runId, S: r, scenario: SCENARIO, applyBeat, typing: typingFrame, commit })
 
   /** 改一步：算涟漪，把下游标成 stale，并给出汇总 */
   const doRipple = useCallback((id: string) => {
@@ -162,7 +137,7 @@ export function usePlan({ playing, speed, runId }: { playing: boolean; speed: nu
   return { state, api }
 }
 
-function applyBeat(S: { elapsed: number; typing: any; typedLen: number; disc: P12State }, b: Beat): boolean {
+function applyBeat(S: BeatRunner<P12State>, b: Beat): boolean {
   const D = S.disc
   const step = (id: string) => D.steps.find((x) => x.id === id)
   switch (b.op) {

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { useBeatLoop, type BeatRunner } from '../../shared/beat'
 import { SCENARIO, type Beat, type Item } from './scenario'
 
 export interface R15State { arrived: boolean; items: Item[]; ignored: { count: number; minutes: number } | null }
@@ -6,24 +7,12 @@ const fresh = (): R15State => ({ arrived: false, items: [], ignored: null })
 
 export function useReturn({ playing, speed, runId }: { playing: boolean; speed: number; runId: number }) {
   const [state, setState] = useState<R15State>(fresh)
-  const r = useRef({ elapsed: 0, idx: 0, disc: fresh() })
+  const r = useRef<BeatRunner<R15State>>({ elapsed: 0, idx: 0, typing: null, typedLen: 0, disc: fresh(), mode: 'demo' })
   const commit = useCallback(() => { const D = r.current.disc; setState({ arrived: D.arrived, items: D.items.map((i) => ({ ...i })), ignored: D.ignored ? { ...D.ignored } : null }) }, [])
 
-  useEffect(() => { r.current = { elapsed: 0, idx: 0, disc: fresh() }; setState(r.current.disc) }, [runId])
+  useEffect(() => { r.current = { elapsed: 0, idx: 0, typing: null, typedLen: 0, disc: fresh(), mode: 'demo' }; setState(r.current.disc) }, [runId])
 
-  useEffect(() => {
-    if (!playing) return
-    let raf = 0, last = performance.now()
-    const tick = (now: number) => {
-      const S = r.current; S.elapsed += (now - last) * speed; last = now
-      let dirty = false
-      while (S.idx < SCENARIO.length && SCENARIO[S.idx].t <= S.elapsed) { const stop = applyBeat(S, SCENARIO[S.idx]); S.idx++; dirty = true; if (stop) break }
-      if (dirty) commit()
-      raf = requestAnimationFrame(tick)
-    }
-    raf = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(raf)
-  }, [playing, speed, runId, commit])
+  useBeatLoop({ playing, speed, runId, S: r, scenario: SCENARIO, applyBeat, commit })
 
   const api = {
     toggle: useCallback((id: string) => { const it = r.current.disc.items.find((x) => x.id === id); if (it) it.open = !it.open; commit() }, [commit]),
@@ -33,7 +22,7 @@ export function useReturn({ playing, speed, runId }: { playing: boolean; speed: 
   return { state, api }
 }
 
-function applyBeat(S: { disc: R15State }, b: Beat): boolean {
+function applyBeat(S: BeatRunner<R15State>, b: Beat): boolean {
   const D = S.disc
   switch (b.op) {
     case 'arrive': D.arrived = true; return false
