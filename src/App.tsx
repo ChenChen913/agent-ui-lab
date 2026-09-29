@@ -8,23 +8,23 @@ import type { Ctl } from './lab/ctl'
  * 它们之间本来就互不 import，拆成独立 chunk 是最自然的结果。
  */
 const LabIndex = lazy(() => import('./lab/Index'))
-const BenchA = lazy(() => import('./experiments/001-bench/A-minimal'))
-const BenchB = lazy(() => import('./experiments/001-bench/B-paper'))
-const BenchC = lazy(() => import('./experiments/001-bench/C-glass'))
-const OneLine = lazy(() => import('./experiments/002-one-line'))
-const Terminal = lazy(() => import('./experiments/003-terminal'))
-const Chronicle = lazy(() => import('./experiments/004-chronicle'))
-const Desktop = lazy(() => import('./experiments/005-desktop'))
-const Spatial = lazy(() => import('./experiments/006-spatial'))
-const Brief = lazy(() => import('./experiments/007-brief'))
-const Baseline = lazy(() => import('./experiments/008-baseline'))
-const Workbench = lazy(() => import('./experiments/009-workbench'))
-const Mission = lazy(() => import('./experiments/010-mission'))
-const Bubble = lazy(() => import('./experiments/011-bubble'))
-const Plan = lazy(() => import('./experiments/012-plan'))
-const Weight = lazy(() => import('./experiments/013-weight'))
-const Ledger = lazy(() => import('./experiments/014-ledger'))
-const Return = lazy(() => import('./experiments/015-return'))
+const BenchA = lazy(() => import('./experiments/b1-bench/A-minimal'))
+const BenchB = lazy(() => import('./experiments/b1-bench/B-paper'))
+const BenchC = lazy(() => import('./experiments/b1-bench/C-glass'))
+const OneLine = lazy(() => import('./experiments/b2-one-line'))
+const Terminal = lazy(() => import('./experiments/b3-terminal'))
+const Chronicle = lazy(() => import('./experiments/b4-chronicle'))
+const Desktop = lazy(() => import('./experiments/b5-desktop'))
+const Spatial = lazy(() => import('./experiments/b6-spatial'))
+const Brief = lazy(() => import('./experiments/a1-brief'))
+const Baseline = lazy(() => import('./experiments/a2-inout'))
+const Workbench = lazy(() => import('./experiments/a3-workbench'))
+const Mission = lazy(() => import('./experiments/a4-mission'))
+const Bubble = lazy(() => import('./experiments/a5-bubble'))
+const Plan = lazy(() => import('./experiments/a6-plan'))
+const Weight = lazy(() => import('./experiments/a7-weight'))
+const Ledger = lazy(() => import('./experiments/a8-ledger'))
+const Return = lazy(() => import('./experiments/a9-return'))
 
 const BENCH: { id: string; name: string; Comp: ComponentType<Ctl> }[] = [
   { id: 'a', name: 'A · 极简黑白', Comp: BenchA },
@@ -51,11 +51,11 @@ export default function App() {
           {BENCH.map((v) => (
             <Route
               key={v.id}
-              path={`/001/${v.id}`}
+              path={`/b1/${v.id}`}
               element={
                 <Frame
-                  key={'001-' + v.id}
-                  no="001"
+                  key={'b1-' + v.id}
+                  no="B1"
                   title="The Bench"
                   variants={BENCH.map(({ id, name }) => ({ id, name }))}
                   current={v.id}
@@ -66,63 +66,63 @@ export default function App() {
           ))}
 
           <Route
-            path="/002"
-            element={<Frame key="002" no="002" title="One Line" render={(ctl) => <OneLine {...ctl} />} />}
+            path="/b2"
+            element={<Frame key="B2" no="B2" title="One Line" render={(ctl) => <OneLine {...ctl} />} />}
           />
 
           <Route
-            path="/003"
-            element={<Frame key="003" no="003" title="Terminal" render={(ctl) => <Terminal {...ctl} />} />}
+            path="/b3"
+            element={<Frame key="B3" no="B3" title="Terminal" render={(ctl) => <Terminal {...ctl} />} />}
           />
 
           <Route
-            path="/004"
-            element={<Frame key="004" no="004" title="Chronicle" render={(ctl) => <Chronicle {...ctl} />} />}
+            path="/b4"
+            element={<Frame key="B4" no="B4" title="Chronicle" render={(ctl) => <Chronicle {...ctl} />} />}
           />
 
           <Route
-            path="/005"
-            element={<Frame key="005" no="005" title="Desktop" render={(ctl) => <Desktop {...ctl} />} />}
+            path="/b5"
+            element={<Frame key="B5" no="B5" title="Desktop" render={(ctl) => <Desktop {...ctl} />} />}
           />
 
           <Route
-            path="/006"
-            element={<Frame key="006" no="006" title="Spatial" render={(ctl) => <Spatial {...ctl} />} />}
+            path="/b6"
+            element={<Frame key="B6" no="B6" title="Spatial" render={(ctl) => <Spatial {...ctl} />} />}
           />
 
           <Route
-            path="/007"
-            element={<Frame key="007" no="007" title="The Brief" render={(ctl) => <Brief {...ctl} />} />}
+            path="/a1"
+            element={<Frame key="A1" no="A1" title="The Brief" render={(ctl) => <Brief {...ctl} />} />}
           />
 
           <Route
-            path="/008"
-            element={<Frame key="008" no="008" title="In & Out" autoPlay={false} render={(ctl) => <Baseline {...ctl} />} />}
+            path="/a2"
+            element={<Frame key="A2" no="A2" title="In & Out" autoPlay={false} render={(ctl) => <Baseline {...ctl} />} />}
           />
 
           <Route
-            path="/009"
-            element={<Frame key="009" no="009" title="Workbench" autoPlay={false} render={(ctl) => <Workbench {...ctl} />} />}
+            path="/a3"
+            element={<Frame key="A3" no="A3" title="Workbench" autoPlay={false} render={(ctl) => <Workbench {...ctl} />} />}
           />
 
           <Route
-            path="/010"
-            element={<Frame key="010" no="010" title="Mission Control" autoPlay={false} render={(ctl) => <Mission {...ctl} />} />}
+            path="/a4"
+            element={<Frame key="A4" no="A4" title="Mission Control" autoPlay={false} render={(ctl) => <Mission {...ctl} />} />}
           />
 
           <Route
-            path="/011"
-            element={<Frame key="011" no="011" title="Bubble" autoPlay={false} render={(ctl) => <Bubble {...ctl} />} />}
+            path="/a5"
+            element={<Frame key="A5" no="A5" title="Bubble" autoPlay={false} render={(ctl) => <Bubble {...ctl} />} />}
           />
 
           <Route
-            path="/012"
-            element={<Frame key="012" no="012" title="The Plan" autoPlay={false} render={(ctl) => <Plan {...ctl} />} />}
+            path="/a6"
+            element={<Frame key="A6" no="A6" title="The Plan" autoPlay={false} render={(ctl) => <Plan {...ctl} />} />}
           />
 
-          <Route path="/013" element={<Frame key="013" no="013" title="Weight" autoPlay={false} render={(ctl) => <Weight {...ctl} />} />} />
-          <Route path="/014" element={<Frame key="014" no="014" title="Ledger" autoPlay={false} render={(ctl) => <Ledger {...ctl} />} />} />
-          <Route path="/015" element={<Frame key="015" no="015" title="Return" autoPlay={false} render={(ctl) => <Return {...ctl} />} />} />
+          <Route path="/a7" element={<Frame key="A7" no="A7" title="Weight" autoPlay={false} render={(ctl) => <Weight {...ctl} />} />} />
+          <Route path="/a8" element={<Frame key="A8" no="A8" title="Ledger" autoPlay={false} render={(ctl) => <Ledger {...ctl} />} />} />
+          <Route path="/a9" element={<Frame key="A9" no="A9" title="Return" autoPlay={false} render={(ctl) => <Return {...ctl} />} />} />
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

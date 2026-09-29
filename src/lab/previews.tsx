@@ -19,7 +19,7 @@ export interface PreviewProps {
 }
 
 /** 有多张截图的模板 */
-const MULTI: Record<string, string[]> = { '001': ['a', 'b', 'c'] }
+const MULTI: Record<string, string[]> = { 'B1': ['a', 'b', 'c'] }
 
 function Shot({ no, vn, bg }: { no: string; vn?: string; bg: string }) {
   const file = vn && MULTI[no]?.includes(vn) ? no + '-' + vn : no
@@ -33,19 +33,19 @@ function Shot({ no, vn, bg }: { no: string; vn?: string; bg: string }) {
 const make = (no: string) => (p: PreviewProps) => <Shot no={no} vn={p.vn} bg={p.bg ?? '#ffffff'} />
 
 export const PREVIEWS: Record<string, (p: PreviewProps) => JSX.Element> = {
-  '001': make('001'),
-  '002': make('002'),
-  '003': make('003'),
-  '004': make('004'),
-  '005': make('005'),
-  '006': make('006'),
-  '007': make('007'),
-  '008': make('008'),
-  '009': make('009'),
-  '010': make('010'),
-  '011': make('011'),
-  '012': make('012'),
-  '013': make('013'),
-  '014': make('014'),
-  '015': make('015'),
+  'B1': make('B1'),
+  'B2': make('B2'),
+  'B3': make('B3'),
+  'B4': make('B4'),
+  'B5': make('B5'),
+  'B6': make('B6'),
+  'A1': make('A1'),
+  'A2': make('A2'),
+  'A3': make('A3'),
+  'A4': make('A4'),
+  'A5': make('A5'),
+  'A6': make('A6'),
+  'A7': make('A7'),
+  'A8': make('A8'),
+  'A9': make('A9'),
 }
