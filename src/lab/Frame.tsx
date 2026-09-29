@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { ArrowLeft, ArrowRight, Pause, Play, RotateCcw } from 'lucide-react'
-import { NAV } from './registry'
+import { NAV, stampedNo } from './registry'
 import ThemeToggle from './ThemeToggle'
 import type { Ctl } from './ctl'
 
@@ -54,7 +54,7 @@ export default function Frame({ no, title, variants, current, autoPlay = true, r
         {divider}
 
         <div className="flex items-baseline gap-2">
-          <span className="font-mono text-[12px] tabular-nums lab-t3">{no}</span>
+          <span className="font-mono text-[12px] tabular-nums lab-t3">{stampedNo(no)}</span>
           <span className="text-[14px] font-medium lab-t1">{title}</span>
         </div>
 
@@ -78,14 +78,14 @@ export default function Frame({ no, title, variants, current, autoPlay = true, r
           {prev ? (
             <Link to={prev.route} title={prev.no + ' · ' + prev.title} className={navBtn}>
               <ArrowLeft size={13} strokeWidth={2} />
-              {prev.no}
+              {stampedNo(prev.no)}
             </Link>
           ) : (
             <span className="h-8 w-[58px]" />
           )}
           {next ? (
             <Link to={next.route} title={next.no + ' · ' + next.title} className={navBtn}>
-              {next.no}
+              {stampedNo(next.no)}
               <ArrowRight size={13} strokeWidth={2} />
             </Link>
           ) : (

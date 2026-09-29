@@ -41,20 +41,37 @@ export interface LineMeta {
   desc: string
 }
 
+/** 展示顺序：主界面在前，过程可视化在后 */
 export const LINES: LineMeta[] = [
+  {
+    id: 'b',
+    name: 'Agent 主界面',
+    question: 'Agent 在干活的时候，怎么让用户看懂？',
+    desc: '传统产品把 Agent 的工作压成一句 Loading。这一线探索的是：那整个过程除了聊天消息，还能怎么被表达出来。六个模板是六种完全不同的视觉语言，故意不统一。',
+  },
   {
     id: 'a',
     name: 'Agent 工作过程可视化',
     question: 'Agent 在干活的时候，怎么让用户看懂？',
     desc: '传统产品把 Agent 的工作压成一句 Loading。这一线探索的是：那整个过程除了聊天消息，还能怎么被表达出来。六个模板是六种完全不同的视觉语言，故意不统一。',
   },
-  {
-    id: 'b',
-    name: 'Agent 主界面',
-    question: '用户应该如何使用 Agent？',
-    desc: '从「Agent 正在干什么」转向「人怎么用它」。这一线研究的是产品入口、任务创建、委托与谈判、产物、以及人和 Agent 的持续交互。',
-  },
 ]
+
+/**
+ * 线内序号：两条主线各自从 1 开始编号。
+ * 由 ENTRIES 里的先后顺序决定，不用手工维护。
+ */
+export function lineIndex(entry: Entry): number {
+  const live = ENTRIES.filter((x) => x.status === 'live' && x.line === entry.line)
+  return live.findIndex((x) => x.no === entry.no) + 1
+}
+
+/** 线内序号带线名，用在没有分区上下文的地方（比如实验页顶栏） */
+export function stampedNo(no: string): string {
+  const entry = ENTRIES.find((x) => x.no === no)
+  if (!entry || entry.status !== 'live') return no
+  return (entry.line === 'a' ? 'A' : 'B') + lineIndex(entry)
+}
 
 /** 首屏主标题（分两行）与副标题 */
 export const HERO = { line1: '把 AI Agent 的界面', line2: '一个一个做出来' }

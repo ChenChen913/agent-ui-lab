@@ -54,24 +54,9 @@ Open the address printed in the terminal (http://localhost:5173 by default). You
 
 ## The two lines
 
-The project has two lines, and **every template belongs to exactly one**.
+The project has two lines, and **every template belongs to exactly one. Each line is numbered from 1.**
 
-### A · Agent process visualisation
-
-> When an agent is working, how do you let the user understand it?
-
-Conventional products compress an agent's work into one spinner. This line asks what else that whole process could be. **The six templates are six deliberately un-unified visual languages.**
-
-| No. | Name | The question it answers |
-|---|---|---|
-| 001 | The Bench | When an agent is working, what can the interface be besides a spinner? |
-| 002 | One Line | If the whole interface were allowed exactly one line, how could an agent still work? |
-| 003 | Terminal | Terminals are crude. Can one be designed into a first-class agent interface? |
-| 004 | Chronicle | What if an agent's work were shown as a timeline instead of a chat log? |
-| 005 | Desktop | What if an agent were not a web page but something that lives on your desktop? |
-| 006 | Spatial | What if an agent's state were expressed through spatial relationships instead of a list? |
-
-### B · Agent product UI
+### 1 · Agent product UI
 
 > How should a person actually use an agent?
 
@@ -79,15 +64,30 @@ Moving from "what is the agent doing" to "how does a person work with it". This 
 
 | No. | Name | The question it answers |
 |---|---|---|
-| 007 | The Brief | What if the interface were about the commission, not the chat log? |
-| 008 | Baseline | What should the layer a user sees right after signing in actually look like? |
-| 009 | Workbench | What if the output were not the last message but an artifact sitting next to the chat? |
-| 010 | Home | What if the home screen were the product itself, with the input floating in the center? |
-| 011 | Bubble | What if the agent looked like the chat app you already know by heart? |
-| 012 | The Plan | The agent already started, and you realise it misunderstood. What now, besides killing it? |
-| 013 | Weight | Should one screen give the same amount of process for one sentence and for twenty projects? |
-| 014 | Settle | Are the process and the result two things, or two stages of one thing? |
-| 015 | Return | The user was away for 20 minutes. What should they see when they come back? |
+| 1 | The Brief | What if the interface were about the commission, not the chat log? |
+| 2 | Baseline | What should the layer a user sees right after signing in actually look like? |
+| 3 | Workbench | What if the output were not the last message but an artifact sitting next to the chat? |
+| 4 | Home | What if the home screen were the product itself, with the input floating in the center? |
+| 5 | Bubble | What if the agent looked like the chat app you already know by heart? |
+| 6 | The Plan | The agent already started, and you realise it misunderstood. What now, besides killing it? |
+| 7 | Weight | Should one screen give the same amount of process for one sentence and for twenty projects? |
+| 8 | Settle | Are the process and the result two things, or two stages of one thing? |
+| 9 | Return | The user was away for 20 minutes. What should they see when they come back? |
+
+### 2 · Agent process visualisation
+
+> When an agent is working, how do you let the user understand it?
+
+Conventional products compress an agent's work into one spinner. This line asks what else that whole process could be. **The six templates are six deliberately un-unified visual languages.**
+
+| No. | Name | The question it answers |
+|---|---|---|
+| 1 | The Bench | When an agent is working, what can the interface be besides a spinner? |
+| 2 | One Line | If the whole interface were allowed exactly one line, how could an agent still work? |
+| 3 | Terminal | Terminals are crude. Can one be designed into a first-class agent interface? |
+| 4 | Chronicle | What if an agent's work were shown as a timeline instead of a chat log? |
+| 5 | Desktop | What if an agent were not a web page but something that lives on your desktop? |
+| 6 | Spatial | What if an agent's state were expressed through spatial relationships instead of a list? |
 
 ## Usage
 

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ENTRIES, HERO, LAB_SUB, LINES, type Entry } from './registry'
+import { ENTRIES, HERO, LAB_SUB, LINES, lineIndex, type Entry } from './registry'
 import { PREVIEWS, type PreviewProps } from './previews'
 import ThemeToggle from './ThemeToggle'
 
@@ -126,7 +126,7 @@ function Card({ e }: { e: Entry }) {
 
       <div className="px-4 pt-4">
         <div className="flex items-baseline gap-2.5">
-          <span className="font-mono text-[12px] tabular-nums lab-t3">{e.no}</span>
+          <span className="font-mono text-[13px] tabular-nums lab-t3">{lineIndex(e)}</span>
           <h3 className="text-[15px] font-medium tracking-[-0.01em] lab-t1">{e.title}</h3>
         </div>
         <p className="mt-2.5 min-h-[47px] text-[13px] leading-[1.8] lab-t2">{e.question}</p>
