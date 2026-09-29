@@ -145,7 +145,8 @@ export function useChronicle(opts: {
         keyRef.current = key
         setState((p) => ({ ...p, live: S.isLive, laneId: a ? a.lane.id : null, segIdx: a ? a.seg : -1 }))
       }
-      raf = requestAnimationFrame(tick)
+      // 时间线走到头就该停 —— 否则每帧都在重画一幅已经不会再变的画面
+      if (S.realT < TOTAL) raf = requestAnimationFrame(tick)
     }
     raf = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(raf)
