@@ -60,7 +60,16 @@ export const ENTRIES: Entry[] = [
       { id: 'a', name: 'Terminal', tag: '调色板 / 文本动效', bg: '#0e1012', fg: '#cbc8c0', accent: '#d6a45f', href: '/003' },
     ],
   },
-  { no: '004', slug: '/004', title: 'Chronicle', question: '把对话历史做成一条可以滑动的时间轴。', status: 'planned' },
+  {
+    no: '004',
+    slug: '/004',
+    title: 'Chronicle',
+    question: '如果不用传统聊天记录，而是用时间轴表达 Agent 的工作过程，会怎么样？',
+    status: 'live',
+    variants: [
+      { id: 'a', name: 'Chronicle', tag: '时间轴 / 泳道 / 可拖动', bg: '#eef1f3', fg: '#16232e', accent: '#c4472c', href: '/004' },
+    ],
+  },
   { no: '005', slug: '/005', title: 'Desktop', question: 'Agent 像操作系统助手一样活着。', status: 'planned' },
   { no: '006', slug: '/006', title: 'Spatial', question: '不用列表，用空间表达 Agent 的工作。', status: 'planned' },
   { no: '—', slug: '/', title: '…', question: '下一个想法。', status: 'planned' },
