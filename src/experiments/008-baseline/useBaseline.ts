@@ -2,8 +2,8 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useBeatLoop, typingFrame, type BeatRunner } from '../../shared/beat'
 import { DEFAULT_ASK, SCENARIO, type Beat, type Msg, type Part } from './scenario'
 
-export interface B8State { typed: string; messages: Msg[]; canvasOpen: boolean }
-const fresh = (): B8State => ({ typed: '', messages: [], canvasOpen: false })
+export interface B8State { typed: string; messages: Msg[] }
+const fresh = (): B8State => ({ typed: '', messages: [] })
 let uid = 0
 const nid = (p: string) => p + ++uid
 const clone = (ms: Msg[]) => ms.map((m) => ({ ...m, files: m.files ? m.files.map((f) => ({ ...f })) : undefined, parts: m.parts ? m.parts.map((p) => JSON.parse(JSON.stringify(p)) as Part) : undefined }))
@@ -18,7 +18,7 @@ export function useBaseline({ playing, speed, runId }: { playing: boolean; speed
   const [state, setState] = useState<B8State>(fresh)
   const r = useRef<BeatRunner<B8State>>({ elapsed: 0, idx: 0, typing: null, typedLen: 0, disc: fresh(), mode: 'demo' })
   const timers = useRef<number[]>([])
-  const commit = useCallback(() => { const D = r.current.disc; setState({ typed: D.typed, messages: clone(D.messages), canvasOpen: D.canvasOpen }) }, [])
+  const commit = useCallback(() => { const D = r.current.disc; setState({ typed: D.typed, messages: clone(D.messages) }) }, [])
   const clearTimers = () => { timers.current.forEach((t) => window.clearTimeout(t)); timers.current = [] }
 
   useEffect(() => { clearTimers(); r.current = { elapsed: 0, idx: 0, typing: null, typedLen: 0, disc: fresh(), mode: 'demo' }; setState(r.current.disc) }, [runId])
@@ -43,8 +43,7 @@ export function useBaseline({ playing, speed, runId }: { playing: boolean; speed
         commit()
       }, 1100))
     }, [commit]),
-    toggleCanvas: useCallback(() => { r.current.disc.canvasOpen = !r.current.disc.canvasOpen; commit() }, [commit]),
-    newChat: useCallback(() => { clearTimers(); r.current = { elapsed: 0, idx: 0, typing: null, typedLen: 0, disc: fresh(), mode: 'live' }; setState(r.current.disc) }, []),
+    home: useCallback(() => { clearTimers(); r.current = { elapsed: 0, idx: 0, typing: null, typedLen: 0, disc: fresh(), mode: 'live' }; setState(r.current.disc) }, []),
     pick: useCallback((t: string) => { r.current.disc.typed = t; commit() }, [commit]),
     setTyped: useCallback((v: string) => { r.current.disc.typed = v; commit() }, [commit]),
   }
@@ -65,7 +64,6 @@ function applyBeat(S: BeatRunner<B8State>, b: Beat): boolean {
     case 'fill': { const m = D.messages.find((x) => x.id === b.msg); const p = m?.parts?.find((x) => x.id === b.id); if (p) Object.assign(p, b.patch); return false }
     case 'stream': { const m = D.messages.find((x) => x.id === b.msg); if (m) m.streaming = b.index; return false }
     case 'done': { const m = D.messages.find((x) => x.id === b.msg); if (m) { m.streaming = -1; m.done = true } return false }
-    case 'canvas': D.canvasOpen = b.open; return false
     case 'end': return true
   }
 }

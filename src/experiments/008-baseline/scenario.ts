@@ -39,7 +39,6 @@ export type Beat =
   | { t: number; op: 'fill'; msg: string; id: string; patch: Partial<Part> }
   | { t: number; op: 'stream'; msg: string; index: number }
   | { t: number; op: 'done'; msg: string }
-  | { t: number; op: 'canvas'; open: boolean }
   | { t: number; op: 'end' }
 
 export const TOTAL = 26000
@@ -127,7 +126,6 @@ export const SCENARIO: Beat[] = [
   { t: 15800, op: 'stream', msg: 'm1', index: 5 },
   { t: 17800, op: 'stream', msg: 'm1', index: -1 },
 
-  { t: 18200, op: 'canvas', open: true },
   { t: 18600, op: 'part', msg: 'm1', part: { id: 'p7', kind: 'artifact', state: 'done', title: '季度报告要点.md', desc: '三个关键点 + 附注 4 的问题 + 数据表', meta: '6.8 KB' } },
   { t: 19600, op: 'done', msg: 'm1' },
   { t: 26000, op: 'end' },

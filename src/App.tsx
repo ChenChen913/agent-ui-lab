@@ -19,11 +19,11 @@ const Spatial = lazy(() => import('./experiments/006-spatial'))
 const Brief = lazy(() => import('./experiments/007-brief'))
 const Baseline = lazy(() => import('./experiments/008-baseline'))
 const Workbench = lazy(() => import('./experiments/009-workbench'))
-const Home = lazy(() => import('./experiments/010-home'))
+const Mission = lazy(() => import('./experiments/010-mission'))
 const Bubble = lazy(() => import('./experiments/011-bubble'))
 const Plan = lazy(() => import('./experiments/012-plan'))
 const Weight = lazy(() => import('./experiments/013-weight'))
-const Settle = lazy(() => import('./experiments/014-settle'))
+const Ledger = lazy(() => import('./experiments/014-ledger'))
 const Return = lazy(() => import('./experiments/015-return'))
 
 const BENCH: { id: string; name: string; Comp: ComponentType<Ctl> }[] = [
@@ -97,7 +97,7 @@ export default function App() {
 
           <Route
             path="/008"
-            element={<Frame key="008" no="008" title="Baseline" autoPlay={false} render={(ctl) => <Baseline {...ctl} />} />}
+            element={<Frame key="008" no="008" title="In & Out" autoPlay={false} render={(ctl) => <Baseline {...ctl} />} />}
           />
 
           <Route
@@ -107,7 +107,7 @@ export default function App() {
 
           <Route
             path="/010"
-            element={<Frame key="010" no="010" title="Home" autoPlay={false} render={(ctl) => <Home {...ctl} />} />}
+            element={<Frame key="010" no="010" title="Mission Control" autoPlay={false} render={(ctl) => <Mission {...ctl} />} />}
           />
 
           <Route
@@ -121,7 +121,7 @@ export default function App() {
           />
 
           <Route path="/013" element={<Frame key="013" no="013" title="Weight" autoPlay={false} render={(ctl) => <Weight {...ctl} />} />} />
-          <Route path="/014" element={<Frame key="014" no="014" title="Settle" autoPlay={false} render={(ctl) => <Settle {...ctl} />} />} />
+          <Route path="/014" element={<Frame key="014" no="014" title="Ledger" autoPlay={false} render={(ctl) => <Ledger {...ctl} />} />} />
           <Route path="/015" element={<Frame key="015" no="015" title="Return" autoPlay={false} render={(ctl) => <Return {...ctl} />} />} />
 
           <Route path="*" element={<Navigate to="/" replace />} />
