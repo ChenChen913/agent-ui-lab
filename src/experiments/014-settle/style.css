@@ -1,0 +1,115 @@
+/* ─────────────────────────────────────────────────────────────
+   014 · Settle —— 过程沉淀成产物
+   没有过程面板。左页边是「它做过的事」，右边是文档本身，
+   中间一条细线把每一段连到产出它的那一步。
+   ───────────────────────────────────────────────────────────── */
+.st {
+  --st-bg: #f2f1ee;
+  --st-paper: #fffefc;
+  --st-ink: #1b1a18;
+  --st-dim: #7c7770;
+  --st-line: #e5e2dc;
+  --st-blue: #1f5f8b;
+  --st-drop: #b3524a;
+
+  height: 100%; display: flex; flex-direction: column; overflow: hidden;
+  background: var(--st-bg); color: var(--st-ink);
+  font-family: 'Geist Variable', ui-sans-serif, system-ui, sans-serif; font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}
+.st-top {
+  flex: none; height: 54px; display: flex; align-items: center; justify-content: space-between;
+  padding: 0 30px; border-bottom: 1px solid var(--st-line);
+}
+.st-top-l { display: flex; align-items: center; gap: 9px; font-size: 14px; font-weight: 500; letter-spacing: -0.01em; }
+.st-dot { width: 6px; height: 6px; border-radius: 50%; background: #c9c5bd; }
+.st-dot[data-live='1'] { background: var(--st-blue); animation: st-pulse 1.3s ease-in-out infinite; }
+@keyframes st-pulse { 0%, 100% { opacity: .3; } 50% { opacity: 1; } }
+.st-top-r { font-family: 'Geist Mono Variable', ui-monospace, monospace; font-size: 12px; color: var(--st-dim); }
+
+.st-body { flex: 1; min-height: 0; overflow-y: auto; }
+.st-body::-webkit-scrollbar { width: 8px; }
+.st-body::-webkit-scrollbar-thumb { background: #dcd8d1; border-radius: 4px; }
+.st-paper {
+  display: flex; gap: 0; max-width: 900px; margin: 26px auto 40px;
+  padding: 0 30px;
+}
+
+/* 左页边：它做过的事 */
+.st-margin { flex: none; width: 128px; padding-top: 4px; display: flex; flex-direction: column; gap: 3px; }
+.st-mark {
+  display: flex; align-items: center; gap: 8px; width: 100%;
+  padding: 6px 9px; font: inherit; font-size: 12.5px; text-align: left;
+  background: transparent; border: 0; border-radius: 7px;
+  color: var(--st-dim); cursor: pointer;
+  transition: background-color .16s ease, color .16s ease;
+}
+.st-mark:hover { background: #e9e6e0; color: var(--st-ink); }
+.st-mark[data-on='1'] { background: #fffefc; color: var(--st-ink); box-shadow: 0 1px 3px rgba(27,26,24,.07); }
+.st-mark-d { width: 6px; height: 6px; flex: none; border-radius: 50%; background: #c9c5bd; }
+.st-mark[data-s='running'] .st-mark-d { background: var(--st-blue); animation: st-pulse 1.3s ease-in-out infinite; }
+.st-mark[data-s='done'] .st-mark-d { background: #6f8f7c; }
+.st-mark[data-s='dropped'] { color: var(--st-drop); text-decoration: line-through; }
+.st-mark[data-s='dropped'] .st-mark-d { background: var(--st-drop); }
+.st-mark-t { flex: 1; }
+.st-mark-c { font-size: 11px; color: #aaa49b; }
+
+/* 右边：文档 */
+.st-doc { flex: 1; min-width: 0; position: relative; padding-left: 26px; }
+.st-doc::before { content: ''; position: absolute; left: 0; top: 8px; bottom: 8px; width: 1px; background: var(--st-line); }
+
+.st-wait { padding: 14vh 0 30px; }
+.st-wait h1 { margin: 0 0 11px; font-size: 24px; font-weight: 500; letter-spacing: -0.025em; }
+.st-wait p { margin: 0; font-size: 14px; line-height: 1.8; color: var(--st-dim); }
+
+.st-blk { position: relative; padding: 9px 0; transition: opacity .25s ease; animation: st-in .4s cubic-bezier(.16,1,.3,1) both; }
+@keyframes st-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.st-blk[data-state='writing'] { opacity: .55; }
+.st-blk[data-state='dropped'] { opacity: .38; }
+.st-blk[data-state='dropped'] h2, .st-blk[data-state='dropped'] p,
+.st-blk[data-state='dropped'] li, .st-blk[data-state='dropped'] blockquote,
+.st-blk[data-state='dropped'] table { text-decoration: line-through; text-decoration-color: var(--st-drop); }
+
+/* 段和来源之间的连接线 */
+.st-link { position: absolute; left: -26px; top: 22px; width: 20px; height: 1px; background: var(--st-line); transition: background-color .2s ease, height .2s ease; }
+.st-blk[data-lit='1'] .st-link { background: var(--st-blue); }
+
+.st-doc h2 { margin: 18px 0 4px; font-size: 17px; font-weight: 600; letter-spacing: -0.015em; }
+.st-doc p { margin: 4px 0; font-size: 15px; line-height: 1.85; color: #3a3833; }
+.st-doc ul { margin: 6px 0; padding-left: 20px; list-style: disc; }
+.st-doc li { margin-bottom: 7px; font-size: 15px; line-height: 1.75; color: #3a3833; }
+.st-doc li::marker { color: #b8b2a8; }
+.st-doc blockquote {
+  margin: 8px 0; padding: 11px 15px; border-left: 2.5px solid var(--st-blue);
+  background: #f4f7f9; border-radius: 0 8px 8px 0;
+  font-size: 14px; line-height: 1.8; color: #3d525f;
+}
+.st-tw { margin: 10px 0; overflow-x: auto; border: 1px solid var(--st-line); border-radius: 9px; background: #fff; }
+.st-doc table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.st-doc th, .st-doc td { padding: 9px 13px; text-align: left; border-bottom: 1px solid #f0eeea; }
+.st-doc th { font-weight: 500; color: var(--st-dim); background: #faf9f7; font-size: 12.5px; }
+.st-doc tr:last-child td { border-bottom: 0; }
+
+.st-cursor { display: inline-block; width: 7px; height: 16px; background: var(--st-blue); vertical-align: -2px; animation: st-cur 1s steps(1,end) infinite; }
+@keyframes st-cur { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
+
+.st-undo {
+  display: inline-flex; align-items: center; gap: 5px; margin-top: 4px;
+  padding: 3px 9px; font: inherit; font-size: 12px;
+  background: transparent; border: 1px solid #e8cfcc; border-radius: 6px; color: var(--st-drop); cursor: pointer;
+}
+.st-undo:hover { background: #fdf4f3; }
+
+.st-foot {
+  flex: none; display: flex; align-items: center; gap: 8px;
+  padding: 11px 30px 13px; border-top: 1px solid var(--st-line);
+  font-size: 12.5px; color: var(--st-dim);
+}
+@media (max-width: 760px) {
+  .st-paper { padding: 0 16px; }
+  .st-margin { width: 34px; }
+  .st-mark-t, .st-mark-c { display: none; }
+  .st-mark { justify-content: center; padding: 6px 0; }
+  .st-top, .st-foot { padding-left: 16px; padding-right: 16px; }
+}
+@media (prefers-reduced-motion: reduce) { .st-blk { animation: none; } .st-dot, .st-mark-d, .st-cursor { animation: none; } }

@@ -16,6 +16,9 @@ import Workbench from './experiments/009-workbench'
 import Home from './experiments/010-home'
 import Bubble from './experiments/011-bubble'
 import Plan from './experiments/012-plan'
+import Weight from './experiments/013-weight'
+import Settle from './experiments/014-settle'
+import Return from './experiments/015-return'
 
 const BENCH: { id: string; name: string; Comp: (p: Ctl) => React.ReactElement }[] = [
   { id: 'a', name: 'A · 极简黑白', Comp: BenchA },
@@ -99,6 +102,10 @@ export default function App() {
           path="/012"
           element={<Frame no="012" title="The Plan" autoPlay={false} render={(ctl) => <Plan {...ctl} />} />}
         />
+
+        <Route path="/013" element={<Frame no="013" title="Weight" autoPlay={false} render={(ctl) => <Weight {...ctl} />} />} />
+        <Route path="/014" element={<Frame no="014" title="Settle" autoPlay={false} render={(ctl) => <Settle {...ctl} />} />} />
+        <Route path="/015" element={<Frame no="015" title="Return" autoPlay={false} render={(ctl) => <Return {...ctl} />} />} />
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

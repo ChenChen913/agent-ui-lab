@@ -353,6 +353,91 @@ function PlanPv() {
   )
 }
 
+/** 013 · 分量：做完的缩成一行，正在跑的大任务接管 */
+function WeightPv() {
+  return (
+    <Box bg="#fafaf9">
+      <rect x="18" y="16" width="120" height="5" rx="2.5" fill="#3d3b37" />
+      <rect x="18" y="30" width="180" height="4" rx="2" fill="#a5a19a" />
+      <rect x="18" y="44" width="52" height="13" rx="6" fill="none" stroke="#e6e4e0" />
+      <circle cx="30" cy="50.5" r="3" fill="#6f8f7c" />
+      <rect x="37" y="49" width="24" height="3" rx="1.5" fill="#a5a19a" />
+      <rect x="18" y="68" width="94" height="5" rx="2.5" fill="#3d3b37" />
+      <rect x="18" y="82" width="150" height="4" rx="2" fill="#a5a19a" />
+      <rect x="18" y="96" width="284" height="48" rx="11" fill="#ffffff" stroke="#e6e4e0" />
+      <rect x="32" y="108" width="130" height="5" rx="2.5" fill="#1c1c1a" />
+      <circle cx="39" cy="126" r="5" fill="#e3ede7" />
+      <rect x="50" y="124" width="76" height="4" rx="2" fill="#55524d" />
+      <circle cx="39" cy="137" r="5" fill="#1c1c1a" />
+      <rect x="50" y="135" width="58" height="4" rx="2" fill="#1c1c1a" />
+      <rect x="18" y="152" width="284" height="1" fill="#e6e4e0" />
+    </Box>
+  )
+}
+
+/** 014 · 沉淀：左页边是做过的事，右边是文档本身 */
+function SettlePv() {
+  return (
+    <Box bg="#f2f1ee">
+      <rect x="26" y="14" width="86" height="16" rx="5" fill="#fffefc" />
+      <circle cx="36" cy="22" r="3" fill="#6f8f7c" />
+      <rect x="43" y="20.5" width="26" height="3" rx="1.5" fill="#7c7770" />
+      <rect x="26" y="34" width="86" height="16" rx="5" fill="#fffefc" />
+      <circle cx="36" cy="42" r="3" fill="#1f5f8b" />
+      <rect x="43" y="40.5" width="30" height="3" rx="1.5" fill="#1b1a18" />
+      <rect x="26" y="54" width="86" height="14" rx="5" fill="none" />
+      <circle cx="36" cy="61" r="3" fill="#c9c5bd" />
+      <rect x="43" y="59.5" width="22" height="3" rx="1.5" fill="#b0aca5" />
+      <rect x="132" y="18" width="1" height="126" fill="#e5e2dc" />
+      <rect x="126" y="34" width="14" height="1" fill="#1f5f8b" />
+      <rect x="148" y="26" width="62" height="6" rx="3" fill="#1b1a18" />
+      <rect x="148" y="42" width="150" height="4" rx="2" fill="#5c5850" />
+      <rect x="148" y="52" width="138" height="4" rx="2" fill="#5c5850" />
+      <rect x="148" y="62" width="104" height="4" rx="2" fill="#5c5850" />
+      <rect x="126" y="84" width="14" height="1" fill="#e5e2dc" />
+      <rect x="148" y="76" width="78" height="6" rx="3" fill="#1b1a18" />
+      <rect x="148" y="92" width="154" height="28" rx="7" fill="#f4f7f9" />
+      <rect x="156" y="99" width="134" height="4" rx="2" fill="#5c7484" />
+      <rect x="156" y="109" width="104" height="4" rx="2" fill="#5c7484" />
+      <rect x="148" y="130" width="154" height="14" rx="4" fill="#ffffff" stroke="#e5e2dc" />
+      <rect x="0" y="152" width={W} height="1" fill="#e5e2dc" />
+      <rect x="18" y="157" width="120" height="3" rx="1.5" fill="#b0aca5" />
+    </Box>
+  )
+}
+
+/** 015 · 回来：简报 + 一条有时间长度的带 */
+function ReturnPv() {
+  return (
+    <Box bg="#f4f6f8">
+      <rect x="0" y="0" width={W} height="22" fill="#f4f6f8" />
+      <rect x="0" y="22" width={W} height="1" fill="#e2e6ea" />
+      <rect x="18" y="9" width="76" height="4" rx="2" fill="#14171b" />
+      <rect x="248" y="9" width="54" height="4" rx="2" fill="#b6bdc5" />
+      <circle cx="23" cy="38" r="3" fill="#b8811c" />
+      <rect x="32" y="36" width="52" height="4" rx="2" fill="#737b85" />
+      <rect x="18" y="48" width="284" height="34" rx="9" fill="#fffdf7" stroke="#f0e3c4" />
+      <rect x="30" y="58" width="150" height="4" rx="2" fill="#5c5a52" />
+      <rect x="30" y="68" width="52" height="10" rx="4" fill="#ffffff" stroke="#e8d9b4" />
+      <rect x="88" y="68" width="52" height="10" rx="4" fill="#ffffff" stroke="#e8d9b4" />
+      <circle cx="23" cy="96" r="3" fill="#2b6ca8" />
+      <rect x="32" y="94" width="76" height="4" rx="2" fill="#737b85" />
+      <rect x="18" y="106" width="284" height="42" rx="9" fill="#ffffff" stroke="#e2e6ea" />
+      <rect x="32" y="115" width="26" height="3" rx="1.5" fill="#9aa3ac" />
+      <rect x="66" y="115" width="120" height="3.5" rx="1.75" fill="#3a4149" />
+      <rect x="262" y="115" width="26" height="3.5" rx="1.75" fill="#2b6ca8" />
+      <rect x="18" y="126" width="284" height="1" fill="#edf0f3" />
+      <rect x="32" y="134" width="26" height="3" rx="1.5" fill="#9aa3ac" />
+      <rect x="66" y="134" width="142" height="3.5" rx="1.75" fill="#3a4149" />
+      <rect x="0" y="160" width={W} height="0" fill="none" />
+      <rect x="18" y="156" width="284" height="2" rx="1" fill="#e2e6ea" />
+      <circle cx="70" cy="157" r="4" fill="#2b6ca8" />
+      <circle cx="150" cy="157" r="4" fill="#2b6ca8" />
+      <circle cx="212" cy="157" r="4" fill="#b8811c" />
+    </Box>
+  )
+}
+
 export const PREVIEWS: Record<string, (p: PreviewProps) => JSX.Element> = {
   '001': Bench,
   '002': OneLine,
@@ -366,4 +451,7 @@ export const PREVIEWS: Record<string, (p: PreviewProps) => JSX.Element> = {
   '010': HomePv,
   '011': BubblePv,
   '012': PlanPv,
+  '013': WeightPv,
+  '014': SettlePv,
+  '015': ReturnPv,
 }

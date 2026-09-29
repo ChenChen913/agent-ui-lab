@@ -1,0 +1,135 @@
+/* ─────────────────────────────────────────────────────────────
+   015 · Return —— 你不在的时候
+   简报的形式，四层按需要介入的程度排。
+   底部那条细线是你离开的 23 分钟，它是有长度的。
+   ───────────────────────────────────────────────────────────── */
+.rt {
+  --rt-bg: #f4f6f8;
+  --rt-card: #ffffff;
+  --rt-ink: #14171b;
+  --rt-dim: #737b85;
+  --rt-line: #e2e6ea;
+  --rt-line-2: #edf0f3;
+  --rt-need: #b8811c;
+  --rt-took: #2b6ca8;
+
+  height: 100%; display: flex; flex-direction: column; overflow: hidden;
+  background: var(--rt-bg); color: var(--rt-ink);
+  font-family: 'Geist Variable', ui-sans-serif, system-ui, sans-serif; font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}
+.rt-top {
+  flex: none; height: 54px; display: flex; align-items: center; gap: 9px;
+  padding: 0 32px; border-bottom: 1px solid var(--rt-line); color: var(--rt-dim);
+}
+.rt-top-t { font-size: 14px; color: var(--rt-ink); font-weight: 500; }
+.rt-top-r { margin-left: auto; font-family: 'Geist Mono Variable', ui-monospace, monospace; font-size: 12px; }
+
+.rt-body { flex: 1; min-height: 0; overflow-y: auto; }
+.rt-body::-webkit-scrollbar { width: 8px; }
+.rt-body::-webkit-scrollbar-thumb { background: #dbe0e5; border-radius: 4px; }
+.rt-col { max-width: 780px; margin: 0 auto; padding: 0 32px; }
+.rt-ghost { height: 24px; }
+
+.rt-sec { margin: 26px 0; animation: rt-in .4s cubic-bezier(.16,1,.3,1) both; }
+@keyframes rt-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.rt-h {
+  display: flex; align-items: center; gap: 8px; margin: 0 0 13px;
+  font-size: 12px; font-weight: 500; letter-spacing: 0.06em; color: var(--rt-dim);
+}
+.rt-h-dot { width: 6px; height: 6px; border-radius: 50%; background: #ccd2d9; }
+.rt-h-dot[data-k='need'] { background: var(--rt-need); }
+.rt-h-dot[data-k='took'] { background: var(--rt-took); }
+.rt-h em { margin-left: 3px; font-style: normal; font-family: 'Geist Mono Variable', ui-monospace, monospace; }
+
+/* 需要你决定的 */
+.rt-need {
+  padding: 18px 20px; border-radius: 13px;
+  background: #fffdf7; border: 1px solid #f0e3c4;
+}
+.rt-need[data-done='1'] { background: var(--rt-card); border-color: var(--rt-line); }
+.rt-need > p { margin: 0 0 14px; font-size: 15.5px; line-height: 1.7; }
+.rt-need[data-done='1'] > p { color: var(--rt-dim); }
+.rt-opts { display: flex; gap: 8px; flex-wrap: wrap; }
+.rt-opts button {
+  padding: 8px 16px; font: inherit; font-size: 14px;
+  background: #fff; border: 1px solid #e8d9b4; border-radius: 9px; color: #7a5a12; cursor: pointer;
+  transition: border-color .16s ease, background-color .16s ease;
+}
+.rt-opts button:hover { border-color: var(--rt-need); background: #fffcf4; }
+.rt-chose { display: inline-block; padding: 5px 12px; border-radius: 7px; font-size: 13px; background: #eef2f6; color: var(--rt-took); }
+
+/* 我替你决定了 */
+.rt-list { background: var(--rt-card); border: 1px solid var(--rt-line); border-radius: 13px; overflow: hidden; }
+.rt-row + .rt-row { border-top: 1px solid var(--rt-line-2); }
+.rt-row-h {
+  display: flex; align-items: center; gap: 14px; width: 100%;
+  padding: 14px 18px; font: inherit; text-align: left;
+  background: transparent; border: 0; cursor: pointer;
+  transition: background-color .15s ease;
+}
+.rt-row-h:hover { background: #fafbfc; }
+.rt-time { flex: none; font-family: 'Geist Mono Variable', ui-monospace, monospace; font-size: 12px; color: var(--rt-dim); }
+.rt-row-t { flex: 1; font-size: 14.5px; }
+.rt-why { display: flex; align-items: center; gap: 3px; font-size: 12.5px; color: var(--rt-took); }
+.rt-chev { transition: transform .22s cubic-bezier(.16,1,.3,1); }
+.rt-row[data-open='1'] .rt-chev { transform: rotate(90deg); }
+
+.rt-row-b { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .26s cubic-bezier(.16,1,.3,1); }
+.rt-row[data-open='1'] .rt-row-b { grid-template-rows: 1fr; }
+.rt-row-bi { overflow: hidden; }
+.rt-row[data-open='1'] .rt-row-bi { padding: 2px 18px 18px 46px; }
+.rt-was-l { font-size: 12px; color: var(--rt-dim); margin-bottom: 8px; }
+.rt-was-o { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 13px; }
+.rt-opt { padding: 5px 12px; border-radius: 7px; font-size: 13px; background: #f2f4f6; color: var(--rt-dim); }
+.rt-opt[data-chose='1'] { background: #e7f0f8; color: var(--rt-took); font-weight: 500; }
+.rt-why-t { margin: 0 0 13px; font-size: 13.5px; line-height: 1.75; color: #4a525b; }
+.rt-ask {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 13px; font: inherit; font-size: 12.5px;
+  background: transparent; border: 1px solid var(--rt-line); border-radius: 8px;
+  color: var(--rt-dim); cursor: pointer;
+  transition: border-color .16s ease, color .16s ease, background-color .16s ease;
+}
+.rt-ask:hover { border-color: var(--rt-took); color: var(--rt-took); }
+.rt-ask[data-on='1'] { background: #e7f0f8; border-color: #cfe0ee; color: var(--rt-took); }
+
+/* 可以忽略的 */
+.rt-ign {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  padding: 13px 18px; font: inherit; font-size: 13.5px;
+  background: transparent; border: 1px dashed var(--rt-line); border-radius: 11px;
+  color: var(--rt-dim); cursor: pointer;
+  transition: border-color .16s ease, color .16s ease;
+}
+.rt-ign:hover { border-color: #ccd2d9; color: var(--rt-ink); }
+.rt-ign em { flex: 1; text-align: left; font-style: normal; font-family: 'Geist Mono Variable', ui-monospace, monospace; font-size: 12px; }
+
+/* ── 时间带 ───────────────────────────────────────────── */
+.rt-band { flex: none; padding: 20px 0 22px; border-top: 1px solid var(--rt-line); }
+.rt-track { position: relative; height: 18px; }
+.rt-line { position: absolute; left: 0; right: 0; top: 8px; height: 2px; border-radius: 1px; background: var(--rt-line); }
+.rt-fill { position: absolute; left: 0; top: 8px; height: 2px; border-radius: 1px; background: #cfd7de; transition: width .6s cubic-bezier(.16,1,.3,1); }
+.rt-tick {
+  position: absolute; top: 4px; width: 10px; height: 10px; margin-left: -5px;
+  border-radius: 50%; border: 2px solid var(--rt-bg); cursor: pointer;
+  background: #b9c2cb; padding: 0;
+  transition: transform .16s ease, background-color .16s ease;
+  animation: rt-pop .3s cubic-bezier(.16,1,.3,1) both;
+}
+@keyframes rt-pop { from { transform: scale(0); } to { transform: scale(1); } }
+.rt-tick[data-k='need'] { background: var(--rt-need); }
+.rt-tick[data-k='took'] { background: var(--rt-took); }
+.rt-tick:hover { transform: scale(1.5); }
+.rt-scale { display: flex; justify-content: space-between; margin-top: 7px; font-family: 'Geist Mono Variable', ui-monospace, monospace; font-size: 11px; color: #9aa3ac; }
+
+@media (max-width: 720px) {
+  .rt-col { padding: 0 18px; }
+  .rt-top { padding: 0 18px; }
+  .rt-row[data-open='1'] .rt-row-bi { padding-left: 18px; }
+  .rt-why { font-size: 0; gap: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rt-sec, .rt-tick { animation: none; }
+  .rt-row-b, .rt-chev, .rt-fill { transition: none; }
+}

@@ -40,6 +40,9 @@ export const NAV: NavItem[] = [
   { no: '010', title: 'Home', route: '/010' },
   { no: '011', title: 'Bubble', route: '/011' },
   { no: '012', title: 'The Plan', route: '/012' },
+  { no: '013', title: 'Weight', route: '/013' },
+  { no: '014', title: 'Settle', route: '/014' },
+  { no: '015', title: 'Return', route: '/015' },
 ]
 
 export const ENTRIES: Entry[] = [
@@ -168,6 +171,24 @@ export const ENTRIES: Entry[] = [
     variants: [
       { id: 'a', name: 'The Plan', tag: '活的计划 · 改一步看涟漪', bg: '#f7f8f9', fg: '#14171a', accent: '#2f4bb8', href: '/012' },
     ],
+  },
+  {
+    no: '013', slug: '/013', title: 'Weight',
+    question: '同一块界面，面对一句话和二十个项目，应该给出同样分量的过程吗？',
+    status: 'live',
+    variants: [{ id: 'a', name: 'Weight', tag: '分量随任务变 · 自己长大', bg: '#fafaf9', fg: '#1c1c1a', accent: '#c2410c', href: '/013' }],
+  },
+  {
+    no: '014', slug: '/014', title: 'Settle',
+    question: '过程和结果，是两个东西，还是同一个东西的两个阶段？',
+    status: 'live',
+    variants: [{ id: 'a', name: 'Settle', tag: '过程即草稿 · 撤来源看少掉什么', bg: '#f2f1ee', fg: '#1b1a18', accent: '#1f5f8b', href: '/014' }],
+  },
+  {
+    no: '015', slug: '/015', title: 'Return',
+    question: '用户离开 20 分钟再回来，界面上应该是什么？',
+    status: 'live',
+    variants: [{ id: 'a', name: 'Return', tag: '简报 · 替你做的决定 · 时间带', bg: '#f4f6f8', fg: '#14171b', accent: '#b8811c', href: '/015' }],
   },
   { no: '—', slug: '/', title: '…', question: '下一个想法。', status: 'planned' },
 ]
