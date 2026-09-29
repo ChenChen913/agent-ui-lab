@@ -40,7 +40,7 @@ export default function Weight({ playing, speed, runId }: Ctl) {
           {state.tasks.length === 0 && (
             <div className="wt-empty">
               <h1>连做三件事试试</h1>
-              <p>一件一句话就能完事，一件中等，一件很复杂。<br />看它给出的过程**分量**有什么不同。</p>
+              <p>一件一句话就能完事，一件中等，一件很复杂。<br />看它给出的过程<strong>分量</strong>有什么不同。</p>
             </div>
           )}
 
