@@ -23,8 +23,7 @@ export interface Entry {
 
 /** 首屏主标题（分两行）与副标题 */
 export const HERO = { line1: '把「Agent 干活的过程」', line2: '设计出来' }
-export const LAB_SUB =
-  '一次一个实验。不做统一的设计系统，也不做组件库，每个实验都是一个独立的小界面，有自己的视觉语言。唯一不变的问题是「Agent 干活的过程，用户看得懂吗？」'
+export const LAB_SUB = '一次一个实验，都在回答同一个问题：Agent 干活的时候，用户看得懂吗？'
 
 /** 按顺序浏览用：每个实验的主入口。Frame 用它渲染 ‹ › 翻页。 */
 export interface NavItem { no: string; title: string; route: string }
