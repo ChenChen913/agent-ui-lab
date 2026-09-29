@@ -1,0 +1,184 @@
+/* A7 · Weight —— 一块分量表 + 一条等宽日志流
+   ─────────────────────────────────────────────────────────
+   刻意做得像仪器，不像聊天软件：
+   整页只有一种字体（等宽）、一种颜色（琥珀）、圆角不超过 4px、
+   没有阴影，层级全靠三种灰和几条发丝线。
+   上半区是读数，下半区是过程 —— 读数和过程必须一起长大，
+   否则「分量」就只是一句形容词。 */
+
+.wt7 {
+  --wt7-bg: #111213;
+  --wt7-panel: #171819;
+  --wt7-line: rgba(255, 255, 255, 0.07);
+  --wt7-line-2: rgba(255, 255, 255, 0.12);
+  --wt7-t1: #e8e6e1;
+  --wt7-t2: #97948f;
+  --wt7-t3: #6a6763;
+  --wt7-accent: #e0a33e;
+  --wt7-ok: #6f9e6a;
+  --wt7-warn: #d97b5a;
+  --wt7-read: #7b96ae;
+  --wt7-run: #9a8fc0;
+  --wt7-mono: 'Geist Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  background: var(--wt7-bg);
+  color: var(--wt7-t1);
+  font-family: var(--wt7-mono);
+  font-size: 12.5px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── 顶栏 ─────────────────────────────────────────────── */
+.wt7-top {
+  flex: none;
+  display: flex; align-items: center; gap: 14px;
+  height: 42px; padding: 0 22px;
+  border-bottom: 1px solid var(--wt7-line);
+  background: var(--wt7-panel);
+}
+.wt7-brand { flex: none; font-size: 12px; letter-spacing: 0.14em; color: var(--wt7-t3); }
+.wt7-ask {
+  flex: 1; min-width: 0;
+  font-size: 12.5px; color: var(--wt7-t2);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.wt7-flag {
+  flex: none; padding: 2px 8px; border-radius: 3px;
+  font-size: 10.5px; color: var(--wt7-accent);
+  background: rgba(224, 163, 62, 0.12);
+  border: 1px solid rgba(224, 163, 62, 0.3);
+}
+
+/* ── 分量表 ───────────────────────────────────────────── */
+.wt7-gauge {
+  flex: none;
+  display: flex; align-items: center; gap: 26px;
+  padding: 20px 22px 18px;
+  border-bottom: 1px solid var(--wt7-line);
+}
+.wt7-g { flex: none; width: 196px; height: 110px; }
+.wt7-g-arc, .wt7-g-needle { transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1); }
+
+.wt7-g-side { flex: 1; min-width: 0; }
+.wt7-g-num { display: flex; align-items: baseline; gap: 6px; }
+.wt7-g-num b {
+  font-size: 40px; font-weight: 500; line-height: 1;
+  letter-spacing: -0.03em; color: var(--wt7-accent);
+  font-variant-numeric: tabular-nums;
+}
+.wt7-g-num span { font-size: 13px; color: var(--wt7-t3); }
+.wt7-g-lab { margin: 8px 0 0; font-size: 12px; color: var(--wt7-t2); line-height: 1.6; }
+.wt7-g-grew {
+  margin: 8px 0 0; padding-left: 10px;
+  border-left: 2px solid rgba(224, 163, 62, 0.45);
+  font-size: 11.5px; line-height: 1.6; color: var(--wt7-accent);
+}
+
+.wt7-g-scale {
+  flex: none;
+  display: flex; flex-direction: column; gap: 14px;
+  padding-left: 20px; border-left: 1px solid var(--wt7-line);
+  font-size: 10.5px; color: var(--wt7-t3);
+}
+.wt7-g-scale span { position: relative; padding-left: 10px; }
+.wt7-g-scale span::before {
+  content: ''; position: absolute; left: 0; top: 50%;
+  width: 4px; height: 1px; background: var(--wt7-line-2);
+}
+
+/* ── 过程日志 ─────────────────────────────────────────── */
+.wt7-log {
+  flex: 1; min-height: 0;
+  display: flex; flex-direction: column;
+  max-height: 214px;
+  transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+/* 撑开：读数和行数一起变大，这才是「分量」 */
+.wt7[data-grown='1'] .wt7-log { max-height: none; }
+
+.wt7-log-h {
+  flex: none;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 30px; padding: 0 22px;
+  border-bottom: 1px solid var(--wt7-line);
+  font-size: 10.5px; letter-spacing: 0.1em; color: var(--wt7-t3);
+}
+.wt7-log-b {
+  flex: 1; min-height: 0; overflow-y: auto;
+  padding: 8px 22px 14px;
+}
+.wt7-log-e { margin: 8px 0; font-size: 12px; color: var(--wt7-t3); }
+
+.wt7-l {
+  display: flex; align-items: baseline; gap: 11px;
+  padding: 2.5px 0;
+  font-size: 12px; line-height: 1.65;
+  animation: wt7-in 0.22s ease-out;
+}
+@keyframes wt7-in { from { opacity: 0; transform: translateX(-3px); } }
+.wt7-l-t { flex: none; width: 54px; color: #55534f; font-variant-numeric: tabular-nums; }
+.wt7-l-k { flex: none; width: 22px; color: var(--wt7-t3); }
+.wt7-l-x { flex: 1; min-width: 0; color: var(--wt7-t2); word-break: break-word; }
+
+.wt7-l[data-k='read'] .wt7-l-k { color: var(--wt7-read); }
+.wt7-l[data-k='edit'] .wt7-l-k { color: var(--wt7-accent); }
+.wt7-l[data-k='run'] .wt7-l-k { color: var(--wt7-run); }
+.wt7-l[data-k='ok'] .wt7-l-k { color: var(--wt7-ok); }
+.wt7-l[data-k='warn'] .wt7-l-k { color: var(--wt7-warn); }
+.wt7-l[data-k='warn'] .wt7-l-x { color: #c8a08c; }
+.wt7-l[data-k='ok'] .wt7-l-x { color: var(--wt7-t1); }
+
+/* ── 底部输入 ─────────────────────────────────────────── */
+.wt7-dock {
+  flex: none;
+  padding: 12px 22px 14px;
+  border-top: 1px solid var(--wt7-line);
+  background: var(--wt7-panel);
+}
+.wt7-form { display: flex; align-items: center; gap: 8px; }
+.wt7-form input {
+  flex: 1; min-width: 0; height: 34px; padding: 0 12px;
+  background: #0d0e0f;
+  border: 1px solid var(--wt7-line-2); border-radius: 4px;
+  font-family: var(--wt7-mono); font-size: 12.5px; color: var(--wt7-t1);
+  outline: none;
+  transition: border-color 0.14s ease;
+}
+.wt7-form input::placeholder { color: #56534f; }
+.wt7-form input:focus { border-color: rgba(224, 163, 62, 0.5); }
+.wt7-form button {
+  flex: none;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px;
+  background: rgba(224, 163, 62, 0.14);
+  border: 1px solid rgba(224, 163, 62, 0.34); border-radius: 4px;
+  color: var(--wt7-accent); cursor: pointer;
+  transition: background-color 0.14s ease;
+}
+.wt7-form button:disabled { opacity: 0.4; cursor: default; background: transparent; }
+.wt7-form button:not(:disabled):hover { background: rgba(224, 163, 62, 0.24); }
+.wt7-note { margin: 8px 0 0; font-size: 11px; color: var(--wt7-t3); line-height: 1.6; }
+
+/* ── 响应式 / 降低动效 ────────────────────────────────── */
+@media (max-width: 900px) {
+  .wt7-gauge { gap: 16px; padding: 16px; }
+  .wt7-g { width: 150px; height: 84px; }
+  .wt7-g-scale { display: none; }
+  .wt7-g-num b { font-size: 32px; }
+  .wt7-log-b, .wt7-log-h { padding-left: 16px; padding-right: 16px; }
+  .wt7-top, .wt7-dock { padding-left: 16px; padding-right: 16px; }
+}
+@media (max-width: 560px) {
+  .wt7-gauge { flex-direction: column; align-items: flex-start; }
+  .wt7-l-t { width: 44px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wt7-log { transition: none; }
+  .wt7-g-arc, .wt7-g-needle { transition: none; }
+  .wt7-l { animation: none; }
+}
