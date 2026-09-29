@@ -1,0 +1,213 @@
+/* A6 · The Plan —— 一条横向的时间轴
+   ─────────────────────────────────────────────────────────
+   这个模板要跟其它八个拉开距离，靠的不是配色，是方向：
+   别人是竖着往下排，它是横着往右排。每一步是一根摆在时间上的条，
+   竖着那根琥珀线是「现在」。
+   浅灰底 + 一层竖向时间格 + 蓝色主色 + 极小的圆角（4px），
+   密度刻意做得比聊天式界面高，像看板不像文档。 */
+
+.pl6 {
+  --pl6-bg: #f7f8f9;
+  --pl6-panel: #ffffff;
+  --pl6-line: #e5e8eb;
+  --pl6-line-2: #d2d7dc;
+  --pl6-t1: #14171a;
+  --pl6-t2: #57606a;
+  --pl6-t3: #8b939c;
+  --pl6-accent: #2f4bb8;
+  --pl6-done: #2e6b52;
+  --pl6-now: #c07a12;
+  --pl6-rowh: 38px;
+  --pl6-mono: 'Geist Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  background: var(--pl6-bg);
+  color: var(--pl6-t1);
+  font-size: 13px;
+}
+
+/* ── 顶栏 ─────────────────────────────────────────────── */
+.pl6-top {
+  flex: none;
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 24px;
+  padding: 18px 24px 14px;
+  border-bottom: 1px solid var(--pl6-line);
+  background: var(--pl6-panel);
+}
+.pl6-title h1 { margin: 0 0 6px; font-size: 17px; font-weight: 500; letter-spacing: -0.015em; }
+.pl6-title p { margin: 0; font-size: 12.5px; line-height: 1.6; color: var(--pl6-t2); max-width: 62ch; }
+.pl6-meta {
+  flex: none; display: flex; align-items: baseline; gap: 5px;
+  font-family: var(--pl6-mono); font-variant-numeric: tabular-nums;
+}
+.pl6-now { font-size: 20px; font-weight: 500; color: var(--pl6-now); letter-spacing: -0.02em; }
+.pl6-tot { font-size: 12px; color: var(--pl6-t3); }
+
+/* ── 时间刻度 ─────────────────────────────────────────── */
+.pl6-axis {
+  flex: none;
+  position: relative; height: 24px;
+  padding-left: 244px;
+  border-bottom: 1px solid var(--pl6-line);
+  background: var(--pl6-panel);
+}
+.pl6-tick {
+  position: absolute; top: 0;
+  transform: translateX(-50%);
+  font-family: var(--pl6-mono); font-size: 10.5px; color: var(--pl6-t3);
+  white-space: nowrap;
+  line-height: 24px;
+}
+.pl6-tick:first-child { transform: none; }
+
+/* ── 主体：左名右轴 ───────────────────────────────────── */
+.pl6-body { flex: 1; min-height: 0; display: flex; }
+
+.pl6-names {
+  flex: none; width: 220px;
+  border-right: 1px solid var(--pl6-line);
+  background: var(--pl6-panel);
+}
+.pl6-name {
+  display: flex; align-items: center; gap: 8px;
+  width: 100%; height: var(--pl6-rowh);
+  padding: 0 12px 0 10px;
+  background: transparent; border: 0; border-bottom: 1px solid transparent;
+  font: inherit; font-size: 12.5px; color: var(--pl6-t2);
+  text-align: left; cursor: pointer;
+  transition: background-color 0.14s ease, color 0.14s ease;
+}
+.pl6-name:hover { background: #f1f3f5; color: var(--pl6-t1); }
+.pl6-name[data-s='running'] { color: var(--pl6-t1); font-weight: 500; }
+.pl6-name[data-s='done'] { color: var(--pl6-t2); }
+.pl6-name[data-sel='1'] { background: rgba(47, 75, 184, 0.08); color: var(--pl6-t1); box-shadow: inset 2px 0 0 var(--pl6-accent); }
+.pl6-n-i {
+  flex: none; width: 16px;
+  font-family: var(--pl6-mono); font-size: 10.5px; color: var(--pl6-t3);
+}
+.pl6-n-l { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pl6-n-e {
+  flex: none; padding: 1px 5px; border-radius: 3px;
+  font-size: 10px; color: var(--pl6-now);
+  background: rgba(192, 122, 18, 0.12);
+}
+
+.pl6-track { flex: 1; min-width: 0; position: relative; }
+.pl6-vgrid { position: absolute; inset: 0; }
+.pl6-vgrid i {
+  position: absolute; top: 0; bottom: 0; width: 1px;
+  background: var(--pl6-line);
+}
+.pl6-vgrid i:first-child { background: var(--pl6-line-2); }
+
+.pl6-row { position: relative; height: var(--pl6-rowh); border-bottom: 1px solid rgba(0, 0, 0, 0.03); }
+.pl6-bar {
+  position: absolute; top: 7px; height: 24px;
+  display: flex; align-items: center;
+  padding: 0 8px;
+  border: 1px solid var(--pl6-line-2); border-radius: 4px;
+  background: #eef0f2;
+  overflow: hidden; cursor: pointer;
+  transition: left 0.42s cubic-bezier(0.16, 1, 0.3, 1), width 0.42s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.2s ease, border-color 0.2s ease;
+}
+.pl6-bar[data-s='pending'] { background: #eef0f2; }
+.pl6-bar[data-s='running'] { background: rgba(47, 75, 184, 0.1); border-color: rgba(47, 75, 184, 0.42); }
+.pl6-bar[data-s='done'] { background: rgba(46, 107, 82, 0.1); border-color: rgba(46, 107, 82, 0.34); }
+.pl6-bar[data-sel='1'] { box-shadow: 0 0 0 2px rgba(47, 75, 184, 0.28); }
+
+.pl6-fill {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 0;
+  background: rgba(47, 75, 184, 0.55);
+}
+.pl6-bar[data-s='done'] .pl6-fill { background: rgba(46, 107, 82, 0.75); }
+.pl6-bar-l {
+  position: relative;
+  font-size: 11px; color: var(--pl6-t2);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.pl6-bar[data-s='running'] .pl6-bar-l { color: var(--pl6-t1); }
+.pl6-bar[data-s='done'] .pl6-bar-l { color: #fff; }
+
+/* 依赖连线：从一条的尾巴拐到下一条的头 */
+.pl6-links {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  color: rgba(20, 23, 26, 0.18);
+  pointer-events: none;
+}
+.pl6-links path { transition: d 0.42s cubic-bezier(0.16, 1, 0.3, 1); }
+
+/* 「现在」这根竖线 */
+.pl6-head {
+  position: absolute; top: 0; bottom: 0; left: 0; width: 2px;
+  background: var(--pl6-now);
+  z-index: 3; pointer-events: none;
+}
+.pl6-head::before {
+  content: ''; position: absolute; top: 0; left: -3px;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--pl6-now);
+}
+
+/* ── 空态 ─────────────────────────────────────────────── */
+.pl6-empty { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 24px; }
+.pl6-empty p { margin: 0; font-size: 13px; color: var(--pl6-t2); }
+
+/* ── 底栏：选中一步之后才出现 ─────────────────────────── */
+.pl6-foot {
+  flex: none;
+  display: flex; align-items: center; gap: 16px;
+  padding: 11px 24px;
+  border-top: 1px solid var(--pl6-line);
+  background: var(--pl6-panel);
+}
+.pl6-f-what { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.pl6-f-n { flex: none; font-family: var(--pl6-mono); font-size: 11.5px; color: var(--pl6-t3); }
+.pl6-f-form { display: flex; align-items: center; gap: 6px; }
+.pl6-f-form input {
+  width: 240px; height: 28px; padding: 0 9px;
+  border: 1px solid var(--pl6-line-2); border-radius: 6px;
+  font: inherit; font-size: 12.5px; color: var(--pl6-t1); background: #fff; outline: none;
+  transition: border-color 0.14s ease;
+}
+.pl6-f-form input:focus { border-color: var(--pl6-accent); }
+.pl6-f-form button {
+  height: 28px; padding: 0 12px;
+  border: 1px solid var(--pl6-line-2); border-radius: 6px;
+  background: #fff; font: inherit; font-size: 12.5px; color: var(--pl6-t2); cursor: pointer;
+  transition: border-color 0.14s ease, color 0.14s ease;
+}
+.pl6-f-form button:disabled { opacity: 0.45; cursor: default; }
+.pl6-f-form button:not(:disabled):hover { border-color: var(--pl6-accent); color: var(--pl6-accent); }
+
+.pl6-f-ops { display: flex; gap: 6px; }
+.pl6-f-ops button {
+  display: inline-flex; align-items: center; gap: 4px;
+  height: 28px; padding: 0 11px;
+  border: 1px solid var(--pl6-line-2); border-radius: 6px;
+  background: #fff; font: inherit; font-size: 12.5px; color: var(--pl6-t2); cursor: pointer;
+  transition: border-color 0.14s ease, color 0.14s ease, background-color 0.14s ease;
+}
+.pl6-f-ops button:hover { border-color: var(--pl6-accent); color: var(--pl6-accent); background: rgba(47, 75, 184, 0.05); }
+.pl6-f-hint { margin-left: auto; font-size: 11.5px; color: var(--pl6-t3); }
+
+/* ── 响应式 / 降低动效 ────────────────────────────────── */
+@media (max-width: 980px) {
+  .pl6-names { width: 150px; }
+  .pl6-axis { padding-left: 174px; }
+  .pl6-f-hint { display: none; }
+}
+@media (max-width: 640px) {
+  .pl6-names { width: 108px; }
+  .pl6-axis { padding-left: 132px; }
+  .pl6-top { flex-direction: column; gap: 10px; }
+  .pl6-f-form input { width: 150px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pl6-bar, .pl6-links path { transition: none; }
+}
