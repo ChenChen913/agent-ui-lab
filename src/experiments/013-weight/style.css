@@ -21,10 +21,25 @@
 .wt-thread::-webkit-scrollbar-thumb { background: #e0ded9; border-radius: 4px; }
 .wt-col { max-width: 760px; margin: 0 auto; padding: 0 30px; }
 
-.wt-empty { padding: 24vh 0 30px; text-align: center; }
-.wt-empty h1 { margin: 0 0 12px; font-size: 26px; font-weight: 500; letter-spacing: -0.025em; }
-.wt-empty p { margin: 0; font-size: 14.5px; line-height: 1.85; color: var(--wt-dim); }
+/* 空状态：左对齐的排版宣言，和 012 的居中构图区分开 */
+.wt-empty { padding: 21vh 0 34px; }
+.wt-empty h1 { margin: 0 0 14px; font-size: 27px; font-weight: 500; letter-spacing: -0.025em; }
+.wt-empty h1 em { font-style: normal; color: var(--wt-hot); }
+.wt-empty p { margin: 0 0 26px; font-size: 14.5px; line-height: 1.85; color: var(--wt-dim); max-width: 46ch; }
 .wt-empty p strong { font-weight: 550; color: var(--wt-ink); }
+/* 三条演示刻度：一眼看懂「分量」长什么样 */
+.wt-demo { display: flex; flex-direction: column; gap: 10px; width: 300px; }
+.wt-demo-r { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--wt-dim); }
+.wt-demo-r .wt-w i { background: #c9c5be; }
+.wt-demo-r span { min-width: 44px; text-align: right; font-family: 'Geist Mono Variable', ui-monospace, monospace; font-size: 11px; }
+
+/* 分量刻度：一步一格 */
+.wt-w { display: inline-flex; align-items: center; gap: 2.5px; }
+.wt-w i { width: 3.5px; height: 11px; border-radius: 1px; background: #b8b4ad; }
+.wt-done[data-weight='heavy'] .wt-w i { background: var(--wt-hot); }
+.wt-done[data-weight='heavy'] .wt-w i:nth-child(n + 5) { opacity: .55; }
+.wt-w-big i { width: 5px; height: 15px; background: var(--wt-hot); }
+.wt-w-big { margin-left: auto; }
 
 /* ── 做完的：缩成一行 ─────────────────────────────────── */
 .wt-done { padding: 22px 0; border-bottom: 1px solid var(--wt-line-2); animation: wt-in .3s cubic-bezier(.16,1,.3,1) both; }
@@ -42,6 +57,7 @@
   transition: border-color .15s ease, color .15s ease;
 }
 .wt-fold-h:hover { border-color: #d5d2cc; color: var(--wt-ink); }
+.wt-fold-h .wt-w { margin-right: 2px; }
 .wt-chev { transition: transform .22s cubic-bezier(.16,1,.3,1); }
 .wt-fold[data-open='1'] .wt-chev { transform: rotate(90deg); }
 .wt-fold-b { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .24s cubic-bezier(.16,1,.3,1); }

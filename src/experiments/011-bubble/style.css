@@ -71,6 +71,7 @@
   max-width: 62%;
   padding: 10px 15px;
   border-radius: 12px;
+  /* 微信式尾角：说话的那一边收平，气泡像从头像里长出来的 */
   background: var(--cb-green);
   color: #fff;
   font-size: 15px; line-height: 1.55;
@@ -219,6 +220,9 @@
   .cb-bub { max-width: 78%; }
   .cb-dock { padding-bottom: 16px; }
 }
+.cb-row[data-me='1'] .cb-bub { border-bottom-right-radius: 4px; }
+.cb-row[data-me='0'] .cb-panel { border-bottom-left-radius: 4px; }
+
 @media (prefers-reduced-motion: reduce) {
   .cb-row { animation: none; }
   .cb-acts-ring, .cb-act-d, .cb-panel.is-typing i, .cb-blk.is-stream::after { animation: none; }

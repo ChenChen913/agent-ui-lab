@@ -239,6 +239,9 @@
   .pl-result { margin-left: 0; }
   .pl-hint { display: none; }
 }
+.pl-step[data-s='done'] .pl-node { opacity: .82; }
+.pl-step[data-s='pending'] { opacity: .68; }
+
 @media (prefers-reduced-motion: reduce) {
   .pl-step, .pl-intro, .pl-result, .pl-summary { animation: none; }
 }

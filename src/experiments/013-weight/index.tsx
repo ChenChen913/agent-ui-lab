@@ -11,6 +11,9 @@ import './style.css'
  * 底部那块过程区会**长大**：一行 → 一条带 → 接管大半个屏幕。
  * 决定它多大的不是 Agent 做了多少，而是用户有多需要知道。
  *
+ * 分量是看得见的：每个任务带一列刻度，一步一格 ——
+ * 轻的任务两小格，重的任务一排密格。行高、字重、密度都跟着分量走。
+ *
  * 最要紧的一拍：第三个任务开局只是一条带，
  * 跑到一半复杂度暴露出来，它**自己长大**了。
  */
@@ -39,8 +42,16 @@ export default function Weight({ playing, speed, runId }: Ctl) {
         <div className="wt-col">
           {state.tasks.length === 0 && (
             <div className="wt-empty">
-              <h1>连做三件事试试</h1>
-              <p>一件一句话就能完事，一件中等，一件很复杂。<br />看它给出的过程<strong>分量</strong>有什么不同。</p>
+              <h1>分量，<em>看得见</em></h1>
+              <p>一句话的事就给一行，复杂的事才值得占据半个屏幕。<br />同一个界面，面对不同分量的任务，给出的过程不一样多。</p>
+              <div className="wt-demo" aria-hidden>
+                {[['2', 2], ['4', 4], ['7', 7]].map(([label, n]) => (
+                  <div key={label as string} className="wt-demo-r">
+                    <span className="wt-w">{Array.from({ length: n as number }, (_, i) => <i key={i} />)}</span>
+                    <span>{label as string} 步</span>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 
@@ -67,17 +78,18 @@ export default function Weight({ playing, speed, runId }: Ctl) {
   )
 }
 
-/** 已经做完的：过程缩成一行 */
+/** 已经做完的：过程缩成一行，只留一条分量刻度 */
 function Done({ t, onToggle }: { t: Task; onToggle: () => void }) {
   const n = t.steps.length
   return (
-    <div className="wt-done">
+    <div className="wt-done" data-weight={n <= 2 ? 'light' : n <= 4 ? 'mid' : 'heavy'}>
       <div className="wt-ask">{t.ask}</div>
       <div className="wt-ans">{t.answer}</div>
       {t.size !== 'none' && n > 0 && (
         <div className="wt-fold" data-open={t.open ? '1' : '0'}>
           <button className="wt-fold-h" onClick={onToggle}>
             <Check size={12} strokeWidth={2.8} />
+            <span className="wt-w" aria-hidden>{t.steps.map((_, i) => <i key={i} />)}</span>
             {n} 步
             <ChevronRight size={12} strokeWidth={2.2} className="wt-chev" />
           </button>
@@ -101,6 +113,7 @@ function Big({ t, grew, onAnswer }: { t: Task; grew: boolean; onAnswer: (o: stri
     <div className="wt-big" data-grew={grew ? '1' : '0'}>
       <div className="wt-big-h">
         <div className="wt-ask wt-ask-big">{t.ask}</div>
+        <span className="wt-w wt-w-big" aria-hidden>{t.steps.map((_, i) => <i key={i} />)}</span>
         {grew && <span className="wt-grew">任务比预想的复杂，过程已展开</span>}
       </div>
 
