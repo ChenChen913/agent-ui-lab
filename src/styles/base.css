@@ -126,6 +126,25 @@ body {
 .lab-gh:hover { border-color: var(--lab-accent); color: var(--lab-accent); }
 .lab-gh span { line-height: 1; }
 
+/* ── 顶栏图标按钮：GitHub / 语言 / 配色，三个一律同尺寸 ──────────
+   能用一个图标说清的就不用图标加文字，三个并排时宽度节奏才稳。 */
+.lab-ib {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 32px; width: 32px; flex: none;
+  border: 1px solid var(--lab-line); border-radius: 9px;
+  color: var(--lab-t2); background: var(--lab-panel);
+  text-decoration: none; cursor: pointer;
+  transition: border-color 0.18s ease, color 0.18s ease;
+}
+.lab-ib:hover { border-color: var(--lab-accent); color: var(--lab-accent); }
+.lab-ib.is-sm { height: 28px; width: 28px; border-radius: 8px; }
+/* 语言那颗是两字母，用等宽 + 正字距，跟图标那两颗视觉重量一致 */
+.lab-ib-lang {
+  font-family: 'Geist Mono Variable', ui-monospace, SFMono-Regular, monospace;
+  font-size: 11px; font-weight: 500; letter-spacing: 0.04em;
+}
+.lab-ib.is-sm.lab-ib-lang { font-size: 10.5px; }
+
 .lab-lh-q { margin: 17px 0 7px; font-size: 15px; font-weight: 500; color: var(--lab-t1); letter-spacing: -0.01em; }
 .lab-lh-d { margin: 0 0 24px; max-width: 78ch; font-size: 13.5px; line-height: 1.85; color: var(--lab-t3); }
 

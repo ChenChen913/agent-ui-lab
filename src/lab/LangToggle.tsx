@@ -1,30 +1,29 @@
-import { Globe } from 'lucide-react'
 import type { Lang } from './registry'
 
 /**
- * 语言切换。单个按钮，按一下换一种。
+ * 语言切换。一颗方按钮，上面只有两个字母：CN / EN。
  *
- * 按钮上写的是**切过去之后你会看到的语言**，不是当前语言 ——
- * 这是加拿大政府设计系统（design.canada.ca）的语言切换规范：
- * 英文页面上写 Français，法文页面上写 English。
- * 小屏用两字母缩写。
+ * 写的是**当前**语言，不是点下去会去的那种语言 ——
+ * 因为旁边两颗（GitHub、配色）都是「现状」图标，
+ * 三颗并排时只有它是「预告」会读起来打架。要去哪边写在 title 里。
+ *
+ * 两字母用 lang 标自身语言，屏幕阅读器才不会念错。
  */
 export default function LangToggle({ lang, setLang, compact = false }: {
   lang: Lang; setLang: (l: Lang) => void; compact?: boolean
 }) {
   const next: Lang = lang === 'zh' ? 'en' : 'zh'
-  const label = next === 'en' ? (compact ? 'EN' : 'English') : (compact ? '中' : '中文')
 
   return (
     <button
       type="button"
       onClick={() => setLang(next)}
-      className="lab-gh"
+      className={'lab-ib lab-ib-lang' + (compact ? ' is-sm' : '')}
+      lang={lang === 'zh' ? 'zh-CN' : 'en'}
       title={next === 'en' ? 'Switch to English' : '切换到中文'}
       aria-label={next === 'en' ? 'Switch to English' : '切换到中文'}
     >
-      <Globe size={14} strokeWidth={1.9} />
-      <span>{label}</span>
+      {lang === 'zh' ? 'CN' : 'EN'}
     </button>
   )
 }

@@ -24,9 +24,15 @@ export default function LabIndex() {
     <div className="min-h-full lab-bg">
       <div className="mx-auto max-w-6xl px-8 pb-14 pt-8">
         <div className="mb-3 flex items-center justify-end gap-2">
-          <a className="lab-gh" href={GITHUB} target="_blank" rel="noreferrer" title="GitHub">
-            <GithubMark size={14} />
-            <span>{t(UI.source)}</span>
+          <a
+            className="lab-ib"
+            href={GITHUB}
+            target="_blank"
+            rel="noreferrer"
+            title={'GitHub · ' + t(UI.source)}
+            aria-label="GitHub"
+          >
+            <GithubMark size={15} />
           </a>
           <LangToggle lang={lang} setLang={setLang} />
           <ThemeToggle lang={lang} />
