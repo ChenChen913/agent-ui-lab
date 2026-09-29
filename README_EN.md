@@ -102,6 +102,8 @@ Conventional products compress an agent's work into one spinner. This line asks 
 | B5 | Desktop | What if an agent were not a web page but something that lives on your desktop? |
 | B6 | Spatial | What if an agent's state were expressed through spatial relationships instead of a list? |
 
+> 2026-09 refactor: the old Baseline and Home were two nearly identical templates, now merged into In & Out; the viewpoint of the old Settle (the process as the draft of the result) moved into Workbench. The nine skeletons are deliberately different from each other: a clause sheet, an entry flow, a two-pane workbench, a card stream of agents, chat bubbles, a horizontal gantt, a gauge with a log stream, a margin-note answer page, and a return briefing — sameness is solved by changing the skeleton, not the palette.
+
 ## Usage
 
 The gallery lives at `/`. Every experiment has its own route:
@@ -112,7 +114,7 @@ The gallery lives at `/`. Every experiment has its own route:
 /b2 … /b6    The rest of line B; /a1 … /a9 are the nine of line A
 ```
 
-Each experiment page has a control bar in the top right: back to the gallery, previous and next experiment, light and dark toggle, play and pause, restart, and speed (0.5x, 1x, 2x).
+Each experiment page has a control bar in the top right: back to the gallery, previous and next experiment, light and dark toggle, play and pause, restart, and speed (0.5x, 1x, 2x). The gallery page has three same-size icon buttons in its top right: GitHub, language (CN / EN), and colour mode (one icon — sun by day, moon by night).
 
 **Every experiment is operable, not just viewable.** You can type into the inputs, click the buttons, drag and zoom the canvas in B6, and rewrite a step in place in A6. The scripted demo is only one of several paths through it, and it stops on its own once the script runs out instead of idling in the background.
 
@@ -133,8 +135,8 @@ All data is mock data hard-coded in `src/experiments/*/scenario.ts`.
 ```
 src/
 ├── experiments/          Fifteen templates, one folder each, self-contained
-│   ├── a1-brief/        scenario / engine / index / style.css / NOTES.md
-│   └── …
+│   ├── a1-brief/        Folder names are the numbers: a1 to a9, b1 to b6
+│   └── …                scenario / engine / index / style.css / NOTES.md
 ├── lab/                  The lab shell
 │   ├── Index.tsx         Gallery page
 │   ├── Frame.tsx         Top bar and playback controls for experiment pages
@@ -148,8 +150,6 @@ docs/                     Screenshots used by the README
 ```
 
 Each experiment ships as its own chunk. Opening one downloads only that one, so the first screen does not carry the weight of the other fourteen.
-docs/                     Screenshots used by the README
-```
 
 ## Development
 

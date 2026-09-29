@@ -48,13 +48,13 @@
     - `src/experiments/*/NOTES.md`（15 份，A1–A9 / B1–B6）
 13. **规模**（命令 → 结果）：
     - `(Get-ChildItem 'src' -Recurse -File).Count` → 97
-    - `(Get-ChildItem 'src' -Recurse -File | Get-Content | Measure-Object -Line).Lines` → 13131
+    - `(Get-ChildItem 'src' -Recurse -File | Get-Content | Measure-Object -Line).Lines` → 13279
     - `(Get-ChildItem 'src\experiments' -Recurse -Filter 'NOTES.md').Count` → 15
     - `(Get-ChildItem 'public\previews' -File).Count` → 17
     - `(Get-ChildItem 'src\experiments' -Directory).Count` → 15
     - `(Select-String -Path 'src\App.tsx' -Pattern 'path="' -AllMatches).Matches.Count` → 16
 14. **构建产物**（`pnpm build`）：
-    - 入口 `index.js` 277.72 kB（gzip 90.34 kB），`index.css` 20.60 kB（gzip 5.12 kB）
+    - 入口 `index.js` 276.47 kB（gzip 90.11 kB），`index.css` 21.18 kB（gzip 5.21 kB）
     - JS chunk 共 30 个：十五个实验各自独立，打开谁才下载谁
     - 2026-09 二次调整：编号改为 A1–A9 / B1–B6（目录、路由、预览图同名），
       A4 重写为卡片流，A6 横向甘特，A7 仪表 + 日志流，A8 页边注
@@ -62,7 +62,7 @@
 
 ## B. 需人工补充
 
-- **一句话描述**（< 120 字符）：Ten standalone interface experiments on how an AI agent's work should look.
+- **一句话描述**（< 120 字符）：Fifteen standalone interface experiments on how an AI agent's work should look.
   （已写入 `package.json` 的 `description` 字段，与 README 逐字一致）
 - **为什么做这个项目**：来自项目作者在本项目对话中的原话，见 README「为什么做这个项目」一节
 - **目标用户 / 前置知识**：前端工程师；需要会 React 与 TypeScript
