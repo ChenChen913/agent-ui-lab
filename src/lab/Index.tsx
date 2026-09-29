@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ENTRIES, HERO, LAB_SUB, LINES, lineIndex, type Entry } from './registry'
+import { ENTRIES, GITHUB, HERO, LAB_SUB, LINES, lineIndex, type Entry } from './registry'
+import GithubMark from './GithubMark'
 import { PREVIEWS, type PreviewProps } from './previews'
 import ThemeToggle from './ThemeToggle'
 
@@ -20,7 +21,11 @@ export default function LabIndex() {
   return (
     <div className="min-h-full lab-bg">
       <div className="mx-auto max-w-6xl px-8 pb-14 pt-8">
-        <div className="mb-3 flex justify-end">
+        <div className="mb-3 flex items-center justify-end gap-2">
+          <a className="lab-gh" href={GITHUB} target="_blank" rel="noreferrer" title="GitHub 源码">
+            <GithubMark size={14} />
+            <span>源码</span>
+          </a>
           <ThemeToggle />
         </div>
 
@@ -125,11 +130,11 @@ function Card({ e }: { e: Entry }) {
       </div>
 
       <div className="px-4 pt-4">
-        <div className="flex items-baseline gap-2.5">
-          <span className="font-mono text-[13px] tabular-nums lab-t3">{lineIndex(e)}</span>
-          <h3 className="text-[15px] font-medium tracking-[-0.01em] lab-t1">{e.title}</h3>
+        <div className="flex items-baseline gap-3">
+          <span className="font-mono text-[17px] font-semibold tabular-nums lab-t3">{lineIndex(e)}</span>
+          <h3 className="text-[21px] font-semibold tracking-[-0.024em] lab-t1">{e.title}</h3>
         </div>
-        <p className="mt-2.5 min-h-[47px] text-[13px] leading-[1.8] lab-t2">{e.question}</p>
+        <p className="mt-2.5 min-h-[48px] text-[13.5px] leading-[1.8] lab-t2">{e.question}</p>
       </div>
 
       <div className="mt-auto border-t px-4 pb-4 pt-3.5 lab-line-soft">

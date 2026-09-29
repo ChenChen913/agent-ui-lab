@@ -25,7 +25,7 @@ function Shot({ no, vn, bg }: { no: string; vn?: string; bg: string }) {
   const file = vn && MULTI[no]?.includes(vn) ? no + '-' + vn : no
   return (
     <div className="lab-shot" style={{ background: bg }}>
-      <img src={'/previews/' + file + '.png'} alt="" draggable={false} />
+      <img src={import.meta.env.BASE_URL + 'previews/' + file + '.png'} alt="" draggable={false} />
     </div>
   )
 }

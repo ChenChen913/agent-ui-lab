@@ -1,7 +1,8 @@
 import { useState, type ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { ArrowLeft, ArrowRight, Pause, Play, RotateCcw } from 'lucide-react'
-import { NAV, stampedNo } from './registry'
+import GithubMark from './GithubMark'
+import { GITHUB, NAV, stampedNo } from './registry'
 import ThemeToggle from './ThemeToggle'
 import type { Ctl } from './ctl'
 
@@ -93,6 +94,10 @@ export default function Frame({ no, title, variants, current, autoPlay = true, r
           )}
 
           {divider}
+
+          <a className="lab-gh" href={GITHUB} target="_blank" rel="noreferrer" title="GitHub 源码">
+            <GithubMark size={15} />
+          </a>
 
           <ThemeToggle compact />
 

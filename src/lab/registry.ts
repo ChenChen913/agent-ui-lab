@@ -74,8 +74,11 @@ export function stampedNo(no: string): string {
 }
 
 /** 首屏主标题（分两行）与副标题 */
-export const HERO = { line1: '把 AI Agent 的界面', line2: '一个一个做出来' }
-export const LAB_SUB = '两条主线：过程怎么被看见，以及人怎么使用 Agent。'
+export const HERO = { line1: 'Agent 的界面', line2: '不该只有一种' }
+export const LAB_SUB = '两条主线：过程怎么被看见，以及人怎么使用 Agent。十五个模板，各自独立。'
+
+/** 源码地址，顶栏那个 GitHub 图标指向它 */
+export const GITHUB = 'https://github.com/ChenChen913/agent-ui-lab'
 
 /** 按顺序浏览用：每个实验的主入口。Frame 用它渲染 ‹ › 翻页。 */
 export interface NavItem { no: string; title: string; route: string }

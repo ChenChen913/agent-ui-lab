@@ -113,6 +113,17 @@ body {
   display: block; user-select: none;
 }
 
+.lab-gh {
+  display: flex; align-items: center; gap: 6px;
+  height: 32px; padding: 0 11px;
+  border: 1px solid var(--lab-line); border-radius: 9px;
+  font-size: 12.5px; text-decoration: none;
+  color: var(--lab-t2); background: var(--lab-panel);
+  transition: border-color 0.18s ease, color 0.18s ease;
+}
+.lab-gh:hover { border-color: var(--lab-accent); color: var(--lab-accent); }
+.lab-gh span { line-height: 1; }
+
 .lab-lh-q { margin: 17px 0 7px; font-size: 15px; font-weight: 500; color: var(--lab-t1); letter-spacing: -0.01em; }
 .lab-lh-d { margin: 0 0 24px; max-width: 78ch; font-size: 13.5px; line-height: 1.85; color: var(--lab-t3); }
 

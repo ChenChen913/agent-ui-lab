@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom'
 import LabIndex from './lab/Index'
 import Frame from './lab/Frame'
 import type { Ctl } from './lab/ctl'
@@ -28,7 +28,7 @@ const BENCH: { id: string; name: string; Comp: (p: Ctl) => React.ReactElement }[
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route path="/" element={<LabIndex />} />
 
@@ -109,6 +109,6 @@ export default function App() {
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   )
 }

@@ -1,0 +1,19 @@
+feat: 换标题、加站点图标、卡片名称加大，并接上 GitHub Pages 自动部署
+
+标题：把 AI Agent 的界面 / 一个一个做出来
+  → Agent 的界面 / 不该只有一种
+  原来那句是在说做法，现在这句是在说立场 —— 也正好解释了为什么有十五个模板。
+
+站点图标：public/favicon.svg，深色圆角方块 + 白色菱形。
+
+卡片：模板名称 15px → 21px 并加粗，编号 13px → 17px 并加粗。
+
+顶栏加了 GitHub 图标（内联 SVG，lucide 里没有），主页和实验页都有，指向源码仓库。
+
+部署：
+
+  路由从 BrowserRouter 换成 HashRouter。静态托管没有服务端重写，
+  用 hash 路由刷新子页面才不会 404。
+  vite.config 加 base —— 构建时是 /agent-ui-lab/，开发时还是根路径。
+  预览图路径改成读 import.meta.env.BASE_URL，跟着 base 走。
+  .github/workflows/deploy.yml：推到 main 就自动构建并发布到 Pages。
