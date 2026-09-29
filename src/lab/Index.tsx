@@ -53,7 +53,7 @@ export default function LabIndex() {
               <p className="lab-lh-q">{line.question}</p>
               <p className="lab-lh-d">{line.desc}</p>
 
-              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
                 {items.map((e) => <Card key={e.no} e={e} />)}
               </div>
             </section>
@@ -101,7 +101,7 @@ function Card({ e }: { e: Entry }) {
     <article className="group relative flex flex-col overflow-hidden rounded-xl border lab-line lab-card lab-hover">
       <Link to={to} className="absolute inset-0 z-10" aria-label={'进入 ' + e.title} />
 
-      <div className="relative h-[168px] overflow-hidden border-b lab-line-soft">
+      <div className="relative h-[240px] overflow-hidden border-b lab-line-soft">
         <P {...previewProps} />
         {multi ? (
           <div

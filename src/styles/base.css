@@ -104,13 +104,12 @@ body {
   font-size: 12px; color: var(--lab-t3);
 }
 /* ── 主页卡片上的真截图 ──────────────────────────────────
-   截图是 1280×560，顶部 52px 是实验外壳的黑边。
-   top 与 height 的百分比都按容器高度算，所以这里能精确裁掉那 52px。 */
+   截图不是整个窗口，是 750×360 的一块关键区域（2 倍像素密度）。
+   卡片是 502×240，比例几乎一样，所以 cover 能整块显示，不用裁。 */
 .lab-shot { position: relative; height: 100%; overflow: hidden; }
 .lab-shot img {
-  position: absolute; left: 0;
-  top: -10.5%; height: 110.5%; width: 100%;
-  object-fit: cover; object-position: top;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
   display: block; user-select: none;
 }
 
